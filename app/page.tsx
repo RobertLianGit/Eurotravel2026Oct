@@ -52,6 +52,34 @@ type FreeOption = {
   locationKeys?: string[];
 };
 
+type MapPoint = {
+  name: string;
+  query: string;
+  kind: "hotel" | "visit" | "move" | "optional" | "context";
+  note?: string;
+  coordinates: [number, number];
+  displayOffset?: [number, number];
+};
+
+type HotelAnchor = {
+  name: string;
+  area: string;
+  query: string;
+  coordinates?: [number, number];
+};
+
+type DayMap = {
+  city: string;
+  subtitle: string;
+  center: [number, number];
+  bbox: [number, number, number, number];
+  hotel: HotelAnchor;
+  points: MapPoint[];
+  contextPoints?: MapPoint[];
+  relationship: string;
+  note: string;
+};
+
 const freeOptions: FreeOption[] = [
   { id: "paris-versailles-treaty", region: "巴黎", category: "历史补线", title: "凡尔赛和约：一战之后的欧洲", places: "凡尔赛宫 / 镜厅 / 巴黎", story: "把凡尔赛从路易十四的王权延伸到1919年的战后秩序：旧王宫如何成为重新划分欧洲的地方。", timing: "巴黎自由日或凡尔赛日之后", source: "Excel 自由行参考（已提炼）", locationKeys: ["凡尔赛宫"] },
   { id: "paris-concorde", region: "巴黎", category: "历史补线", title: "协和广场：王权与革命争夺同一块空间", places: "协和广场", story: "从路易十五广场、革命时期的断头台，到今天的城市轴线，讲公共空间如何反复改名、改写。", timing: "巴黎自由日半日", source: "Excel 自由行参考（已提炼）", locationKeys: ["协和广场"] },
@@ -67,6 +95,298 @@ const freeOptions: FreeOption[] = [
   { id: "rome-photo-line", region: "罗马", category: "邓紫棋 / 拍照", title: "罗马人像拍照候选线", places: "特莱维喷泉 → 西班牙广场", story: "这不是已确认的邓紫棋同款地点，而是一条最适合现场拍照、距离和节奏都可控的候选线。", timing: "第6天自由日上午", source: "罗马拍照备选" },
   { id: "rome-jasmine", region: "罗马", category: "邓紫棋 / 拍照", title: "圣彼得穹顶远景拍照候选", places: "橘园 / 马尔他骑士团钥匙孔 / 茉莉花步道", story: "不再进入梵蒂冈内部，改从城市远景拍圣彼得穹顶；适合把拍照和罗马历史收束结合起来。", timing: "第6天自由日下午", source: "罗马拍照备选" },
 ];
+
+const hotelAnchors: Record<"rome" | "florence" | "berlin" | "paris", HotelAnchor> = {
+  rome: { name: "温暖酒店 Warmthotel", area: "Via Giuseppe Prezzolini, 5 · Roma", query: "Warmthotel, Via Giuseppe Prezzolini 5, 00144 Roma RM, Italy", coordinates: [41.8157, 12.4721] },
+  florence: { name: "佛罗伦萨米开朗基罗星际酒店", area: "Viale Fratelli Rosselli, 2 · Firenze", query: "Starhotels Michelangelo Florence, Viale Fratelli Rosselli 2, 50123 Firenze FI, Italy", coordinates: [43.7761, 11.2433] },
+  berlin: { name: "柏林中心 H+ 酒店", area: "Chausseestraße 118–120 · Berlin Mitte", query: "H+ Hotel Berlin Mitte, Chausseestraße 118-120, 10115 Berlin, Germany", coordinates: [52.5351, 13.3836] },
+  paris: { name: "巴黎意大利广场美居酒店", area: "25 Bd Auguste Blanqui · Paris 13e", query: "Hôtel Mercure Paris Place d'Italie, 25 Boulevard Auguste Blanqui, 75013 Paris, France", coordinates: [48.8313, 2.3548] },
+};
+
+const dailyMaps: Record<string, DayMap> = {
+  "day-01": {
+    city: "罗马",
+    subtitle: "抵达段：机场 → 酒店",
+    center: [41.88, 12.43],
+    bbox: [12.21, 41.76, 12.55, 41.94],
+    hotel: hotelAnchors.rome,
+    contextPoints: [
+      { name: "斗兽场", query: "Colosseum, Rome", kind: "context", coordinates: [41.8902, 12.4922] },
+      { name: "梵蒂冈", query: "Vatican City", kind: "context", coordinates: [41.9033, 12.4534] },
+    ],
+    points: [{ name: "罗马机场 FCO", query: "Leonardo da Vinci–Fiumicino Airport", kind: "move", coordinates: [41.7999, 12.2462], note: "抵达后前往酒店" }],
+    relationship: "今天先看机场到酒店的大方向，正式景点从第2天开始。",
+    note: "酒店位置补齐后，这里会显示机场 → 酒店的准确落点和路线。",
+  },
+  "day-02": {
+    city: "罗马",
+    subtitle: "古罗马城市线：东南古城 → 万神殿 → 西班牙广场",
+    center: [41.895, 12.478],
+    bbox: [12.43, 41.80, 12.52, 41.92],
+    hotel: hotelAnchors.rome,
+    points: [
+      { name: "斗兽场", query: "Colosseum, Rome", kind: "visit", coordinates: [41.8902, 12.4922], note: "起点：皇帝如何组织城市人群" },
+      { name: "万神殿", query: "Pantheon, Rome", kind: "visit", coordinates: [41.8986, 12.4769], note: "从公共娱乐转到宇宙秩序" },
+      { name: "特莱维喷泉", query: "Trevi Fountain, Rome", kind: "visit", coordinates: [41.9009, 12.4833] },
+      { name: "真理之口", query: "Bocca della Verità, Rome", kind: "visit", coordinates: [41.8884, 12.4817] },
+      { name: "西班牙广场", query: "Spanish Steps, Rome", kind: "visit", coordinates: [41.9059, 12.4828], note: "终点：帝国遗产进入今日街道" },
+    ],
+    relationship: "这些点位集中在罗马历史中心，斗兽场在东南侧，万神殿—特莱维—西班牙广场形成一条向北的步行线。",
+    note: "正式路线点位已标出；酒店标记暂时只能显示到罗马市中心，不能代替真实酒店定位。",
+  },
+  "day-03": {
+    city: "罗马｜梵蒂冈",
+    subtitle: "跨越城市边界：罗马酒店 → 梵蒂冈城",
+    center: [41.903, 12.454],
+    bbox: [12.43, 41.80, 12.49, 41.925],
+    hotel: hotelAnchors.rome,
+    contextPoints: [
+      { name: "斗兽场", query: "Colosseum, Rome", kind: "context", coordinates: [41.8902, 12.4922] },
+      { name: "万神殿", query: "Pantheon, Rome", kind: "context", coordinates: [41.8986, 12.4769] },
+      { name: "特莱维喷泉", query: "Trevi Fountain, Rome", kind: "context", coordinates: [41.9009, 12.4833] },
+    ],
+    points: [
+      { name: "圣彼得大教堂", query: "St. Peter's Basilica, Vatican City", kind: "visit", coordinates: [41.9022, 12.4539], note: "君士坦丁、基督教帝国、教皇罗马", displayOffset: [-3, 4] },
+      { name: "梵蒂冈博物馆", query: "Vatican Museums", kind: "visit", coordinates: [41.9065, 12.4536], note: "教皇如何收藏和重新解释罗马遗产", displayOffset: [3, -3] },
+      { name: "西斯廷教堂", query: "Sistine Chapel, Vatican City", kind: "visit", coordinates: [41.9031, 12.4545], note: "艺术成为权力和解释权", displayOffset: [7, 0] },
+    ],
+    relationship: "梵蒂冈在罗马西北侧，三处正式景点彼此非常集中；真正需要规划的是酒店到梵蒂冈的进城交通和预约时间。",
+    note: "第3天只显示梵蒂冈正式行程；后面的地图不会再次把梵蒂冈当作新景点。",
+  },
+  "day-04": {
+    city: "佛罗伦萨",
+    subtitle: "罗马 → 佛罗伦萨市中心历史线",
+    center: [43.771, 11.255],
+    bbox: [11.235, 43.755, 11.275, 43.79],
+    hotel: hotelAnchors.florence,
+    points: [
+      { name: "佛罗伦萨火车站 / 抵达点", query: "Firenze Santa Maria Novella station", kind: "move", coordinates: [43.7767, 11.2486] },
+      { name: "乌菲兹美术馆", query: "Uffizi Gallery, Florence", kind: "visit", coordinates: [43.7678, 11.2553], note: "美第奇如何把财富变成政治信用" },
+      { name: "圣母百花大教堂", query: "Cathedral of Santa Maria del Fiore, Florence", kind: "visit", coordinates: [43.7731, 11.256], note: "城邦竞争的公共宣言" },
+      { name: "领主广场", query: "Piazza della Signoria, Florence", kind: "visit", coordinates: [43.7696, 11.2558] },
+      { name: "天堂之门", query: "Gates of Paradise, Florence", kind: "visit", coordinates: [43.7734, 11.2552] },
+    ],
+    relationship: "佛罗伦萨核心景点高度集中在老城步行范围内；酒店若在车站附近，通常先向东南进入大教堂—领主广场—乌菲兹一线。",
+    note: "佛罗伦萨酒店已确认在 Viale Fratelli Rosselli, 2；这里重点看酒店 / 火车站与老城景点的相对位置。",
+  },
+  "day-05": {
+    city: "托斯卡纳",
+    subtitle: "佛罗伦萨 / 罗马住宿关系之外的乡村日",
+    center: [43.15, 11.53],
+    bbox: [11.15, 41.72, 12.70, 43.90],
+    hotel: hotelAnchors.rome,
+    points: [
+      { name: "锡耶纳大教堂", query: "Siena Cathedral", kind: "visit", coordinates: [43.3188, 11.3308], note: "另一座城邦的自我表达" },
+      { name: "奥尔恰谷 / 丝柏树", query: "Val d'Orcia, Tuscany", kind: "visit", coordinates: [43.06, 11.6], note: "土地、道路和景观也是秩序" },
+      { name: "皮恩扎", query: "Pienza, Italy", kind: "visit", coordinates: [43.0768, 11.6785] },
+      { name: "Vitaleta 小教堂", query: "Cappella della Madonna di Vitaleta", kind: "visit", coordinates: [43.0607, 11.6627] },
+      { name: "返回罗马", query: "Rome, Italy", kind: "move", coordinates: [41.9028, 12.4964] },
+    ],
+    relationship: "这是包车 / 旅游车串联的长距离日，不适合用步行地图理解；重点看锡耶纳、皮恩扎和奥尔恰谷之间的空间跨度。",
+    note: "按你的最新说明，今天返回罗马后仍以温暖酒店作为住宿锚点；交通以包车或旅游车为准。预订单文本显示 9/29 退房，后续需要再核对是否为订单日期显示问题。",
+  },
+  "day-06": {
+    city: "罗马",
+    subtitle: "自由日：经典人像线 + 圣彼得穹顶远景候选",
+    center: [41.895, 12.479],
+    bbox: [12.43, 41.80, 12.52, 41.925],
+    hotel: hotelAnchors.rome,
+    points: [
+      { name: "特莱维喷泉", query: "Trevi Fountain, Rome", kind: "optional", coordinates: [41.9009, 12.4833] },
+      { name: "西班牙广场", query: "Spanish Steps, Rome", kind: "optional", coordinates: [41.9059, 12.4828] },
+      { name: "橘园", query: "Giardino degli Aranci, Rome", kind: "optional", coordinates: [41.8889, 12.4828] },
+      { name: "马尔他骑士团钥匙孔", query: "Knights of Malta Keyhole, Rome", kind: "optional", coordinates: [41.8859, 12.4769] },
+      { name: "茉莉花步道", query: "Passeggiata del Gelsomino, Rome", kind: "optional", coordinates: [41.8976, 12.4487], note: "从城外远景看圣彼得穹顶" },
+    ],
+    relationship: "自由日不锁死路线；地图把几个候选点放在同一张罗马图上，方便你按天气和体力取舍。",
+    note: "按你的最新说明，自由日仍从温暖酒店出发；这些候选不会自动覆盖正式行程，选中后再去现场控制台排序。",
+  },
+  "day-07": {
+    city: "罗马 → 柏林",
+    subtitle: "罗马酒店 → FCO；柏林抵达关系放到第8天",
+    center: [41.84, 12.37],
+    bbox: [12.21, 41.76, 12.55, 41.94],
+    hotel: hotelAnchors.rome,
+    contextPoints: [
+      { name: "斗兽场", query: "Colosseum, Rome", kind: "context", coordinates: [41.8902, 12.4922] },
+      { name: "罗马历史中心", query: "Centro Storico, Rome", kind: "context", coordinates: [41.895, 12.478] },
+    ],
+    points: [{ name: "罗马机场 FCO", query: "Leonardo da Vinci–Fiumicino Airport", kind: "move", coordinates: [41.7999, 12.2462], note: "U25082｜15:10 起飞" }],
+    relationship: "上午自由时段属于罗马；下午跨城后，第8天地图再展开柏林酒店与景点关系。",
+    note: "不要把梵蒂冈重新塞回今天；地图只保留温暖酒店 → FCO 机场的实际关系。按你的说明，这段时间仍住温暖酒店。",
+  },
+  "day-08": {
+    city: "柏林",
+    subtitle: "国家权力 → 罪责 → 分裂 → 边界打开",
+    center: [52.52, 13.38],
+    bbox: [13.27, 52.48, 13.43, 52.58],
+    hotel: hotelAnchors.berlin,
+    points: [
+      { name: "国会大厦", query: "Reichstag Building, Berlin", kind: "visit", coordinates: [52.5186, 13.3762], note: "现代国家权力的象征", displayOffset: [-10, -5] },
+      { name: "勃兰登堡门", query: "Brandenburg Gate, Berlin", kind: "visit", coordinates: [52.5163, 13.3777], note: "王国、帝国、分裂与统一", displayOffset: [4, -10] },
+      { name: "欧洲被害犹太人纪念碑", query: "Memorial to the Murdered Jews of Europe", kind: "visit", coordinates: [52.5138, 13.3785], displayOffset: [13, -2] },
+      { name: "波茨坦广场 / 柏林墙", query: "Potsdamer Platz, Berlin", kind: "visit", coordinates: [52.5096, 13.376], note: "分裂进入城市肌理", displayOffset: [0, 8] },
+      { name: "博恩霍尔姆大街", query: "Bornholmer Straße Berlin Wall Memorial", kind: "visit", coordinates: [52.5546, 13.3912], note: "1989年边界真正打开的地点", displayOffset: [0, -2] },
+      { name: "查理检查站", query: "Checkpoint Charlie, Berlin", kind: "visit", coordinates: [52.5076, 13.3904], displayOffset: [8, 6] },
+    ],
+    relationship: "柏林正式景点跨越市中心南北；勃兰登堡门—国会大厦—纪念碑—波茨坦广场较集中，博恩霍尔姆大街在北侧，查理检查站在南侧。",
+    note: "已安排的柏林点位只在今日地图显示，不再作为自由行备选重复出现。",
+  },
+  "day-09": {
+    city: "柏林 → 巴黎",
+    subtitle: "柏林酒店 → 夏洛滕堡宫 / BER",
+    center: [52.48, 13.37],
+    bbox: [13.25, 52.34, 13.55, 52.56],
+    hotel: hotelAnchors.berlin,
+    points: [
+      { name: "夏洛滕堡宫", query: "Charlottenburg Palace, Berlin", kind: "visit", coordinates: [52.5206, 13.2955], note: "补上普鲁士和霍亨索伦前史" },
+      { name: "柏林机场 BER", query: "Berlin Brandenburg Airport", kind: "move", coordinates: [52.3667, 13.5033], note: "U25161｜18:30 起飞" },
+    ],
+    relationship: "这是柏林最后半天的补线：酒店 → 夏洛滕堡宫 → BER；不要再绕回已经完成的柏林墙主线。",
+    note: "行李是否能随车、酒店到夏洛滕堡的实际距离，需要结合酒店地址和司机安排确认。",
+  },
+  "day-10": {
+    city: "巴黎",
+    subtitle: "卢浮宫 → 蒙马特 → 城市大道 → 埃菲尔铁塔",
+    center: [48.865, 2.33],
+    bbox: [2.27, 48.83, 2.42, 48.91],
+    hotel: hotelAnchors.paris,
+    points: [
+      { name: "卢浮宫", query: "Louvre Museum, Paris", kind: "visit", coordinates: [48.8606, 2.3376], note: "王宫收藏变成公共博物馆" },
+      { name: "蒙马特", query: "Montmartre, Paris", kind: "visit", coordinates: [48.8867, 2.3431] },
+      { name: "香榭丽舍", query: "Avenue des Champs-Élysées, Paris", kind: "visit", coordinates: [48.8698, 2.3076] },
+      { name: "埃菲尔铁塔", query: "Eiffel Tower, Paris", kind: "visit", coordinates: [48.8584, 2.2945], note: "工业化和现代国家的展示橱窗" },
+      { name: "塞纳河", query: "Seine River, Paris", kind: "visit", coordinates: [48.8566, 2.3522] },
+    ],
+    relationship: "正式路线从卢浮宫向西北到蒙马特，再折回城市大道和铁塔；拍照线是沿既有转场叠加，不是另加一条远距离路线。",
+    note: "酒店位置补齐后，可判断当天更适合从酒店先去卢浮宫，还是先去蒙马特。",
+  },
+  "day-11": {
+    city: "巴黎｜凡尔赛",
+    subtitle: "巴黎酒店 → 凡尔赛 → 凯旋门 → 巴黎圣母院",
+    center: [48.82, 2.25],
+    bbox: [2.08, 48.78, 2.40, 48.90],
+    hotel: hotelAnchors.paris,
+    points: [
+      { name: "凡尔赛宫", query: "Palace of Versailles", kind: "visit", coordinates: [48.8049, 2.1204], note: "绝对王权的空间机器" },
+      { name: "凯旋门", query: "Arc de Triomphe, Paris", kind: "visit", coordinates: [48.8738, 2.295], note: "革命与帝国重新写国家叙事" },
+      { name: "巴黎圣母院", query: "Notre-Dame de Paris", kind: "visit", coordinates: [48.853, 2.3499] },
+    ],
+    relationship: "凡尔赛在巴黎西南郊，凯旋门和巴黎圣母院回到市中心；这是巴黎当天最需要看交通顺序的一天。",
+    note: "凡尔赛已经是正式行程，不会再出现在自由行备选库；这里专门显示它与巴黎酒店和市中心的空间关系。",
+  },
+  "day-12": {
+    city: "巴黎",
+    subtitle: "自由日：演出地 / 左岸 / 革命记忆备选",
+    center: [48.86, 2.35],
+    bbox: [2.28, 48.82, 2.42, 48.91],
+    hotel: hotelAnchors.paris,
+    points: [
+      { name: "Le Zénith Paris–La Villette", query: "Le Zénith Paris–La Villette", kind: "optional", coordinates: [48.8943, 2.393], note: "邓紫棋巴黎演出地打卡候选" },
+      { name: "圣日耳曼大街", query: "Boulevard Saint-Germain, Paris", kind: "optional", coordinates: [48.853, 2.333], note: "左岸生活感拍照线" },
+      { name: "艺术桥", query: "Pont des Arts, Paris", kind: "optional", coordinates: [48.8584, 2.3376] },
+      { name: "先贤祠", query: "Panthéon, Paris", kind: "optional", coordinates: [48.8462, 2.346] },
+      { name: "荣军院", query: "Les Invalides, Paris", kind: "optional", coordinates: [48.8566, 2.3126] },
+      { name: "协和广场", query: "Place de la Concorde, Paris", kind: "optional", coordinates: [48.8656, 2.3212] },
+      { name: "巴士底广场", query: "Place de la Bastille, Paris", kind: "optional", coordinates: [48.853, 2.369] },
+    ],
+    relationship: "自由日候选分成三块：左岸与市中心、荣军院—协和广场、北侧拉维莱特；不要一天全部跑完，地图用于挑一条。",
+    note: "先在地图上看距离，再把最终选择加入控制台；这里的候选点不会自动改写正式行程。",
+  },
+  "day-13": {
+    city: "巴黎 → 北京",
+    subtitle: "巴黎酒店 → 最后自由时段 → CDG",
+    center: [48.92, 2.43],
+    bbox: [2.20, 48.78, 2.60, 49.04],
+    hotel: hotelAnchors.paris,
+    points: [{ name: "戴高乐机场 CDG", query: "Charles de Gaulle Airport", kind: "move", coordinates: [49.0097, 2.5479], note: "CA934｜20:20 起飞" }],
+    relationship: "返程日重点不是再塞景点，而是看巴黎酒店到机场的方向和最后离城时间。",
+    note: "巴黎酒店已确认在意大利广场附近；这里重点看最后自由时段与 CDG 机场的离城方向。",
+  },
+};
+
+function sketchPosition(map: DayMap, point: MapPoint) {
+  const [left, bottom, right, top] = map.bbox;
+  const [lat, lon] = point.coordinates;
+  const [offsetX, offsetY] = point.displayOffset ?? [0, 0];
+  const x = 8 + ((lon - left) / (right - left)) * 84 + offsetX;
+  const y = 10 + ((top - lat) / (top - bottom)) * 46 + offsetY;
+  return { x: Math.max(6, Math.min(94, x)), y: Math.max(8, Math.min(57, y)) };
+}
+
+function distanceKm(from: [number, number], to: [number, number]) {
+  const [fromLat, fromLon] = from;
+  const [toLat, toLon] = to;
+  const earthRadius = 6371;
+  const latDelta = (toLat - fromLat) * Math.PI / 180;
+  const lonDelta = (toLon - fromLon) * Math.PI / 180;
+  const value = Math.sin(latDelta / 2) ** 2 + Math.cos(fromLat * Math.PI / 180) * Math.cos(toLat * Math.PI / 180) * Math.sin(lonDelta / 2) ** 2;
+  return earthRadius * 2 * Math.atan2(Math.sqrt(value), Math.sqrt(1 - value));
+}
+
+function directionLabel(from: [number, number], to: [number, number]) {
+  const latDelta = to[0] - from[0];
+  const lonDelta = to[1] - from[1];
+  if (Math.abs(lonDelta) > Math.abs(latDelta) * 1.15) return lonDelta > 0 ? "向东" : "向西";
+  if (Math.abs(latDelta) > Math.abs(lonDelta) * 1.15) return latDelta > 0 ? "向北" : "向南";
+  return `${latDelta > 0 ? "北" : "南"}${lonDelta > 0 ? "东" : "西"}`;
+}
+
+function segmentLabel(from: [number, number], to: [number, number], point: MapPoint) {
+  const km = distanceKm(from, to);
+  const roundedKm = km < 1 ? km.toFixed(1) : km.toFixed(1);
+  const direction = directionLabel(from, to);
+  const mode = point.kind === "move" || km > 8 ? "交通段" : `步行约 ${Math.max(3, Math.round(km * 12))} 分钟`;
+  return `约 ${roundedKm} km · ${direction} · ${mode}`;
+}
+
+function MapCard({ map }: { map: DayMap }) {
+  const contextPoints = map.contextPoints ?? [];
+  const routePoints = map.points.filter((point) => point.kind !== "optional");
+  const optionalPoints = map.points.filter((point) => point.kind === "optional");
+  const routePath = routePoints.map((point) => {
+    const position = sketchPosition(map, point);
+    return `${position.x},${position.y}`;
+  }).join(" ");
+  const optionalPath = optionalPoints.map((point) => {
+    const position = sketchPosition(map, point);
+    return `${position.x},${position.y}`;
+  }).join(" ");
+  const hotelPoint = map.hotel.coordinates ? { name: map.hotel.name, query: map.hotel.query, kind: "hotel" as const, coordinates: map.hotel.coordinates } : null;
+
+  return <details className="map-card">
+    <summary><span className="map-summary-icon">⌖</span><span><b>今日地图</b><small>{map.subtitle}</small></span><em>点击展开</em><strong>＋</strong></summary>
+    <div className="map-card-body">
+      <div className="map-card-intro"><div><p className="eyebrow">SKETCH MAP / 方位草图</p><h4>{map.city}怎么走</h4><p>{map.relationship}</p></div><span className="map-status">相对位置示意<br /><b>不是按比例地图</b></span></div>
+      <div className="map-layout">
+        <div className="sketch-map-wrap">
+          <svg className="sketch-map" viewBox="0 0 100 64" role="img" aria-label={`${map.city}方位草图`}>
+            <path className="sketch-land" d="M5 46 C12 33 17 22 31 18 C45 4 70 9 84 18 C95 26 94 43 87 53 C73 62 52 56 39 58 C23 60 10 55 5 46 Z" />
+            <path className="sketch-road road-one" d="M4 44 C17 39 22 48 35 40 S57 16 94 22" />
+            <path className="sketch-road road-two" d="M15 15 C26 27 26 39 42 48 S70 51 91 42" />
+            <path className="sketch-road road-three" d="M20 55 C35 39 49 35 62 14" />
+            {routePath && routePoints.length > 1 && <polyline className="sketch-route" points={routePath} />}
+            {optionalPath && optionalPoints.length > 1 && <polyline className="sketch-route optional-route" points={optionalPath} />}
+            <g className="sketch-compass" transform="translate(87 8)"><circle r="5" /><path d="M0 -4 L1.5 1 L0 0 L-1.5 1 Z" /><text x="0" y="-7">N</text><text x="8" y="2">E</text><text x="0" y="10">S</text><text x="-8" y="2">W</text></g>
+            <text className="sketch-caption" x="7" y="61">方位关系草图 · 北向上</text>
+            {contextPoints.map((point) => { const position = sketchPosition(map, point); return <g className="sketch-context" key={`context-${point.name}`} transform={`translate(${position.x} ${position.y})`}><circle r="1.7" /></g>; })}
+            {map.hotel.coordinates && (() => { const position = sketchPosition(map, { name: map.hotel.name, query: map.hotel.query, kind: "hotel", coordinates: map.hotel.coordinates }); return <g className="sketch-hotel" transform={`translate(${position.x} ${position.y})`}><circle r="3.1" /><text x="4.4" y="1.2">H · 酒店</text></g>; })()}
+            {map.points.map((point, index) => { const position = sketchPosition(map, point); return <g className={`sketch-point ${point.kind}`} key={`point-${point.name}-${index}`} transform={`translate(${position.x} ${position.y})`}><circle r={point.kind === "optional" ? 2.6 : 2.9} /><text x="0" y="0.9" textAnchor="middle">{point.kind === "optional" ? "·" : String(index + 1)}</text></g>; })}
+          </svg>
+        </div>
+        <div className="map-stops">
+          <div className={`map-stop hotel-stop ${map.hotel.coordinates ? "" : "pending"}`}><span className="map-stop-number hotel-number">H</span><div><b>{map.hotel.name}</b><small>{map.hotel.area}</small></div></div>
+          {map.points.map((point, index) => <div className="route-sequence" key={`${point.name}-${index}`}>
+            {hotelPoint && <div className="map-segment"><span>↓</span><small>{segmentLabel(index === 0 ? hotelPoint.coordinates : map.points[index - 1].coordinates, point.coordinates, point)}</small></div>}
+            <div className={`map-stop ${point.kind}`}><span className="map-stop-number">{point.kind === "optional" ? "·" : String(index + 1).padStart(2, "0")}</span><div><b>{point.name}</b><small>{point.note ?? (point.kind === "optional" ? "自由日候选" : "当天路线点位")}</small></div></div>
+          </div>)}
+          {contextPoints.length > 0 && <div className="map-context-note"><b>城市参照地标</b><span>{contextPoints.map((point) => point.name).join(" · ")}</span></div>}
+        </div>
+      </div>
+      <div className="map-card-footer"><p><b>怎么读：</b>{map.note}</p><div className="map-legend"><span><i className="legend-line solid" />实线：当天顺序</span><span><i className="legend-line dashed" />虚线：备选方向</span><span><i className="legend-dot hotel-dot" />H：酒店</span></div></div>
+    </div>
+  </details>;
+}
 
 const basePlans: DayPlan[] = [
   {
@@ -401,6 +721,7 @@ export default function Home() {
         {activeView === "plan" && <section className="module plan-module">
           <div className="module-title"><div><p className="eyebrow">SHARED VIEW / 给两个人</p><h3>今天要去哪？</h3><p>这张是你和老婆共同看的版本。它只放具体安排：时间、地点、交通、吃饭，以及现场已经调整过的内容。</p></div><span className="shared-badge">✓ 两个人都看这张</span></div>
           <div className="plan-layout"><div className="timeline-card"><div className="card-topline"><span>今日路线</span><small>{activePlan.activities.length} 个安排</small></div><div className="route-ribbon">{activePlan.route.map((stop, index) => <span key={`${stop}-${index}`}><i>{String(index + 1).padStart(2, "0")}</i>{stop}</span>)}</div><div className="timeline">{activePlan.activities.map((activity) => <div className={`timeline-item ${activity.kind}`} key={activity.id}><div className="timeline-time">{activity.time}</div><div className="timeline-dot" /><div className="timeline-content"><div><b>{activity.title}</b><span>{activity.place}</span></div><p>{activity.note}</p></div></div>)}</div></div><aside className="side-info"><div className="info-card transport-card"><span className="info-icon">↗</span><div><small>交通方式</small>{activePlan.transport.map((item) => <p key={item}>{item}</p>)}</div></div><div className="info-card meal-card"><span className="info-icon">◇</span><div><small>吃饭 / 休息</small>{activePlan.meals.map((item) => <p key={item}>{item}</p>)}</div></div>{activePlan.photoIdeas && <div className="info-card photo-card"><span className="info-icon">✦</span><div><small>拍照 / 打卡建议</small>{activePlan.photoIdeas.map((item) => <p key={item}>{item}</p>)}</div></div>}<div className="next-card"><small>今天的提醒</small><b>{activePlan.id === "day-03" ? "第三天固定是梵蒂冈" : activePlan.tag === "隐藏时段" ? "这是可以临场调整的时间" : "时间可以在现场控制台调整"}</b><button onClick={() => setActiveView("control")}>去调整今日安排 →</button></div></aside></div>
+          {dailyMaps[activePlan.id] && <MapCard map={dailyMaps[activePlan.id]} />}
         </section>}
 
         {activeView === "story" && <section className="module story-module">
