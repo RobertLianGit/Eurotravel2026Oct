@@ -40,6 +40,16 @@ test("starter preview infrastructure is removed from the finished guide", async 
 
   assert.match(page, /export default function Home/);
   assert.doesNotMatch(page, /SkeletonPreview|react-loading-skeleton/);
+  assert.match(page, /先排顺序，再补细节/);
+  assert.match(page, /长按拖动，或用 ↑↓/);
+  assert.match(page, /点击展开 · 每行一条/);
+  assert.match(page, /罗马最后自由时段/);
+  assert.doesNotMatch(page, /梵蒂冈（可选）/);
+  assert.match(page, /Fly Away/);
+  assert.match(page, /拍照 \/ 打卡建议/);
+  assert.match(page, /自由行备选库/);
+  assert.match(page, /邓紫棋 \/ 拍照/);
+  assert.match(page, /加入第 \{activePlan.number\} 天/);
   assert.match(layout, /欧洲历史旅行手册/);
   assert.doesNotMatch(packageJson, /react-loading-skeleton/);
   await assert.rejects(access(new URL("app/_sites-preview/SkeletonPreview.tsx", templateRoot)));

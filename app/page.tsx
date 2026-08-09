@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type DragEvent } from "react";
 
 type Activity = {
   id: string;
@@ -27,6 +27,7 @@ type DayPlan = {
   route: string[];
   transport: string[];
   meals: string[];
+  photoIdeas?: string[];
   activities: Activity[];
   story: {
     title: string;
@@ -38,6 +39,36 @@ type DayPlan = {
   };
   source: string;
 };
+
+type FreeOption = {
+  id: string;
+  region: "罗马" | "柏林" | "巴黎";
+  category: "历史补线" | "邓紫棋 / 拍照";
+  title: string;
+  places: string;
+  story: string;
+  timing: string;
+  source: string;
+};
+
+const freeOptions: FreeOption[] = [
+  { id: "paris-versailles-treaty", region: "巴黎", category: "历史补线", title: "凡尔赛和约：一战之后的欧洲", places: "凡尔赛宫 / 镜厅 / 巴黎", story: "把凡尔赛从路易十四的王权延伸到1919年的战后秩序：旧王宫如何成为重新划分欧洲的地方。", timing: "巴黎自由日或凡尔赛日之后", source: "Excel 自由行参考（已提炼）" },
+  { id: "paris-concorde", region: "巴黎", category: "历史补线", title: "协和广场：王权与革命争夺同一块空间", places: "协和广场", story: "从路易十五广场、革命时期的断头台，到今天的城市轴线，讲公共空间如何反复改名、改写。", timing: "巴黎自由日半日", source: "Excel 自由行参考（已提炼）" },
+  { id: "paris-bastille", region: "巴黎", category: "历史补线", title: "巴士底广场：一座消失的监狱如何变成革命符号", places: "巴士底广场 / 圣安东尼街区", story: "现场已经看不到完整的巴士底监狱，但正因为它消失了，记忆才更依赖地图、纪念柱和公共叙事。", timing: "巴黎自由日下午", source: "Excel 自由行参考（已提炼）" },
+  { id: "paris-pantheon", region: "巴黎", category: "历史补线", title: "先贤祠：法国决定记住谁", places: "先贤祠 / 拉丁区", story: "从教堂到国家陵寝，讲法国如何把宗教空间改造成公共记忆的名单。", timing: "巴黎自由日上午", source: "Excel 自由行参考（已提炼）" },
+  { id: "paris-invalides", region: "巴黎", category: "历史补线", title: "荣军院：拿破仑与战争国家", places: "荣军院 / 拿破仑墓", story: "把拿破仑从个人英雄拉回国家机器：战争、荣誉、军队和国家记忆如何彼此绑定。", timing: "巴黎自由日或返程前半天", source: "Excel 自由行参考（已提炼）" },
+  { id: "paris-bartholomew", region: "巴黎", category: "历史补线", title: "圣巴托洛缪之夜：宗教战争如何进入城市记忆", places: "巴黎历史中心 / 卢浮宫—塞纳河一线", story: "把法国宗教战争放进城市空间：王权、天主教、胡格诺派和暴力记忆怎样叠在同一座首都里。", timing: "适合做一条历史故事线，不必专门赶景点", source: "Excel 自由行参考（已提炼）" },
+  { id: "gem-fly-away", region: "巴黎", category: "邓紫棋 / 拍照", title: "邓紫棋《Fly Away》巴黎同款拍照线", places: "巴黎地铁 → 卢浮宫 → 埃菲尔铁塔", story: "公开资料可确认 MV 在巴黎取景。建议不追求完全复刻，而是保留‘地铁转场—卢浮宫—铁塔夜景’这条镜头逻辑。", timing: "第10天转场时预留30–45分钟", source: "邓紫棋公开 MV 资料" },
+  { id: "gem-zenith", region: "巴黎", category: "邓紫棋 / 拍照", title: "邓紫棋巴黎演出地打卡", places: "Le Zénith Paris–La Villette", story: "这是粉丝向打卡，不是历史景点。她曾在这里举办巴黎演出，适合在巴黎自由日单独安排，不要硬塞进卢浮宫路线。", timing: "第12天自由日上午或下午", source: "邓紫棋巴黎演出资料" },
+  { id: "paris-left-bank-photo", region: "巴黎", category: "邓紫棋 / 拍照", title: "左岸生活感拍照备选", places: "圣日耳曼大街 → Café de Flore / Les Deux Magots → 艺术桥", story: "如果想拍‘人在巴黎’而不只是地标，可以用咖啡馆、街角和塞纳河完成一条轻松的人像线。", timing: "第12天自由日下午", source: "巴黎官方旅游资料 / 拍照备选" },
+  { id: "berlin-brandenburg", region: "柏林", category: "历史补线", title: "勃兰登堡门：从普鲁士门楼到统一象征", places: "勃兰登堡门 / 巴黎广场", story: "同一座门经历王国、帝国、纳粹、分裂和统一，适合补进柏林20世纪主线。", timing: "第8天或第9天离城前", source: "Excel 自由行参考（已提炼）" },
+  { id: "berlin-bornholmer", region: "柏林", category: "历史补线", title: "博恩霍尔姆大街：柏林墙如何真正打开", places: "Bornholmer Straße 边境检查站", story: "把1989年11月9日落到一个具体夜晚：新闻发布会、含混命令、边防人员和门外人群怎样共同改变冷战。", timing: "第8天正式历史线的延伸", source: "Excel 自由行参考（已提炼）" },
+  { id: "berlin-checkpoint", region: "柏林", category: "历史补线", title: "查理检查站：冷战被压缩成一个关卡", places: "Checkpoint Charlie", story: "从军事检查站、坦克对峙到今天的城市景观，讲冷战如何被博物馆化、商业化。", timing: "第8天体力允许时", source: "Excel 自由行参考（已提炼）" },
+  { id: "berlin-unter-den-linden", region: "柏林", category: "历史补线", title: "菩提树下大街：国家大道的形成", places: "Unter den Linden / 新岗哨 / 博物馆岛外观", story: "把普鲁士王权、帝国首都、战争记忆和今天的柏林大道放到一条步行线上。", timing: "第9天飞巴黎前隐藏时段", source: "Excel 自由行参考（已提炼）" },
+  { id: "rome-gem-unverified", region: "罗马", category: "邓紫棋 / 拍照", title: "邓紫棋罗马具体地点：待核实入口", places: "现场照片 / 链接 → 再加入罗马路线", story: "目前没有足够可靠的公开资料确认她在罗马的具体打卡地点。这里先保留入口，不把候选地点误写成她去过。", timing: "罗马自由日集中核对", source: "待你补充照片或链接" },
+  { id: "rome-photo-line", region: "罗马", category: "邓紫棋 / 拍照", title: "罗马人像拍照候选线", places: "特莱维喷泉 → 西班牙广场", story: "这不是已确认的邓紫棋同款地点，而是一条最适合现场拍照、距离和节奏都可控的候选线。", timing: "第6天自由日上午", source: "罗马拍照备选" },
+  { id: "rome-jasmine", region: "罗马", category: "邓紫棋 / 拍照", title: "圣彼得穹顶远景拍照候选", places: "橘园 / 马尔他骑士团钥匙孔 / 茉莉花步道", story: "不再进入梵蒂冈内部，改从城市远景拍圣彼得穹顶；适合把拍照和罗马历史收束结合起来。", timing: "第6天自由日下午", source: "罗马拍照备选" },
+];
 
 const basePlans: DayPlan[] = [
   {
@@ -103,25 +134,28 @@ const basePlans: DayPlan[] = [
   },
   {
     id: "day-06", number: "06", date: "10月1日", city: "罗马", tag: "自由日", title: "给自己补一块罗马",
-    route: ["全天自由活动", "可选：古罗马补充", "可选：圣天使堡一线"], transport: ["市内交通：步行 / 地铁 / 打车按当天选择", "自由日不锁死路线"], meals: ["午餐：当天路线附近自选", "晚餐：罗马市区自选"],
+    route: ["全天自由活动", "拍照预留：罗马人像线", "可选：古罗马 / 橘园一线"], transport: ["市内交通：步行 / 地铁 / 打车按当天选择", "自由日不锁死路线；拍照线按天气和体力取舍"], meals: ["午餐：当天路线附近自选", "晚餐：罗马市区自选"],
+    photoIdeas: ["邓紫棋罗马具体打卡点：目前没有足够可靠的公开资料确认，不把候选点写成她去过。", "建议预留：特莱维喷泉 → 西班牙广场，适合做一条轻量经典人像线。", "进阶备选：橘园 / 马尔他骑士团钥匙孔；想拍圣彼得穹顶远景，可看罗马官方推荐的茉莉花步道。"],
     activities: [
-      { id: "d6-1", time: "上午", title: "自由选择一条补充线", place: "罗马", note: "古罗马 / 教皇罗马 / 休息三选一", kind: "free" },
+      { id: "d6-1", time: "09:00–11:00", title: "拍照预留：罗马人像线", place: "特莱维喷泉 → 西班牙广场", note: "先作为邓紫棋打卡候选，不把它写成已确认的她去过地点；天气不好可直接取消", kind: "free" },
       { id: "d6-2", time: "中午", title: "午餐", place: "当天决定", note: "可以在控制台里加入餐厅", kind: "meal" },
-      { id: "d6-3", time: "下午", title: "继续自由活动", place: "罗马", note: "按体力和预约调整", kind: "free" },
+      { id: "d6-3", time: "14:30–16:30", title: "第二拍照备选 / 历史补线", place: "橘园 / 马尔他骑士团钥匙孔 / 茉莉花步道", note: "三选一即可；不要为了拍照把自由日排满", kind: "free" },
+      { id: "d6-4", time: "傍晚", title: "自由活动 / 晚餐", place: "罗马市区", note: "保留体力，也可补拍白天没拍到的照片", kind: "free" },
     ],
     story: { title: "自由日不是空白，是你的版本", question: "自由时间怎样把正式路线变成自己的旅行？", lead: "正式方案在这里留出全天自由活动。今天的重点不是完成更多景点，而是决定你想把哪条历史线补完整。", body: "你可以回看前几天：斗兽场代表皇帝如何管理人群，梵蒂冈代表帝国如何被教会继承，佛罗伦萨又把罗马遗产变成了城邦竞争。现在请你选择一个缺口：补古罗马公共空间，补圣天使堡和教皇罗马，或者只在街道里观察这些历史怎样继续生活在今天。自由日的价值，是让你不必服从别人替你排好的顺序。", chapters: [{ label: "01", title: "补古罗马", text: "把前一天的帝国城市线再补一段。" }, { label: "02", title: "补教皇罗马", text: "把梵蒂冈之后的城市记忆继续延伸。" }, { label: "03", title: "什么都不补", text: "休息、吃饭和观察，也可以成为旅行材料。" }], prompt: "我在罗马自由日有这些选择：____。请帮我根据前几天已经讲过的帝国、教会和文艺复兴，安排一条不重复、节奏合理的半日或一日路线，并写出当天可以讲的完整故事。\n\n现场补充：" },
     source: "正式方案 PDF｜罗马全天自由活动；自由行参考第二 sheet 作为补充库",
   },
   {
-    id: "day-07", number: "07", date: "10月2日", city: "罗马 → 柏林", tag: "隐藏时段", title: "罗马最后上午，给教皇罗马收尾",
-    route: ["圣彼得大教堂 / 可选", "机场", "抵达柏林"], transport: ["U25082｜15:10 罗马 → 17:20 柏林", "预计 12:00 左右从市区前往机场，按实际接送调整"], meals: ["早餐：酒店附近", "午餐：机场 / 路上"],
+    id: "day-07", number: "07", date: "10月2日", city: "罗马 → 柏林", tag: "隐藏时段", title: "去柏林前的自由半天",
+    route: ["罗马最后自由时段", "酒店取行李", "机场", "抵达柏林"], transport: ["U25082｜15:10 罗马 → 17:20 柏林", "预计 12:00 左右从市区前往机场，按实际接送调整"], meals: ["早餐：罗马酒店附近", "午餐：机场 / 路上"],
     activities: [
-      { id: "d7-1", time: "07:00", title: "圣彼得大教堂 / 穹顶", place: "梵蒂冈（可选）", note: "把帝国、教会和文艺复兴连成尾声", kind: "visit" },
-      { id: "d7-2", time: "10:30", title: "回酒店取行李", place: "罗马酒店", note: "为机场留足余量", kind: "move" },
-      { id: "d7-3", time: "15:10", title: "飞往柏林", place: "FCO → BER", note: "转入德国章节", kind: "move" },
+      { id: "d7-1", time: "07:30–10:30", title: "罗马最后自由时段", place: "酒店周边 / 当天自选", note: "不再安排梵蒂冈：睡懒觉、咖啡、买伴手礼，或补一个前几天错过的街区", kind: "free" },
+      { id: "d7-2", time: "10:30", title: "回酒店取行李", place: "罗马酒店", note: "检查护照、机票和随身物品，为机场留足余量", kind: "move" },
+      { id: "d7-3", time: "12:00", title: "前往机场", place: "罗马市区 → FCO", note: "按接送安排和当天路况调整", kind: "move" },
+      { id: "d7-4", time: "15:10", title: "飞往柏林", place: "FCO → BER", note: "从罗马章节转入德国章节", kind: "move" },
     ],
-    story: { title: "离开罗马之前，从皇帝走到教皇", question: "为什么圣彼得大教堂适合做罗马章节的结尾？", lead: "真实航班是下午起飞，因此上午可以作为隐藏时段使用。它不是多塞一个景点，而是给罗马的主线收一个尾。", body: "前几天看见的是异教罗马、皇帝罗马和文艺复兴城市；现在站在圣彼得大教堂，可以把故事收成一句话：帝国消失了，但罗马的道路、建筑和普世权威被新的机构继续使用。然后带着这条线去柏林，看欧洲如何进入国家时代。", chapters: [{ label: "01", title: "回望斗兽场", text: "从皇帝组织人群的城市出发。" }, { label: "02", title: "站在圣彼得", text: "看教会如何接过罗马的普世想象。" }, { label: "03", title: "飞向柏林", text: "从帝国时代进入民族国家时代。" }], prompt: "请把罗马最后上午写成 2 分钟告别故事：要把斗兽场、梵蒂冈和即将抵达的柏林连接起来，适合我在去机场路上讲给老婆听。\n\n原稿：" },
-    source: "正式方案 PDF｜罗马→柏林；机票安排补充 U25082 15:10",
+    story: { title: "离开罗马：把三条历史线装进行李", question: "当我们离开罗马，哪些故事已经完成，哪些要带去柏林？", lead: "第 3 天已经完整参观过梵蒂冈，今天不再重复安排景点。真实航班前的上午故意留白：让你们休息、吃早餐、买东西，也把罗马的几条历史线收起来。", body: "离开罗马前，先回想第 2 天的斗兽场和万神殿：皇帝如何管理人群，也如何把自己的秩序包装成宇宙秩序。第 3 天的梵蒂冈已经把故事转了一个方向——帝国不再只靠军队和法律留下来，它还通过基督教、艺术和教皇的普世权威继续影响欧洲。第 4、5 天的佛罗伦萨和托斯卡纳，又让我们看到罗马的古典遗产怎样被城邦、银行和艺术重新激活。今天的自由半天不是少安排了一个景点，而是给这些故事留出消化的时间。去机场路上，可以把它收成一句话：罗马留下了帝国的道路、教会的权威和城市竞争的记忆；下一站柏林，要看现代国家如何接过并改造这些遗产。", chapters: [{ label: "01", title: "不再加一个景点", text: "梵蒂冈已经在第 3 天完整完成，今天的留白是有意安排，不是遗漏。" }, { label: "02", title: "把罗马收成三层", text: "斗兽场与万神殿是皇帝，梵蒂冈是教会，佛罗伦萨是古典遗产的新竞争。" }, { label: "03", title: "从帝国城市去国家城市", text: "带着罗马的问题去柏林：谁来组织现代欧洲，国家又会走向哪里？" }], prompt: "请把罗马去柏林前的自由半天写成一段 2—3 分钟的告别故事。注意：梵蒂冈已经在第 3 天完整参观过，今天不要再安排圣彼得大教堂或任何梵蒂冈景点；要把斗兽场、万神殿、梵蒂冈、佛罗伦萨和即将抵达的柏林连接起来，语气像我在机场路上讲给老婆听。\n\n我今天早上实际看到的细节：" },
+    source: "正式方案 PDF｜罗马→柏林；机票安排补充 U25082 15:10；第 3 天梵蒂冈已完成",
   },
   {
     id: "day-08", number: "08", date: "10月3日", city: "柏林", tag: "正式行程", title: "德国为什么走到20世纪这一步",
@@ -150,12 +184,13 @@ const basePlans: DayPlan[] = [
   },
   {
     id: "day-10", number: "10", date: "10月5日", city: "巴黎", tag: "正式行程", title: "巴黎如何把王权变成现代城市",
-    route: ["卢浮宫", "蒙马特", "香榭丽舍", "埃菲尔铁塔", "塞纳河"], transport: ["巴黎市内：地铁 / 步行 / 车辆，以正式方案为准", "点位较多：现场可调整顺序"], meals: ["午餐：卢浮宫或市中心附近", "晚餐：塞纳河 / 酒店附近自选"],
+    route: ["卢浮宫", "蒙马特", "香榭丽舍", "埃菲尔铁塔", "塞纳河", "Fly Away 拍照线"], transport: ["巴黎市内：地铁 / 步行 / 车辆，以正式方案为准", "点位较多：现场可调整顺序；拍照预留随转场完成"], meals: ["午餐：卢浮宫或市中心附近", "晚餐：塞纳河 / 酒店附近自选"],
+    photoIdeas: ["公开资料可确认：邓紫棋《Fly Away》MV在巴黎取景，画面涉及巴黎地铁、卢浮宫和埃菲尔铁塔，可按‘地铁 → 卢浮宫 → 铁塔’做同款路线。", "建议预留 30–45 分钟拍照，不另加一个远距离景点；正式参观超时时，优先保留铁塔与塞纳河机位。"],
     activities: [
       { id: "d10-1", time: "上午", title: "卢浮宫", place: "Louvre", note: "王宫如何变成公共博物馆", kind: "visit" },
       { id: "d10-2", time: "中午", title: "午餐 / 转场", place: "巴黎市区", note: "根据排队和体力调整", kind: "meal" },
-      { id: "d10-3", time: "下午", title: "蒙马特 → 香榭丽舍", place: "Paris", note: "城市生活与国家大道", kind: "visit" },
-      { id: "d10-4", time: "傍晚", title: "埃菲尔铁塔 / 塞纳河", place: "Eiffel Tower / Seine", note: "工业现代性收束今天", kind: "visit" },
+      { id: "d10-3", time: "下午", title: "蒙马特 → 香榭丽舍", place: "Paris", note: "城市生活与国家大道；转场途中预留地铁拍照镜头", kind: "visit" },
+      { id: "d10-4", time: "傍晚", title: "埃菲尔铁塔 / 塞纳河 + Fly Away 同款镜头", place: "Eiffel Tower / Seine", note: "把公开资料里出现的巴黎取景点收在一张照片里", kind: "free" },
     ],
     story: { title: "卢浮宫到埃菲尔铁塔，是一条时间线", question: "一座城市怎样把王权、革命和工业化同时放在眼前？", lead: "今天看巴黎不是看漂亮，而是看一座首都怎样把过去收藏起来，再用新的城市形式展示自己已经进入现代。", body: "卢浮宫曾经是王宫，后来变成公共博物馆；它把王权的收藏转成国家可以共享的文化。香榭丽舍和城市大道把权力、商业和人群重新组织起来，巴黎不再只是国王的城市，也变成现代社会的舞台。埃菲尔铁塔则把巴黎带进工业化和世界展览的时代。今天三个地点连起来，可以讲成一座城市如何从王权的私有空间，变成现代国家的公共橱窗。", chapters: [{ label: "01", title: "王宫收藏过去", text: "卢浮宫把王权的收藏转成公共文化。" }, { label: "02", title: "大道组织人群", text: "现代巴黎把权力、商业和日常生活放到同一张城市地图上。" }, { label: "03", title: "铁塔展示未来", text: "工业技术成为国家和城市展示现代性的方式。" }], prompt: "请把卢浮宫、蒙马特、香榭丽舍、埃菲尔铁塔和塞纳河串成一个 6 分钟巴黎故事，重点讲王权如何变成现代城市。\n\n原稿：" },
     source: "正式方案 PDF｜巴黎：卢浮宫、蒙马特、香榭丽舍、铁塔、塞纳河",
@@ -174,11 +209,12 @@ const basePlans: DayPlan[] = [
   },
   {
     id: "day-12", number: "12", date: "10月7日", city: "巴黎", tag: "自由日", title: "把巴黎的缝隙补成自己的线",
-    route: ["全天自由活动", "可选：先贤祠", "可选：荣军院 / 协和广场 / 巴士底广场"], transport: ["市内交通：当天决定", "可以在控制台加入具体餐厅、街区和交通方式"], meals: ["午餐：当天路线附近自选", "晚餐：巴黎市区自选"],
+    route: ["全天自由活动", "音乐打卡备选", "可选：先贤祠 / 革命记忆线"], transport: ["市内交通：当天决定", "可以在控制台加入具体餐厅、街区、拍照点和交通方式"], meals: ["午餐：当天路线附近自选", "晚餐：巴黎市区自选"],
+    photoIdeas: ["已确认的邓紫棋巴黎打卡候选：Le Zénith Paris–La Villette，她曾在这里举行巴黎演出；适合做粉丝打卡，不必和历史景点硬塞在同一天。", "如果想拍生活感：圣日耳曼大街 + Café de Flore / Les Deux Magots + 艺术桥；这是巴黎官方推荐的左岸散步组合。", "如果只想拍《Fly Away》同款，优先放回第 10 天，不建议第 12 天再重复卢浮宫和铁塔。"],
     activities: [
-      { id: "d12-1", time: "上午", title: "选择一条补充线", place: "巴黎", note: "先贤祠 / 荣军院 / 协和广场 / 巴士底广场", kind: "free" },
+      { id: "d12-1", time: "上午", title: "音乐打卡备选", place: "Le Zénith Paris–La Villette", note: "邓紫棋曾在此演出；如果想做粉丝打卡，预留半天，不与核心历史线硬塞", kind: "free" },
       { id: "d12-2", time: "中午", title: "午餐", place: "当天决定", note: "可以加入你想去的餐厅", kind: "meal" },
-      { id: "d12-3", time: "下午", title: "自由活动 / 购物 / 补景点", place: "巴黎", note: "根据体力和兴趣调整", kind: "free" },
+      { id: "d12-3", time: "下午", title: "自由活动 / 左岸拍照 / 补景点", place: "圣日耳曼大街 / 艺术桥 / 巴黎", note: "也可以改成先贤祠、荣军院、协和广场或巴士底广场", kind: "free" },
     ],
     story: { title: "把革命的缝隙补进巴黎", question: "自由时间怎样让一条正式路线变得更完整？", lead: "正式方案在巴黎留出全天自由活动。自由行参考里的内容，在这里成为可选择的补充，不会覆盖正式安排。", body: "如果想补法国革命与国家记忆，可以选一条小线：先贤祠看谁被国家记住，协和广场看王权与革命如何争夺同一块空间，巴士底广场看革命如何从城市记忆变成公共身份，荣军院则可以接回拿破仑与战争。今天不必全部完成，挑一条最想讲的即可。自由日的控制台会把你最终选定的顺序写回‘今日行程’，所以你和老婆看到的路线，和你最后真正决定的路线会保持一致。", chapters: [{ label: "01", title: "先贤祠：谁被记住", text: "国家通过纪念人物，决定公共记忆的名单。" }, { label: "02", title: "协和广场：同一空间的反复改写", text: "王权、革命和共和国在同一块广场上留下不同版本。" }, { label: "03", title: "巴士底：记忆变成身份", text: "一座已不存在的监狱，如何成为现代法国的政治符号。" }], prompt: "我在巴黎自由日想去：____，想吃：____，交通偏好是：____。请帮我排一个节奏合理的当天行程，并把这些地点串成一个完整的法国革命与国家记忆故事。\n\n现场补充：" },
     source: "正式方案 PDF｜巴黎全天自由活动；自由行参考第二 sheet 补充线",
@@ -208,7 +244,7 @@ const basePlans: DayPlan[] = [
 
 const initialPlans = Object.fromEntries(basePlans.map((plan) => [plan.id, plan])) as Record<string, DayPlan>;
 
-type View = "plan" | "story" | "control";
+type View = "plan" | "story" | "control" | "library";
 
 export default function Home() {
   const [activeDayId, setActiveDayId] = useState("day-03");
@@ -216,9 +252,13 @@ export default function Home() {
   const [plans, setPlans] = useState<Record<string, DayPlan>>(initialPlans);
   const [storyDraft, setStoryDraft] = useState("");
   const [newActivity, setNewActivity] = useState("");
+  const [draggingActivityId, setDraggingActivityId] = useState<string | null>(null);
+  const [libraryFilter, setLibraryFilter] = useState("全部");
   const [toast, setToast] = useState("");
 
   const activePlan = plans[activeDayId] ?? initialPlans["day-03"];
+  const libraryFilters = ["全部", "罗马", "柏林", "巴黎", "邓紫棋 / 拍照"];
+  const visibleFreeOptions = useMemo(() => freeOptions.filter((option) => libraryFilter === "全部" || option.region === libraryFilter || option.category === libraryFilter), [libraryFilter]);
 
   useEffect(() => {
     try {
@@ -243,6 +283,7 @@ export default function Home() {
     plan: { label: "今日行程", hint: "你和老婆一起看" },
     story: { label: "今日故事", hint: "你现场讲" },
     control: { label: "现场控制台", hint: "你来调整" },
+    library: { label: "自由行备选", hint: "集中挑选" },
   }), []);
 
   function selectDay(id: string) {
@@ -269,6 +310,32 @@ export default function Home() {
     });
   }
 
+  function reorderActivity(sourceId: string, targetId: string) {
+    if (sourceId === targetId) return;
+    updatePlan((plan) => {
+      const sourceIndex = plan.activities.findIndex((activity) => activity.id === sourceId);
+      const targetIndex = plan.activities.findIndex((activity) => activity.id === targetId);
+      if (sourceIndex < 0 || targetIndex < 0) return plan;
+      const activities = [...plan.activities];
+      const [moved] = activities.splice(sourceIndex, 1);
+      activities.splice(targetIndex, 0, moved);
+      return { ...plan, activities };
+    });
+    setDraggingActivityId(null);
+  }
+
+  function startDragging(event: DragEvent<HTMLButtonElement>, activityId: string) {
+    event.dataTransfer.effectAllowed = "move";
+    event.dataTransfer.setData("text/plain", activityId);
+    setDraggingActivityId(activityId);
+  }
+
+  function dropActivity(event: DragEvent<HTMLDivElement>, targetId: string) {
+    event.preventDefault();
+    const sourceId = event.dataTransfer.getData("text/plain") || draggingActivityId;
+    if (sourceId) reorderActivity(sourceId, targetId);
+  }
+
   function removeActivity(activityId: string) {
     updatePlan((plan) => ({ ...plan, activities: plan.activities.filter((activity) => activity.id !== activityId) }));
   }
@@ -279,6 +346,11 @@ export default function Home() {
     updatePlan((plan) => ({ ...plan, activities: [...plan.activities, { id: `custom-${Date.now()}`, time: "待定", title, place: "现场补充", note: "由你在现场加入", kind: "free" }] }));
     setNewActivity("");
     setToast("已加入今日行程草稿");
+  }
+
+  function addFreeOption(option: FreeOption) {
+    updatePlan((plan) => ({ ...plan, activities: [...plan.activities, { id: `option-${option.id}-${Date.now()}`, time: "待定", title: option.title, place: option.places, note: `${option.timing}｜${option.story}`, kind: "free" }] }));
+    setToast(`已把“${option.title}”加入第${activePlan.number}天草稿`);
   }
 
   function savePlan() {
@@ -320,12 +392,12 @@ export default function Home() {
       <section className="workspace section-shell" id="workspace">
         <div className="current-day-head"><div><p className="eyebrow">DAY {activePlan.number} / {activePlan.tag}</p><h2>{activePlan.city}<small>{activePlan.date}</small></h2><p>{activePlan.title}</p></div><div className="source-chip">{activePlan.source}</div></div>
         <nav className="module-tabs" aria-label="旅行手册模块">
-          {(Object.keys(viewCopy) as View[]).map((view) => <button key={view} className={activeView === view ? "active" : ""} onClick={() => setActiveView(view)}><span className={`tab-icon ${view}`}>{view === "plan" ? "⌂" : view === "story" ? "✦" : "↻"}</span><span><b>{viewCopy[view].label}</b><small>{viewCopy[view].hint}</small></span></button>)}
+          {(Object.keys(viewCopy) as View[]).map((view) => <button key={view} className={activeView === view ? "active" : ""} onClick={() => setActiveView(view)}><span className={`tab-icon ${view}`}>{view === "plan" ? "⌂" : view === "story" ? "✦" : view === "library" ? "◇" : "↻"}</span><span><b>{viewCopy[view].label}</b><small>{viewCopy[view].hint}</small></span></button>)}
         </nav>
 
         {activeView === "plan" && <section className="module plan-module">
           <div className="module-title"><div><p className="eyebrow">SHARED VIEW / 给两个人</p><h3>今天要去哪？</h3><p>这张是你和老婆共同看的版本。它只放具体安排：时间、地点、交通、吃饭，以及现场已经调整过的内容。</p></div><span className="shared-badge">✓ 两个人都看这张</span></div>
-          <div className="plan-layout"><div className="timeline-card"><div className="card-topline"><span>今日路线</span><small>{activePlan.activities.length} 个安排</small></div><div className="route-ribbon">{activePlan.route.map((stop, index) => <span key={`${stop}-${index}`}><i>{String(index + 1).padStart(2, "0")}</i>{stop}</span>)}</div><div className="timeline">{activePlan.activities.map((activity) => <div className={`timeline-item ${activity.kind}`} key={activity.id}><div className="timeline-time">{activity.time}</div><div className="timeline-dot" /><div className="timeline-content"><div><b>{activity.title}</b><span>{activity.place}</span></div><p>{activity.note}</p></div></div>)}</div></div><aside className="side-info"><div className="info-card transport-card"><span className="info-icon">↗</span><div><small>交通方式</small>{activePlan.transport.map((item) => <p key={item}>{item}</p>)}</div></div><div className="info-card meal-card"><span className="info-icon">◇</span><div><small>吃饭 / 休息</small>{activePlan.meals.map((item) => <p key={item}>{item}</p>)}</div></div><div className="next-card"><small>今天的提醒</small><b>{activePlan.id === "day-03" ? "第三天固定是梵蒂冈" : activePlan.tag === "隐藏时段" ? "这是可以临场调整的时间" : "时间可以在现场控制台调整"}</b><button onClick={() => setActiveView("control")}>去调整今日安排 →</button></div></aside></div>
+          <div className="plan-layout"><div className="timeline-card"><div className="card-topline"><span>今日路线</span><small>{activePlan.activities.length} 个安排</small></div><div className="route-ribbon">{activePlan.route.map((stop, index) => <span key={`${stop}-${index}`}><i>{String(index + 1).padStart(2, "0")}</i>{stop}</span>)}</div><div className="timeline">{activePlan.activities.map((activity) => <div className={`timeline-item ${activity.kind}`} key={activity.id}><div className="timeline-time">{activity.time}</div><div className="timeline-dot" /><div className="timeline-content"><div><b>{activity.title}</b><span>{activity.place}</span></div><p>{activity.note}</p></div></div>)}</div></div><aside className="side-info"><div className="info-card transport-card"><span className="info-icon">↗</span><div><small>交通方式</small>{activePlan.transport.map((item) => <p key={item}>{item}</p>)}</div></div><div className="info-card meal-card"><span className="info-icon">◇</span><div><small>吃饭 / 休息</small>{activePlan.meals.map((item) => <p key={item}>{item}</p>)}</div></div>{activePlan.photoIdeas && <div className="info-card photo-card"><span className="info-icon">✦</span><div><small>拍照 / 打卡建议</small>{activePlan.photoIdeas.map((item) => <p key={item}>{item}</p>)}</div></div>}<div className="next-card"><small>今天的提醒</small><b>{activePlan.id === "day-03" ? "第三天固定是梵蒂冈" : activePlan.tag === "隐藏时段" ? "这是可以临场调整的时间" : "时间可以在现场控制台调整"}</b><button onClick={() => setActiveView("control")}>去调整今日安排 →</button></div></aside></div>
         </section>}
 
         {activeView === "story" && <section className="module story-module">
@@ -334,15 +406,22 @@ export default function Home() {
           <div className="story-body"><div className="story-text"><p>{activePlan.story.body}</p><div className="chapter-list">{activePlan.story.chapters.map((chapter) => <article className="chapter" key={chapter.label}><span>{chapter.label}</span><div><h4>{chapter.title}</h4><p>{chapter.text}</p></div></article>)}</div></div><aside className="prompt-panel"><div className="prompt-panel-top"><span>口播提示词</span><small>可编辑 · 可发给 ChatGPT</small></div><textarea value={storyDraft} onChange={(event) => setStoryDraft(event.target.value)} aria-label={`${activePlan.date}完整故事提示词`} /><div className="prompt-actions"><button className="primary-button" onClick={copyStoryPrompt}>复制完整提示词 <span>↗</span></button><button className="secondary-button" onClick={() => setStoryDraft(activePlan.story.prompt)}>恢复本日版本</button></div><p className="prompt-tip">建议：先在现场改“我要讲的重点”和“眼前看到的细节”，再复制给 ChatGPT。</p></aside></div>
         </section>}
 
+        {activeView === "library" && <section className="module library-module">
+          <div className="module-title"><div><p className="eyebrow">FREE TRAVEL LIBRARY / 集中挑选</p><h3>自由行备选库</h3><p>这里集中放 Excel「自由行参考」里已经提炼出的补充内容，以及邓紫棋相关的拍照打卡建议。它们不会自动进入正式行程，选中第 {activePlan.number} 天后，点击“加入今天”才会进入控制台草稿。</p></div><span className="shared-badge">{freeOptions.length} 个备选</span></div>
+          <div className="library-howto"><b>使用方式</b><span>① 先选上方日期</span><span>② 在这里挑选备选项</span><span>③ 加入后到“现场控制台”改时间和顺序</span></div>
+          <div className="library-filters" aria-label="筛选自由行备选">{libraryFilters.map((filter) => <button key={filter} className={libraryFilter === filter ? "active" : ""} onClick={() => setLibraryFilter(filter)}>{filter}</button>)}</div>
+          <div className="library-grid">{visibleFreeOptions.map((option) => <article className={`library-card ${option.category === "邓紫棋 / 拍照" ? "gem-option" : ""}`} key={option.id}><div className="library-card-top"><span>{option.region}</span><em>{option.category}</em></div><h4>{option.title}</h4><p className="library-places">{option.places}</p><p>{option.story}</p><div className="library-card-bottom"><small>{option.timing}</small><button onClick={() => addFreeOption(option)}>加入第 {activePlan.number} 天 →</button></div><small className="library-source">{option.source}</small></article>)}</div>
+        </section>}
+
         {activeView === "control" && <section className="module control-module">
-          <div className="module-title"><div><p className="eyebrow">FIELD CONSOLE / 只给你</p><h3>现场调整，反写回今日行程。</h3><p>你可以增加景点、改时间、调顺序、加入餐厅和交通。保存以后，回到“今日行程”，你和老婆看到的就是这一版。</p></div><div className="console-actions"><button className="secondary-button" onClick={resetPlan}>恢复正式方案</button><button className="primary-button" onClick={savePlan}>保存并同步 →</button></div></div>
-          <div className="control-grid"><div className="editor-card"><div className="editor-head"><span>今日安排顺序</span><small>拖动感暂用上下箭头</small></div><div className="editable-list">{activePlan.activities.map((activity, index) => <div className="editable-item" key={activity.id}><div className="move-buttons"><button onClick={() => moveActivity(index, -1)} aria-label="上移">↑</button><button onClick={() => moveActivity(index, 1)} aria-label="下移">↓</button></div><input className="time-input" value={activity.time} onChange={(event) => updateActivity(activity.id, "time", event.target.value)} aria-label="时间" /><div className="editable-fields"><input value={activity.title} onChange={(event) => updateActivity(activity.id, "title", event.target.value)} aria-label="安排标题" /><input value={activity.place} onChange={(event) => updateActivity(activity.id, "place", event.target.value)} aria-label="地点" /><input value={activity.note} onChange={(event) => updateActivity(activity.id, "note", event.target.value)} aria-label="备注" /></div><button className="delete-button" onClick={() => removeActivity(activity.id)} aria-label="删除安排">×</button></div>)}</div><div className="add-row"><input value={newActivity} onChange={(event) => setNewActivity(event.target.value)} onKeyDown={(event) => { if (event.key === "Enter") addActivity(); }} placeholder="加入一个地点、餐厅或临时安排" /><button onClick={addActivity}>＋ 加入</button></div></div><aside className="console-side"><div className="editor-card mini-editor"><div className="editor-head"><span>交通方式</span><small>每行一条</small></div><textarea value={activePlan.transport.join("\n")} onChange={(event) => updatePlan((plan) => ({ ...plan, transport: event.target.value.split("\n") }))} aria-label="交通方式" /></div><div className="editor-card mini-editor"><div className="editor-head"><span>吃饭 / 休息</span><small>每行一条</small></div><textarea value={activePlan.meals.join("\n")} onChange={(event) => updatePlan((plan) => ({ ...plan, meals: event.target.value.split("\n") }))} aria-label="吃饭和休息" /></div><div className="sync-note"><span>↻</span><p><b>反写逻辑</b>保存后，今日行程模块会立即读取这份调整；故事模块仍然保留你今天要讲的完整故事。</p></div></aside></div>
+          <div className="module-title"><div><p className="eyebrow">FIELD CONSOLE / 只给你</p><h3>现场调整，反写回今日行程。</h3><p>先排顺序，再补时间、地点和备注。每次改动都会先留在本机，最后点“保存并同步”。</p></div><div className="console-actions"><button className="secondary-button" onClick={resetPlan}>恢复正式方案</button><button className="primary-button" onClick={savePlan}>保存并同步 →</button></div></div>
+          <div className="control-grid"><div className="editor-card"><div className="editor-head"><span>今天怎么走</span><small>长按拖动，或用 ↑↓</small></div><div className="console-modebar"><span className="console-mode-icon">↕</span><div><b>先排顺序，再补细节</b><small>{activePlan.activities.length} 个安排 · 手机上每一格都可以直接点开修改</small></div></div><div className="editable-list">{activePlan.activities.map((activity, index) => <div className={`editable-item ${draggingActivityId === activity.id ? "dragging" : ""}`} key={activity.id} onDragOver={(event) => event.preventDefault()} onDrop={(event) => dropActivity(event, activity.id)}><div className="editable-item-top"><button className="drag-handle" draggable onDragStart={(event) => startDragging(event, activity.id)} onDragEnd={() => setDraggingActivityId(null)} aria-label={`拖动第${index + 1}项`} title="长按或拖动调整顺序">↕</button><div><b>安排 {String(index + 1).padStart(2, "0")}</b><small>可拖动调整顺序</small></div><div className="item-actions"><button onClick={() => moveActivity(index, -1)} aria-label="上移" disabled={index === 0}>↑</button><button onClick={() => moveActivity(index, 1)} aria-label="下移" disabled={index === activePlan.activities.length - 1}>↓</button><button className="delete-button" onClick={() => removeActivity(activity.id)} aria-label="删除安排">×</button></div></div><div className="editable-fields"><label><span>时间</span><input className="time-input" value={activity.time} onChange={(event) => updateActivity(activity.id, "time", event.target.value)} aria-label="时间" /></label><label><span>安排</span><input value={activity.title} onChange={(event) => updateActivity(activity.id, "title", event.target.value)} aria-label="安排标题" /></label><label><span>地点</span><input value={activity.place} onChange={(event) => updateActivity(activity.id, "place", event.target.value)} aria-label="地点" /></label><label className="full-field"><span>提醒 / 备注</span><input value={activity.note} onChange={(event) => updateActivity(activity.id, "note", event.target.value)} aria-label="备注" /></label></div></div>)}</div><div className="add-row"><input value={newActivity} onChange={(event) => setNewActivity(event.target.value)} onKeyDown={(event) => { if (event.key === "Enter") addActivity(); }} placeholder="加入地点、餐厅或临时安排" aria-label="新安排" /><button onClick={addActivity}>＋ 加入</button></div></div><aside className="console-side"><details className="editor-card compact-editor"><summary><span>交通方式</span><small>点击展开 · 每行一条</small></summary><textarea value={activePlan.transport.join("\n")} onChange={(event) => updatePlan((plan) => ({ ...plan, transport: event.target.value.split("\n") }))} aria-label="交通方式" /></details><details className="editor-card compact-editor"><summary><span>吃饭 / 休息</span><small>点击展开 · 每行一条</small></summary><textarea value={activePlan.meals.join("\n")} onChange={(event) => updatePlan((plan) => ({ ...plan, meals: event.target.value.split("\n") }))} aria-label="吃饭和休息" /></details><div className="sync-note"><span>↻</span><p><b>保存后自动反写</b>回到“今日行程”，你和老婆看到的就是这一版；故事模块不会被改动。</p></div></aside></div>
         </section>}
       </section>
 
       <section className="mobile-howto section-shell"><p className="eyebrow">HOW TO USE ON THE ROAD</p><div><b>先给老婆看“今日行程”</b><span>再切到“今日故事”自己讲</span><span>现场有变化，就进“控制台”调整并保存</span></div></section>
       <footer className="app-footer"><div><span className="brand-seal">EH</span><b>欧洲历史旅行手册</b></div><span>v.02 / ROME-FIRST / MOBILE</span></footer>
-      <nav className="mobile-nav" aria-label="底部模块导航">{(Object.keys(viewCopy) as View[]).map((view) => <button key={view} className={activeView === view ? "active" : ""} onClick={() => setActiveView(view)}><span>{view === "plan" ? "⌂" : view === "story" ? "✦" : "↻"}</span>{viewCopy[view].label}</button>)}</nav>
+      <nav className="mobile-nav" aria-label="底部模块导航">{(Object.keys(viewCopy) as View[]).map((view) => <button key={view} className={activeView === view ? "active" : ""} onClick={() => setActiveView(view)}><span>{view === "plan" ? "⌂" : view === "story" ? "✦" : view === "library" ? "◇" : "↻"}</span>{viewCopy[view].label}</button>)}</nav>
       {toast && <div className="toast" role="status">{toast}<span>✓</span></div>}
     </main>
   );
