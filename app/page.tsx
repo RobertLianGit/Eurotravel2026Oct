@@ -49,22 +49,20 @@ type FreeOption = {
   story: string;
   timing: string;
   source: string;
+  locationKeys?: string[];
 };
 
 const freeOptions: FreeOption[] = [
-  { id: "paris-versailles-treaty", region: "巴黎", category: "历史补线", title: "凡尔赛和约：一战之后的欧洲", places: "凡尔赛宫 / 镜厅 / 巴黎", story: "把凡尔赛从路易十四的王权延伸到1919年的战后秩序：旧王宫如何成为重新划分欧洲的地方。", timing: "巴黎自由日或凡尔赛日之后", source: "Excel 自由行参考（已提炼）" },
-  { id: "paris-concorde", region: "巴黎", category: "历史补线", title: "协和广场：王权与革命争夺同一块空间", places: "协和广场", story: "从路易十五广场、革命时期的断头台，到今天的城市轴线，讲公共空间如何反复改名、改写。", timing: "巴黎自由日半日", source: "Excel 自由行参考（已提炼）" },
-  { id: "paris-bastille", region: "巴黎", category: "历史补线", title: "巴士底广场：一座消失的监狱如何变成革命符号", places: "巴士底广场 / 圣安东尼街区", story: "现场已经看不到完整的巴士底监狱，但正因为它消失了，记忆才更依赖地图、纪念柱和公共叙事。", timing: "巴黎自由日下午", source: "Excel 自由行参考（已提炼）" },
-  { id: "paris-pantheon", region: "巴黎", category: "历史补线", title: "先贤祠：法国决定记住谁", places: "先贤祠 / 拉丁区", story: "从教堂到国家陵寝，讲法国如何把宗教空间改造成公共记忆的名单。", timing: "巴黎自由日上午", source: "Excel 自由行参考（已提炼）" },
-  { id: "paris-invalides", region: "巴黎", category: "历史补线", title: "荣军院：拿破仑与战争国家", places: "荣军院 / 拿破仑墓", story: "把拿破仑从个人英雄拉回国家机器：战争、荣誉、军队和国家记忆如何彼此绑定。", timing: "巴黎自由日或返程前半天", source: "Excel 自由行参考（已提炼）" },
+  { id: "paris-versailles-treaty", region: "巴黎", category: "历史补线", title: "凡尔赛和约：一战之后的欧洲", places: "凡尔赛宫 / 镜厅 / 巴黎", story: "把凡尔赛从路易十四的王权延伸到1919年的战后秩序：旧王宫如何成为重新划分欧洲的地方。", timing: "巴黎自由日或凡尔赛日之后", source: "Excel 自由行参考（已提炼）", locationKeys: ["凡尔赛宫"] },
+  { id: "paris-concorde", region: "巴黎", category: "历史补线", title: "协和广场：王权与革命争夺同一块空间", places: "协和广场", story: "从路易十五广场、革命时期的断头台，到今天的城市轴线，讲公共空间如何反复改名、改写。", timing: "巴黎自由日半日", source: "Excel 自由行参考（已提炼）", locationKeys: ["协和广场"] },
+  { id: "paris-bastille", region: "巴黎", category: "历史补线", title: "巴士底广场：一座消失的监狱如何变成革命符号", places: "巴士底广场 / 圣安东尼街区", story: "现场已经看不到完整的巴士底监狱，但正因为它消失了，记忆才更依赖地图、纪念柱和公共叙事。", timing: "巴黎自由日下午", source: "Excel 自由行参考（已提炼）", locationKeys: ["巴士底广场"] },
+  { id: "paris-pantheon", region: "巴黎", category: "历史补线", title: "先贤祠：法国决定记住谁", places: "先贤祠 / 拉丁区", story: "从教堂到国家陵寝，讲法国如何把宗教空间改造成公共记忆的名单。", timing: "巴黎自由日上午", source: "Excel 自由行参考（已提炼）", locationKeys: ["先贤祠"] },
+  { id: "paris-invalides", region: "巴黎", category: "历史补线", title: "荣军院：拿破仑与战争国家", places: "荣军院 / 拿破仑墓", story: "把拿破仑从个人英雄拉回国家机器：战争、荣誉、军队和国家记忆如何彼此绑定。", timing: "巴黎自由日或返程前半天", source: "Excel 自由行参考（已提炼）", locationKeys: ["荣军院"] },
   { id: "paris-bartholomew", region: "巴黎", category: "历史补线", title: "圣巴托洛缪之夜：宗教战争如何进入城市记忆", places: "巴黎历史中心 / 卢浮宫—塞纳河一线", story: "把法国宗教战争放进城市空间：王权、天主教、胡格诺派和暴力记忆怎样叠在同一座首都里。", timing: "适合做一条历史故事线，不必专门赶景点", source: "Excel 自由行参考（已提炼）" },
   { id: "gem-fly-away", region: "巴黎", category: "邓紫棋 / 拍照", title: "邓紫棋《Fly Away》巴黎同款拍照线", places: "巴黎地铁 → 卢浮宫 → 埃菲尔铁塔", story: "公开资料可确认 MV 在巴黎取景。建议不追求完全复刻，而是保留‘地铁转场—卢浮宫—铁塔夜景’这条镜头逻辑。", timing: "第10天转场时预留30–45分钟", source: "邓紫棋公开 MV 资料" },
   { id: "gem-zenith", region: "巴黎", category: "邓紫棋 / 拍照", title: "邓紫棋巴黎演出地打卡", places: "Le Zénith Paris–La Villette", story: "这是粉丝向打卡，不是历史景点。她曾在这里举办巴黎演出，适合在巴黎自由日单独安排，不要硬塞进卢浮宫路线。", timing: "第12天自由日上午或下午", source: "邓紫棋巴黎演出资料" },
   { id: "paris-left-bank-photo", region: "巴黎", category: "邓紫棋 / 拍照", title: "左岸生活感拍照备选", places: "圣日耳曼大街 → Café de Flore / Les Deux Magots → 艺术桥", story: "如果想拍‘人在巴黎’而不只是地标，可以用咖啡馆、街角和塞纳河完成一条轻松的人像线。", timing: "第12天自由日下午", source: "巴黎官方旅游资料 / 拍照备选" },
-  { id: "berlin-brandenburg", region: "柏林", category: "历史补线", title: "勃兰登堡门：从普鲁士门楼到统一象征", places: "勃兰登堡门 / 巴黎广场", story: "同一座门经历王国、帝国、纳粹、分裂和统一，适合补进柏林20世纪主线。", timing: "第8天或第9天离城前", source: "Excel 自由行参考（已提炼）" },
-  { id: "berlin-bornholmer", region: "柏林", category: "历史补线", title: "博恩霍尔姆大街：柏林墙如何真正打开", places: "Bornholmer Straße 边境检查站", story: "把1989年11月9日落到一个具体夜晚：新闻发布会、含混命令、边防人员和门外人群怎样共同改变冷战。", timing: "第8天正式历史线的延伸", source: "Excel 自由行参考（已提炼）" },
-  { id: "berlin-checkpoint", region: "柏林", category: "历史补线", title: "查理检查站：冷战被压缩成一个关卡", places: "Checkpoint Charlie", story: "从军事检查站、坦克对峙到今天的城市景观，讲冷战如何被博物馆化、商业化。", timing: "第8天体力允许时", source: "Excel 自由行参考（已提炼）" },
-  { id: "berlin-unter-den-linden", region: "柏林", category: "历史补线", title: "菩提树下大街：国家大道的形成", places: "Unter den Linden / 新岗哨 / 博物馆岛外观", story: "把普鲁士王权、帝国首都、战争记忆和今天的柏林大道放到一条步行线上。", timing: "第9天飞巴黎前隐藏时段", source: "Excel 自由行参考（已提炼）" },
+  { id: "berlin-unter-den-linden", region: "柏林", category: "历史补线", title: "菩提树下大街：国家大道的形成", places: "Unter den Linden / 新岗哨 / 博物馆岛外观", story: "把普鲁士王权、帝国首都、战争记忆和今天的柏林大道放到一条步行线上。", timing: "第9天飞巴黎前隐藏时段", source: "Excel 自由行参考（已提炼）", locationKeys: ["菩提树下大街"] },
   { id: "rome-gem-unverified", region: "罗马", category: "邓紫棋 / 拍照", title: "邓紫棋罗马具体地点：待核实入口", places: "现场照片 / 链接 → 再加入罗马路线", story: "目前没有足够可靠的公开资料确认她在罗马的具体打卡地点。这里先保留入口，不把候选地点误写成她去过。", timing: "罗马自由日集中核对", source: "待你补充照片或链接" },
   { id: "rome-photo-line", region: "罗马", category: "邓紫棋 / 拍照", title: "罗马人像拍照候选线", places: "特莱维喷泉 → 西班牙广场", story: "这不是已确认的邓紫棋同款地点，而是一条最适合现场拍照、距离和节奏都可控的候选线。", timing: "第6天自由日上午", source: "罗马拍照备选" },
   { id: "rome-jasmine", region: "罗马", category: "邓紫棋 / 拍照", title: "圣彼得穹顶远景拍照候选", places: "橘园 / 马尔他骑士团钥匙孔 / 茉莉花步道", story: "不再进入梵蒂冈内部，改从城市远景拍圣彼得穹顶；适合把拍照和罗马历史收束结合起来。", timing: "第6天自由日下午", source: "罗马拍照备选" },
@@ -258,7 +256,12 @@ export default function Home() {
 
   const activePlan = plans[activeDayId] ?? initialPlans["day-03"];
   const libraryFilters = ["全部", "罗马", "柏林", "巴黎", "邓紫棋 / 拍照"];
-  const visibleFreeOptions = useMemo(() => freeOptions.filter((option) => libraryFilter === "全部" || option.region === libraryFilter || option.category === libraryFilter), [libraryFilter]);
+  const scheduledText = useMemo(() => Object.values(plans).map((plan) => [plan.route.join(" "), ...plan.activities.map((activity) => `${activity.title} ${activity.place}`)].join(" ")).join(" ").toLocaleLowerCase(), [plans]);
+  const visibleFreeOptions = useMemo(() => freeOptions.filter((option) => {
+    const alreadyScheduled = option.locationKeys?.some((key) => scheduledText.includes(key.toLocaleLowerCase())) ?? false;
+    const matchesFilter = libraryFilter === "全部" || option.region === libraryFilter || option.category === libraryFilter;
+    return matchesFilter && !alreadyScheduled;
+  }), [libraryFilter, scheduledText]);
 
   useEffect(() => {
     try {
@@ -407,7 +410,7 @@ export default function Home() {
         </section>}
 
         {activeView === "library" && <section className="module library-module">
-          <div className="module-title"><div><p className="eyebrow">FREE TRAVEL LIBRARY / 集中挑选</p><h3>自由行备选库</h3><p>这里集中放 Excel「自由行参考」里已经提炼出的补充内容，以及邓紫棋相关的拍照打卡建议。它们不会自动进入正式行程，选中第 {activePlan.number} 天后，点击“加入今天”才会进入控制台草稿。</p></div><span className="shared-badge">{freeOptions.length} 个备选</span></div>
+          <div className="module-title"><div><p className="eyebrow">FREE TRAVEL LIBRARY / 集中挑选</p><h3>自由行备选库</h3><p>这里集中放 Excel「自由行参考」里已经提炼出的补充内容，以及邓紫棋相关的拍照打卡建议。已经出现在正式行程里的地点会自动从这里排除，避免重复；选中第 {activePlan.number} 天后，点击“加入今天”才会进入控制台草稿。</p></div><span className="shared-badge">{visibleFreeOptions.length} 个可选</span></div>
           <div className="library-howto"><b>使用方式</b><span>① 先选上方日期</span><span>② 在这里挑选备选项</span><span>③ 加入后到“现场控制台”改时间和顺序</span></div>
           <div className="library-filters" aria-label="筛选自由行备选">{libraryFilters.map((filter) => <button key={filter} className={libraryFilter === filter ? "active" : ""} onClick={() => setLibraryFilter(filter)}>{filter}</button>)}</div>
           <div className="library-grid">{visibleFreeOptions.map((option) => <article className={`library-card ${option.category === "邓紫棋 / 拍照" ? "gem-option" : ""}`} key={option.id}><div className="library-card-top"><span>{option.region}</span><em>{option.category}</em></div><h4>{option.title}</h4><p className="library-places">{option.places}</p><p>{option.story}</p><div className="library-card-bottom"><small>{option.timing}</small><button onClick={() => addFreeOption(option)}>加入第 {activePlan.number} 天 →</button></div><small className="library-source">{option.source}</small></article>)}</div>

@@ -50,6 +50,9 @@ test("starter preview infrastructure is removed from the finished guide", async 
   assert.match(page, /自由行备选库/);
   assert.match(page, /邓紫棋 \/ 拍照/);
   assert.match(page, /加入第 \{activePlan.number\} 天/);
+  assert.match(page, /scheduledText/);
+  assert.match(page, /alreadyScheduled/);
+  assert.doesNotMatch(page, /berlin-brandenburg|berlin-bornholmer|berlin-checkpoint/);
   assert.match(layout, /欧洲历史旅行手册/);
   assert.doesNotMatch(packageJson, /react-loading-skeleton/);
   await assert.rejects(access(new URL("app/_sites-preview/SkeletonPreview.tsx", templateRoot)));
