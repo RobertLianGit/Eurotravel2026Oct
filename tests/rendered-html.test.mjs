@@ -25,8 +25,10 @@ test("server-renders the interactive travel guide", async () => {
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape|Building your site/i);
   assert.match(html, /欧洲历史旅行手册/);
   assert.match(html, /梵蒂冈/);
-  assert.match(html, /现场工作台/);
-  assert.match(html, /口播提示词/);
+  assert.match(html, /今日行程/);
+  assert.match(html, /今日故事/);
+  assert.match(html, /现场控制台/);
+  assert.match(html, /今天要去哪/);
 });
 
 test("starter preview infrastructure is removed from the finished guide", async () => {
