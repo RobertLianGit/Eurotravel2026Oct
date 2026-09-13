@@ -28,6 +28,12 @@ type DayPlan = {
   transport: string[];
   meals: string[];
   photoIdeas?: string[];
+  priorityReminder?: {
+    label: string;
+    title: string;
+    body: string;
+    items: string[];
+  };
   activities: Activity[];
   story: {
     title: string;
@@ -165,6 +171,8 @@ const dailyMaps: Record<string, DayMap> = {
       { name: "圣母百花大教堂", query: "Cathedral of Santa Maria del Fiore, Florence", kind: "visit", coordinates: [43.7731, 11.256], note: "城邦竞争的公共宣言" },
       { name: "领主广场", query: "Piazza della Signoria, Florence", kind: "visit", coordinates: [43.7696, 11.2558] },
       { name: "天堂之门", query: "Gates of Paradise, Florence", kind: "visit", coordinates: [43.7734, 11.2552] },
+      { name: "学院美术馆", query: "Galleria dell'Accademia, Florence", kind: "optional", coordinates: [43.7769, 11.2589], note: "佛罗伦萨第二天已安排：米开朗基罗《大卫》" },
+      { name: "巴杰罗国家博物馆", query: "Museo Nazionale del Bargello, Florence", kind: "optional", coordinates: [43.7704, 11.2577], note: "佛罗伦萨第二天新增：重点提醒，不要忘记" },
     ],
     relationship: "佛罗伦萨核心景点高度集中在老城步行范围内；酒店若在车站附近，通常先向东南进入大教堂—领主广场—乌菲兹一线。",
     note: "佛罗伦萨酒店已确认在 Viale Fratelli Rosselli, 2；这里重点看酒店 / 火车站与老城景点的相对位置。",
@@ -429,13 +437,14 @@ const basePlans: DayPlan[] = [
   {
     id: "day-04", number: "04", date: "9月29日", city: "罗马 → 佛罗伦萨", tag: "正式行程", title: "帝国之后，城邦重新发明欧洲",
     route: ["前往佛罗伦萨", "乌菲兹美术馆", "圣母百花大教堂", "领主广场", "天堂之门"], transport: ["罗马 → 佛罗伦萨：按正式方案交通", "佛罗伦萨市区：步行串联"], meals: ["午餐：佛罗伦萨市中心自选", "晚餐：酒店 / 市区自选"],
+    priorityReminder: { label: "务必记住 / 佛罗伦萨第二天", title: "学院美术馆 + 巴杰罗国家博物馆", body: "你已经确定佛罗伦萨第二天去学院美术馆；这次新增的巴杰罗国家博物馆要单独记住，不要到了现场只看《大卫》却漏掉巴杰罗。两馆可以串成一条‘米开朗基罗—多纳太罗—佛罗伦萨雕塑传统’的补充线，具体先后按预约时间调整。", items: ["学院美术馆｜Galleria dell’Accademia｜重点看米开朗基罗《大卫》", "巴杰罗国家博物馆｜Museo Nazionale del Bargello｜新增安排，重点提醒：不要忘记"] },
     activities: [
       { id: "d4-1", time: "上午", title: "前往佛罗伦萨", place: "罗马 → 佛罗伦萨", note: "从帝国城市进入城邦城市", kind: "move" },
       { id: "d4-2", time: "10:30", title: "乌菲兹美术馆", place: "Uffizi Gallery", note: "美第奇如何用艺术打造公共声望", kind: "visit" },
       { id: "d4-3", time: "14:00", title: "百花大教堂 / 洗礼堂", place: "Duomo", note: "城市竞争如何变成建筑高度", kind: "visit" },
       { id: "d4-4", time: "16:00", title: "领主广场", place: "Piazza della Signoria", note: "看城邦如何把政治放到公共空间", kind: "visit" },
     ],
-    story: { title: "佛罗伦萨为什么能接过罗马的火炬？", question: "罗马帝国消失以后，新的欧洲为什么从城邦竞争中长出来？", lead: "今天不是从帝国跳进美术馆，而是看城市如何重新获得政治主动权。", body: "佛罗伦萨的银行、广场、教堂和美术馆共同说明了一件事：财富本身不会自动变成合法性。美第奇家族必须把银行赚来的钱转化为建筑、画作和公共荣耀，让整座城市不断重复一个印象——这个家族有能力让佛罗伦萨变得更伟大。文艺复兴因此不是艺术突然自由了，而是艺术被卷入城邦竞争，成为城市争夺信用、声望和权力的方式。", chapters: [{ label: "01", title: "城邦竞争", text: "城市之间的竞争，让公共建筑成为政治声明。" }, { label: "02", title: "美第奇赞助", text: "银行财富必须经过艺术和公共荣耀，才能变成政治信用。" }, { label: "03", title: "从罗马到佛罗伦萨", text: "罗马留下的古典遗产，在城邦竞争中被重新激活。" }], prompt: "请把佛罗伦萨的乌菲兹、百花大教堂和领主广场串成一个 5 分钟故事，重点讲‘城邦竞争如何把艺术变成政治’。\n\n原稿：" },
+    story: { title: "佛罗伦萨为什么能接过罗马的火炬？", question: "罗马帝国消失以后，新的欧洲为什么从城邦竞争中长出来？", lead: "今天不是从帝国跳进美术馆，而是看城市如何重新获得政治主动权。第二天再用学院美术馆和巴杰罗，把这条雕塑线补完整。", body: "佛罗伦萨的银行、广场、教堂和美术馆共同说明了一件事：财富本身不会自动变成合法性。美第奇家族必须把银行赚来的钱转化为建筑、画作和公共荣耀，让整座城市不断重复一个印象——这个家族有能力让佛罗伦萨变得更伟大。文艺复兴因此不是艺术突然自由了，而是艺术被卷入城邦竞争，成为城市争夺信用、声望和权力的方式。你已经安排第二天去学院美术馆，那里用米开朗基罗的《大卫》把人体、英雄和城市理想集中在一起；新增的巴杰罗国家博物馆则要单独记住，它把多纳太罗等人的雕塑放回佛罗伦萨的公共与宫廷空间中。这样两天连起来，看的就不只是名作，而是城邦怎样用雕塑塑造自己的公民形象。", chapters: [{ label: "01", title: "城邦竞争", text: "城市之间的竞争，让公共建筑成为政治声明。" }, { label: "02", title: "美第奇赞助", text: "银行财富必须经过艺术和公共荣耀，才能变成政治信用。" }, { label: "03", title: "第二天补雕塑线", text: "学院美术馆看《大卫》，巴杰罗国家博物馆看佛罗伦萨雕塑传统，别漏掉新增的巴杰罗。" }, { label: "04", title: "从罗马到佛罗伦萨", text: "罗马留下的古典遗产，在城邦竞争中被重新激活。" }], prompt: "请把佛罗伦萨两天的故事串起来：第一天的乌菲兹、百花大教堂、领主广场，第二天的学院美术馆和巴杰罗国家博物馆。重点讲‘城邦竞争如何把艺术变成政治’，并把米开朗基罗《大卫》与多纳太罗的雕塑传统连接起来。写成我可以现场口播的 6 分钟故事。\n\n原稿：" },
     source: "正式方案 PDF｜罗马→佛罗伦萨；自由行参考补充美第奇线",
   },
   {
@@ -721,6 +730,7 @@ export default function Home() {
         {activeView === "plan" && <section className="module plan-module">
           <div className="module-title"><div><p className="eyebrow">SHARED VIEW / 给两个人</p><h3>今天要去哪？</h3><p>这张是你和老婆共同看的版本。它只放具体安排：时间、地点、交通、吃饭，以及现场已经调整过的内容。</p></div><span className="shared-badge">✓ 两个人都看这张</span></div>
           <div className="plan-layout"><div className="timeline-card"><div className="card-topline"><span>今日路线</span><small>{activePlan.activities.length} 个安排</small></div><div className="route-ribbon">{activePlan.route.map((stop, index) => <span key={`${stop}-${index}`}><i>{String(index + 1).padStart(2, "0")}</i>{stop}</span>)}</div><div className="timeline">{activePlan.activities.map((activity) => <div className={`timeline-item ${activity.kind}`} key={activity.id}><div className="timeline-time">{activity.time}</div><div className="timeline-dot" /><div className="timeline-content"><div><b>{activity.title}</b><span>{activity.place}</span></div><p>{activity.note}</p></div></div>)}</div></div><aside className="side-info"><div className="info-card transport-card"><span className="info-icon">↗</span><div><small>交通方式</small>{activePlan.transport.map((item) => <p key={item}>{item}</p>)}</div></div><div className="info-card meal-card"><span className="info-icon">◇</span><div><small>吃饭 / 休息</small>{activePlan.meals.map((item) => <p key={item}>{item}</p>)}</div></div>{activePlan.photoIdeas && <div className="info-card photo-card"><span className="info-icon">✦</span><div><small>拍照 / 打卡建议</small>{activePlan.photoIdeas.map((item) => <p key={item}>{item}</p>)}</div></div>}<div className="next-card"><small>今天的提醒</small><b>{activePlan.id === "day-03" ? "第三天固定是梵蒂冈" : activePlan.tag === "隐藏时段" ? "这是可以临场调整的时间" : "时间可以在现场控制台调整"}</b><button onClick={() => setActiveView("control")}>去调整今日安排 →</button></div></aside></div>
+          {activePlan.priorityReminder && <section className="priority-reminder" aria-label={activePlan.priorityReminder.label}><div className="priority-reminder-head"><span className="priority-mark">!</span><div><p className="eyebrow">{activePlan.priorityReminder.label}</p><h4>{activePlan.priorityReminder.title}</h4></div><strong>新增安排</strong></div><p className="priority-reminder-body">{activePlan.priorityReminder.body}</p><div className="priority-reminder-items">{activePlan.priorityReminder.items.map((item, index) => <div key={item}><span>{String(index + 1).padStart(2, "0")}</span><b>{item}</b></div>)}</div></section>}
           {dailyMaps[activePlan.id] && <MapCard map={dailyMaps[activePlan.id]} />}
         </section>}
 
