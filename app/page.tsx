@@ -590,8 +590,19 @@ export default function Home() {
 
   useEffect(() => {
     try {
-      const stored = window.localStorage.getItem("eurotravel-plans-v3");
-      if (stored) window.setTimeout(() => setPlans({ ...initialPlans, ...JSON.parse(stored) }), 0);
+      const currentStored = window.localStorage.getItem("eurotravel-plans-v4");
+      const legacyStored = window.localStorage.getItem("eurotravel-plans-v3");
+      if (currentStored) {
+        window.setTimeout(() => setPlans({ ...initialPlans, ...JSON.parse(currentStored) }), 0);
+      } else if (legacyStored) {
+        window.setTimeout(() => {
+          const legacyPlans = JSON.parse(legacyStored) as Record<string, DayPlan>;
+          const migratedPlans = { ...initialPlans, ...legacyPlans, "day-05": initialPlans["day-05"] };
+          window.localStorage.setItem("eurotravel-plans-v3-backup", legacyStored);
+          window.localStorage.setItem("eurotravel-plans-v4", JSON.stringify(migratedPlans));
+          setPlans(migratedPlans);
+        }, 0);
+      }
     } catch {
       // Device-local persistence is optional.
     }
@@ -682,7 +693,7 @@ export default function Home() {
   }
 
   function savePlan() {
-    window.localStorage.setItem("eurotravel-plans-v3", JSON.stringify(plans));
+    window.localStorage.setItem("eurotravel-plans-v4", JSON.stringify(plans));
     setToast("今日行程已保存到本机，今日行程页会同步更新");
   }
 
