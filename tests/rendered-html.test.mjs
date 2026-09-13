@@ -53,6 +53,8 @@ test("starter preview infrastructure is removed from the finished guide", async 
   assert.match(page, /priorityReminder/);
   assert.match(page, /学院美术馆/);
   assert.match(page, /巴杰罗国家博物馆/);
+  assert.match(page, /9 月 30 日/);
+  assert.match(page, /day-05.*9月30日/s);
   assert.match(page, /新增安排/);
   assert.match(page, /scheduledText/);
   assert.match(page, /alreadyScheduled/);
