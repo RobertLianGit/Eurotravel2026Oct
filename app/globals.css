@@ -127,6 +127,26 @@
 .compact-editor textarea { display: block; width: calc(100% - 34px); min-height: 105px; margin: 0 17px 17px; resize: vertical; line-height: 1.6; }
 .photo-card { background: #e2ecea; }
 .photo-card .info-icon { color: var(--blue); }
+.daily-reference { margin: 0 0 15px; padding: 20px; border: 1px solid rgba(54,106,113,.3); background: rgba(226,236,234,.72); }
+.daily-reference-head { display: flex; align-items: end; justify-content: space-between; gap: 18px; padding-bottom: 16px; border-bottom: 1px solid rgba(54,106,113,.18); }
+.daily-reference-head h4 { margin: 0; font: 600 24px/1.2 var(--serif); }
+.daily-reference-head p:last-child { max-width: 660px; margin: 8px 0 0; color: var(--muted); font: 13px/1.6 var(--serif); }
+.daily-reference-head > span { padding: 7px 9px; color: var(--blue); border: 1px solid rgba(54,106,113,.35); font: 10px var(--sans); white-space: nowrap; }
+.daily-reference-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; padding-top: 12px; }
+.daily-reference-card { display: flex; min-width: 0; flex-direction: column; padding: 15px; border: 1px solid rgba(30,44,42,.12); background: rgba(255,255,255,.55); }
+.daily-reference-card.gem-option { border-color: rgba(54,106,113,.38); background: #e2ecea; }
+.daily-reference-card h5 { margin: 13px 0 0; font: 600 19px/1.25 var(--serif); }
+.daily-reference-story { margin: 10px 0 0; color: var(--muted); font: 13px/1.65 var(--serif); }
+.spot-guide { margin-top: 12px; border-top: 1px solid rgba(30,44,42,.1); }
+.spot-guide-item { display: grid; grid-template-columns: 28px 1fr; gap: 8px; padding: 10px 0; border-bottom: 1px dashed rgba(30,44,42,.12); }
+.spot-guide-item > b { color: var(--gold); font: italic 15px var(--serif); }
+.spot-guide-item strong { display: block; color: var(--ink); font: 600 12px/1.4 var(--serif); }
+.spot-guide-item span { display: block; margin-top: 4px; color: var(--muted); font: 11px/1.5 var(--serif); }
+.spot-guide-item i { display: inline-block; width: 30px; color: var(--clay); font-style: normal; }
+.daily-reference-actions { display: flex; align-items: end; justify-content: space-between; gap: 10px; margin-top: auto; padding-top: 14px; }
+.daily-reference-actions small { color: var(--muted); font: 11px/1.4 var(--serif); }
+.daily-reference-actions button { padding: 8px 10px; border: 1px solid var(--clay); background: transparent; color: var(--clay); font-size: 11px; white-space: nowrap; }
+.daily-reference-actions button:hover { background: var(--clay); color: #fffaf1; }
 .module-tabs { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 .library-module { background: #eee7da; }
 .library-howto { display: flex; flex-wrap: wrap; gap: 9px 18px; align-items: center; margin-bottom: 22px; padding: 13px 15px; background: #e7ddca; color: var(--muted); font: 12px/1.5 var(--serif); }
@@ -290,4 +310,16 @@ a.map-stop:hover { background: rgba(255,255,255,.4); }
   .map-legend { gap: 7px 10px; font-size: 12px; }
   .map-card-footer > div { display: grid; width: 100%; grid-template-columns: 1fr; }
   .map-card-footer .secondary-button { width: 100%; padding: 12px; text-align: center; }
+}
+
+@media (max-width: 620px) {
+  .daily-reference { margin-right: -1px; margin-left: -1px; padding: 15px 12px; }
+  .daily-reference-head { display: block; }
+  .daily-reference-head h4 { font-size: 21px; }
+  .daily-reference-head p:last-child { font-size: 13px; }
+  .daily-reference-head > span { display: inline-block; margin-top: 10px; }
+  .daily-reference-grid { grid-template-columns: 1fr; }
+  .daily-reference-story { font-size: 14px; }
+  .spot-guide-item span { font-size: 12px; }
+  .daily-reference-actions button { min-height: 42px; font-size: 12px; }
 }
