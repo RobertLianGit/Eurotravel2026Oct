@@ -150,6 +150,7 @@
 .library-card-bottom button { padding: 9px 10px; border: 1px solid var(--clay); background: transparent; color: var(--clay); font-size: 11px; white-space: nowrap; }
 .library-card-bottom button:hover { background: var(--clay); color: #fffaf1; }
 .library-source { display: block; margin-top: 12px; color: var(--muted); font-size: 9px; }
+.library-source a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
 
 @media (max-width: 620px) {
   .module-tabs { grid-template-columns: repeat(4, minmax(0, 1fr)); }

@@ -48,13 +48,14 @@ type DayPlan = {
 
 type FreeOption = {
   id: string;
-  region: "罗马" | "柏林" | "巴黎";
-  category: "历史补线" | "邓紫棋 / 拍照";
+  region: "罗马" | "佛罗伦萨" | "柏林" | "巴黎";
+  category: "历史补线" | "邓紫棋 / 拍照" | "机位 / 出片" | "美食 / 餐厅" | "伴手礼 / 购物";
   title: string;
   places: string;
   story: string;
   timing: string;
   source: string;
+  sourceUrl?: string;
   locationKeys?: string[];
 };
 
@@ -93,9 +94,22 @@ const freeOptions: FreeOption[] = [
   { id: "paris-pantheon", region: "巴黎", category: "历史补线", title: "先贤祠：法国决定记住谁", places: "先贤祠 / 拉丁区", story: "从教堂到国家陵寝，讲法国如何把宗教空间改造成公共记忆的名单。", timing: "巴黎自由日上午", source: "Excel 自由行参考（已提炼）", locationKeys: ["先贤祠"] },
   { id: "paris-invalides", region: "巴黎", category: "历史补线", title: "荣军院：拿破仑与战争国家", places: "荣军院 / 拿破仑墓", story: "把拿破仑从个人英雄拉回国家机器：战争、荣誉、军队和国家记忆如何彼此绑定。", timing: "巴黎自由日或返程前半天", source: "Excel 自由行参考（已提炼）", locationKeys: ["荣军院"] },
   { id: "paris-bartholomew", region: "巴黎", category: "历史补线", title: "圣巴托洛缪之夜：宗教战争如何进入城市记忆", places: "巴黎历史中心 / 卢浮宫—塞纳河一线", story: "把法国宗教战争放进城市空间：王权、天主教、胡格诺派和暴力记忆怎样叠在同一座首都里。", timing: "适合做一条历史故事线，不必专门赶景点", source: "Excel 自由行参考（已提炼）" },
-  { id: "gem-fly-away", region: "巴黎", category: "邓紫棋 / 拍照", title: "邓紫棋《Fly Away》巴黎同款拍照线", places: "巴黎地铁 → 卢浮宫 → 埃菲尔铁塔", story: "公开资料可确认 MV 在巴黎取景。建议不追求完全复刻，而是保留‘地铁转场—卢浮宫—铁塔夜景’这条镜头逻辑。", timing: "第10天转场时预留30–45分钟", source: "邓紫棋公开 MV 资料" },
-  { id: "gem-zenith", region: "巴黎", category: "邓紫棋 / 拍照", title: "邓紫棋巴黎演出地打卡", places: "Le Zénith Paris–La Villette", story: "这是粉丝向打卡，不是历史景点。她曾在这里举办巴黎演出，适合在巴黎自由日单独安排，不要硬塞进卢浮宫路线。", timing: "第12天自由日上午或下午", source: "邓紫棋巴黎演出资料" },
+  { id: "gem-fly-away", region: "巴黎", category: "邓紫棋 / 拍照", title: "《Fly Away》MV 巴黎取景地｜已确认", places: "巴黎地铁 → 卢浮宫 → 埃菲尔铁塔", story: "索尼音乐的发布资料明确写到 MV 取景于巴黎，并点出地铁、卢浮宫和埃菲尔铁塔。网站把它标成‘MV取景’，不把它误写成 2025 年演唱会期间到访。建议按‘地铁转场—卢浮宫—铁塔夜景’保留镜头逻辑。", timing: "第10天转场时预留30–45分钟", source: "索尼音乐官方资料 / Official MV", sourceUrl: "https://www.sonymusic.com.tw/news/gem-20200123/" },
+  { id: "gem-zenith", region: "巴黎", category: "邓紫棋 / 拍照", title: "邓紫棋巴黎演唱会场馆｜已确认", places: "Le Zénith Paris–La Villette · 19区", story: "I AM GLORIA 海外首站于 2025 年 1 月 21 日在 Zénith Paris–La Villette 举行。这里是明确的演出场馆打卡，不代表她在演出期间还去过周边哪些店或景点。", timing: "第12天自由日；若专程去，单独预留半天", source: "演出场馆 / 巡演公开资料", sourceUrl: "https://www.offi.fr/concerts/le-zenith-3401/gem-2696312.html" },
+  { id: "gem-paris-vlog", region: "巴黎", category: "邓紫棋 / 拍照", title: "邓紫棋本人巴黎 Vlog｜街头、店铺与摩托车镜头", places: "巴黎街头 / 店铺内 / 摩托车场景（具体地址未公开）", story: "GEM 本人发布的巴黎 Vlog 和公开笔记能确认她在巴黎拍了街头生活、店铺内和骑摩托车的画面，但没有给出可核验的店名或街道地址。可以复刻‘城市生活感’，不能把某家店写成她确定去过。", timing: "第12天自由日：作为生活感拍照主题，不必追地址", source: "GEM 官方巴黎 Vlog", sourceUrl: "https://www.youtube.com/watch?v=NOq4l9tWM2w" },
+  { id: "gem-paris-unclear-clues", region: "巴黎", category: "邓紫棋 / 拍照", title: "演唱会期间的餐馆 / 麦当劳线索｜待核验", places: "小红书粉丝线索：餐馆、麦当劳（没有确认地址）", story: "小红书站内能看到‘之前麦当劳偶遇邓紫棋的小哥被剪进 Vlog’以及演唱会期间餐馆营业内容，但这些是粉丝或商家内容，不足以证明她本人去过哪一家。先保留为线索，现场不要按此安排专程打卡。", timing: "出发前若找到原图地址，再决定是否加入自由日", source: "小红书站内检索｜邓紫棋 巴黎 吃饭", sourceUrl: "https://www.xiaohongshu.com/search_result?keyword=%E9%82%93%E7%B4%AB%E6%A3%8B%20%E5%B7%B4%E9%BB%8E%20%E5%90%83%E9%A5%AD" },
   { id: "paris-left-bank-photo", region: "巴黎", category: "邓紫棋 / 拍照", title: "左岸生活感拍照备选", places: "圣日耳曼大街 → Café de Flore / Les Deux Magots → 艺术桥", story: "如果想拍‘人在巴黎’而不只是地标，可以用咖啡馆、街角和塞纳河完成一条轻松的人像线。", timing: "第12天自由日下午", source: "巴黎官方旅游资料 / 拍照备选" },
+  { id: "florence-photo-hotspots", region: "佛罗伦萨", category: "机位 / 出片", title: "佛罗伦萨高频机位线｜穹顶、老桥与米开朗基罗广场", places: "圣母百花大教堂 → 老桥 → 米开朗基罗广场", story: "小红书近期搜索结果里反复出现圣母百花大教堂穹顶、老桥‘周杰伦同款’和米开朗基罗广场。建议把老城近景安排在白天，把米开朗基罗广场留给日落，不与 9 月 30 日的两座博物馆硬塞在一起。", timing: "佛罗伦萨自由时段 / 9月30日参观后择一", source: "小红书站内检索｜佛罗伦萨机位", sourceUrl: "https://www.xiaohongshu.com/search_result?keyword=%E4%BD%9B%E7%BD%97%E4%BC%A6%E8%90%A8%20%E6%9C%BA%E4%BD%8D", locationKeys: ["米开朗基罗广场"] },
+  { id: "florence-food-route", region: "佛罗伦萨", category: "美食 / 餐厅", title: "佛罗伦萨吃什么｜T骨牛排、Gelato 与牛肚包", places: "佛罗伦萨老城 / 中央市场周边", story: "近期站内结果的高频方向是佛罗伦萨 T 骨牛排、Gelato、牛肚包和 2 天游吃法。这里先记‘吃什么’而不是直接锁一家店；到现场再结合排队、价格和当天路线决定。", timing: "9月29日或9月30日午晚餐", source: "小红书站内检索｜佛罗伦萨美食", sourceUrl: "https://www.xiaohongshu.com/search_result?keyword=%E4%BD%9B%E7%BD%97%E4%BC%A6%E8%90%A8%20%E7%BE%8E%E9%A3%9F" },
+  { id: "florence-gifts", region: "佛罗伦萨", category: "伴手礼 / 购物", title: "佛罗伦萨伴手礼｜皮具、市场与地方食品", places: "San Lorenzo 市场 / Sant’Ambrogio 市场", story: "佛罗伦萨适合把伴手礼和老城步行结合：先看皮具、纸品和地方食品，再决定是否购买。皮具要现场看做工、材质和退换条件，不因为‘佛罗伦萨’标签就直接下单。", timing: "佛罗伦萨自由时段或返程前", source: "佛罗伦萨官方市场资料", sourceUrl: "https://www.feelflorence.it/en/experiences-itineraries/markets-florence" },
+  { id: "berlin-photo-hotspots", region: "柏林", category: "机位 / 出片", title: "柏林补充机位｜大教堂、Photoautomat 与东边画廊", places: "柏林大教堂 → Photoautomat → 东边画廊", story: "小红书近期结果里，柏林大教堂、老式 Photoautomat、东边画廊和城市地铁站反复出现。勃兰登堡门、查理检查站已经在正式行程里，这张卡只保留补充点，不重复安排。", timing: "柏林自由时段；先按体力选一到两个", source: "小红书站内检索｜柏林拍照", sourceUrl: "https://www.xiaohongshu.com/search_result?keyword=%E6%9F%8F%E6%9E%97%20%E6%8B%8D%E7%85%A7", locationKeys: ["东边画廊"] },
+  { id: "berlin-food-route", region: "柏林", category: "美食 / 餐厅", title: "柏林吃什么｜猪肘、Döner、Currywurst", places: "市中心 / Markthalle Neun / 老牌德餐馆", story: "近期结果集中在猪肘、Döner、Currywurst、老牌德餐和亚洲菜。建议把‘传统德国菜’和‘街头快餐’分成两顿，不要一天连续安排多个重口味正餐。", timing: "柏林正式行程的午餐或晚餐", source: "小红书站内检索 / VisitBerlin", sourceUrl: "https://www.xiaohongshu.com/search_result?keyword=%E6%9F%8F%E6%9E%97%20%E7%BE%8E%E9%A3%9F" },
+  { id: "berlin-gifts", region: "柏林", category: "伴手礼 / 购物", title: "柏林伴手礼｜Ampelmann 与 Rausch 巧克力", places: "Ampelmann 专卖店 / Rausch 巧克力", story: "近期站内结果明确出现柏林交通灯小人和 Rausch 巧克力。它们比泛泛的‘柏林纪念品’更容易形成城市记忆；购买前仍要看店铺位置和当天是否顺路。", timing: "柏林自由时段或离境前", source: "小红书站内检索｜柏林伴手礼", sourceUrl: "https://www.xiaohongshu.com/search_result?keyword=%E6%9F%8F%E6%9E%97%20%E4%BC%B4%E6%89%8B%E7%A4%BC" },
+  { id: "paris-photo-hotspots", region: "巴黎", category: "机位 / 出片", title: "巴黎补充机位｜铁塔、战神广场与蒙马特", places: "战神广场 / 埃菲尔铁塔远景 / 蒙马特", story: "近期站内结果反复出现铁塔多角度、战神广场、蒙马特、卢浮宫金字塔、凯旋门和塞纳河。卢浮宫、蒙马特、埃菲尔铁塔和塞纳河已经在正式方案里，这里只作为拍摄角度库，不新增重复景点。", timing: "第10天正式路线转场时择一机位", source: "小红书站内检索｜巴黎机位 / 出片", sourceUrl: "https://www.xiaohongshu.com/search_result?keyword=%E5%B7%B4%E9%BB%8E%20%E6%9C%BA%E4%BD%8D" },
+  { id: "paris-food-route", region: "巴黎", category: "美食 / 餐厅", title: "巴黎吃什么｜法餐、马卡龙与下午茶", places: "正式路线沿线 / 玛黑区 / 左岸", story: "近期结果的高频方向是本地法餐、牛排馆、马卡龙、下午茶和 Brunch。先按当天景点位置挑店，再核对营业时间和预约要求，不直接把搜索热度等同于餐厅质量。", timing: "巴黎第10—12天按路线现场选择", source: "小红书站内检索｜巴黎美食", sourceUrl: "https://www.xiaohongshu.com/search_result?keyword=%E5%B7%B4%E9%BB%8E%20%E7%BE%8E%E9%A3%9F" },
+  { id: "paris-gifts", region: "巴黎", category: "伴手礼 / 购物", title: "巴黎伴手礼｜玛黑区、博物馆商店与 10–20 欧元选项", places: "玛黑区 / 博物馆商店 / Bacha Coffee", story: "近期结果里有‘一站式购齐附地图’、玛黑区 6 店路线、10–20 欧元平价伴手礼、博物馆商店和 Bacha Coffee。适合留给巴黎自由日，先确定预算，再按区域集中购买。", timing: "第12天自由日或返程前半天", source: "小红书站内检索 / 巴黎官方旅游资料", sourceUrl: "https://www.xiaohongshu.com/search_result?keyword=%E5%B7%B4%E9%BB%8E%20%E4%BC%B4%E6%89%8B%E7%A4%BC" },
+  { id: "rome-food-route", region: "罗马", category: "美食 / 餐厅", title: "罗马吃什么｜传统罗马菜与 Testaccio", places: "Trastevere / Testaccio / 历史中心", story: "近期站内结果有‘不踩雷指南’、适合中国胃的宝藏餐厅和本地人方向。先按菜系选择：Carbonara、Cacio e pepe、Supplì、牛肚包；区域上优先考虑 Trastevere 与 Testaccio，再根据当天路线落地。", timing: "罗马第2—6天的午晚餐", source: "小红书站内检索 / Roma Food Trail", sourceUrl: "https://www.xiaohongshu.com/search_result?keyword=%E7%BD%97%E9%A9%AC%20%E7%BE%8E%E9%A3%9F" },
+  { id: "rome-gifts", region: "罗马", category: "伴手礼 / 购物", title: "罗马伴手礼｜意大利平价礼物与梵蒂冈主题", places: "历史中心 / 梵蒂冈周边 / 本土品牌店", story: "近期结果的方向包括意大利平价伴手礼、本土品牌、Venchi、梵蒂冈主题纪念品和冰箱贴。梵蒂冈日优先买小而轻的纸品或纪念章，巧克力和液体类留意行李空间。", timing: "第3天梵蒂冈结束后或第6天自由日", source: "小红书站内检索｜罗马伴手礼", sourceUrl: "https://www.xiaohongshu.com/search_result?keyword=%E7%BD%97%E9%A9%AC%20%E4%BC%B4%E6%89%8B%E7%A4%BC" },
   { id: "berlin-unter-den-linden", region: "柏林", category: "历史补线", title: "菩提树下大街：国家大道的形成", places: "Unter den Linden / 新岗哨 / 博物馆岛外观", story: "把普鲁士王权、帝国首都、战争记忆和今天的柏林大道放到一条步行线上。", timing: "第9天飞巴黎前隐藏时段", source: "Excel 自由行参考（已提炼）", locationKeys: ["菩提树下大街"] },
   { id: "rome-gem-unverified", region: "罗马", category: "邓紫棋 / 拍照", title: "邓紫棋罗马具体地点：待核实入口", places: "现场照片 / 链接 → 再加入罗马路线", story: "目前没有足够可靠的公开资料确认她在罗马的具体打卡地点。这里先保留入口，不把候选地点误写成她去过。", timing: "罗马自由日集中核对", source: "待你补充照片或链接" },
   { id: "rome-photo-line", region: "罗马", category: "邓紫棋 / 拍照", title: "罗马人像拍照候选线", places: "特莱维喷泉 → 西班牙广场", story: "这不是已确认的邓紫棋同款地点，而是一条最适合现场拍照、距离和节奏都可控的候选线。", timing: "第6天自由日上午", source: "罗马拍照备选" },
@@ -533,7 +547,7 @@ const basePlans: DayPlan[] = [
   {
     id: "day-12", number: "12", date: "10月7日", city: "巴黎", tag: "自由日", title: "把巴黎的缝隙补成自己的线",
     route: ["全天自由活动", "音乐打卡备选", "可选：先贤祠 / 革命记忆线"], transport: ["市内交通：当天决定", "可以在控制台加入具体餐厅、街区、拍照点和交通方式"], meals: ["午餐：当天路线附近自选", "晚餐：巴黎市区自选"],
-    photoIdeas: ["已确认的邓紫棋巴黎打卡候选：Le Zénith Paris–La Villette，她曾在这里举行巴黎演出；适合做粉丝打卡，不必和历史景点硬塞在同一天。", "如果想拍生活感：圣日耳曼大街 + Café de Flore / Les Deux Magots + 艺术桥；这是巴黎官方推荐的左岸散步组合。", "如果只想拍《Fly Away》同款，优先放回第 10 天，不建议第 12 天再重复卢浮宫和铁塔。"],
+    photoIdeas: ["已确认的邓紫棋巴黎打卡候选：Le Zénith Paris–La Villette，她曾在这里举行巴黎演出；适合做粉丝打卡，不必和历史景点硬塞在同一天。", "GEM 本人公开巴黎 Vlog 能看到街头、店铺和摩托车生活镜头，但没有公开店名或具体地址；可以复刻氛围，不要把粉丝猜测当成她的行程。", "演唱会期间的餐馆、麦当劳等目前只有小红书粉丝或商家线索，没有足够证据确认具体店址；网站已放进‘待核验’卡片。", "如果只想拍《Fly Away》同款，优先放回第 10 天，不建议第 12 天再重复卢浮宫和铁塔。"],
     activities: [
       { id: "d12-1", time: "上午", title: "音乐打卡备选", place: "Le Zénith Paris–La Villette", note: "邓紫棋曾在此演出；如果想做粉丝打卡，预留半天，不与核心历史线硬塞", kind: "free" },
       { id: "d12-2", time: "中午", title: "午餐", place: "当天决定", note: "可以加入你想去的餐厅", kind: "meal" },
@@ -580,7 +594,7 @@ export default function Home() {
   const [toast, setToast] = useState("");
 
   const activePlan = plans[activeDayId] ?? initialPlans["day-03"];
-  const libraryFilters = ["全部", "罗马", "柏林", "巴黎", "邓紫棋 / 拍照"];
+  const libraryFilters = ["全部", "罗马", "佛罗伦萨", "柏林", "巴黎", "机位 / 出片", "美食 / 餐厅", "伴手礼 / 购物", "邓紫棋 / 拍照"];
   const scheduledText = useMemo(() => Object.values(plans).map((plan) => [plan.route.join(" "), ...plan.activities.map((activity) => `${activity.title} ${activity.place}`)].join(" ")).join(" ").toLocaleLowerCase(), [plans]);
   const visibleFreeOptions = useMemo(() => freeOptions.filter((option) => {
     const alreadyScheduled = option.locationKeys?.some((key) => scheduledText.includes(key.toLocaleLowerCase())) ?? false;
@@ -751,7 +765,7 @@ export default function Home() {
           <div className="module-title"><div><p className="eyebrow">FREE TRAVEL LIBRARY / 集中挑选</p><h3>自由行备选库</h3><p>这里集中放 Excel「自由行参考」里已经提炼出的补充内容，以及邓紫棋相关的拍照打卡建议。已经出现在正式行程里的地点会自动从这里排除，避免重复；选中第 {activePlan.number} 天后，点击“加入今天”才会进入控制台草稿。</p></div><span className="shared-badge">{visibleFreeOptions.length} 个可选</span></div>
           <div className="library-howto"><b>使用方式</b><span>① 先选上方日期</span><span>② 在这里挑选备选项</span><span>③ 加入后到“现场控制台”改时间和顺序</span></div>
           <div className="library-filters" aria-label="筛选自由行备选">{libraryFilters.map((filter) => <button key={filter} className={libraryFilter === filter ? "active" : ""} onClick={() => setLibraryFilter(filter)}>{filter}</button>)}</div>
-          <div className="library-grid">{visibleFreeOptions.map((option) => <article className={`library-card ${option.category === "邓紫棋 / 拍照" ? "gem-option" : ""}`} key={option.id}><div className="library-card-top"><span>{option.region}</span><em>{option.category}</em></div><h4>{option.title}</h4><p className="library-places">{option.places}</p><p>{option.story}</p><div className="library-card-bottom"><small>{option.timing}</small><button onClick={() => addFreeOption(option)}>加入第 {activePlan.number} 天 →</button></div><small className="library-source">{option.source}</small></article>)}</div>
+          <div className="library-grid">{visibleFreeOptions.map((option) => <article className={`library-card ${option.category === "邓紫棋 / 拍照" ? "gem-option" : ""}`} key={option.id}><div className="library-card-top"><span>{option.region}</span><em>{option.category}</em></div><h4>{option.title}</h4><p className="library-places">{option.places}</p><p>{option.story}</p><div className="library-card-bottom"><small>{option.timing}</small><button onClick={() => addFreeOption(option)}>加入第 {activePlan.number} 天 →</button></div><small className="library-source">{option.sourceUrl ? <a href={option.sourceUrl} target="_blank" rel="noreferrer">来源：{option.source} ↗</a> : option.source}</small></article>)}</div>
         </section>}
 
         {activeView === "control" && <section className="module control-module">
