@@ -89,6 +89,138 @@ type DayMap = {
   note: string;
 };
 
+type FieldGuideStop = {
+  number: string;
+  status: "必看" | "宫内寻找" | "顺路观察" | "可选补线";
+  titleZh: string;
+  titleFr: string;
+  address: string;
+  directions: string;
+  onsite: string;
+  history: string;
+  practical: string;
+  navigationUrl?: string;
+  sourceUrl: string;
+};
+
+type DayFieldGuide = {
+  eyebrow: string;
+  title: string;
+  dateNote: string;
+  intro: string;
+  routeNote: string;
+  stops: FieldGuideStop[];
+};
+
+const dayFieldGuides: Record<string, DayFieldGuide> = {
+  "day-10": {
+    eyebrow: "LOUVRE MUST-SEE / 卢浮宫第一目标",
+    title: "《自由引导人民》｜La Liberté guidant le peuple",
+    dateNote: "10月5日 · 卢浮宫上午",
+    intro: "这幅画描绘的是1830年七月革命，不是1789年法国大革命。先找到德农馆一层700号展厅，再从远到近看旗帜、人物、尸体和远处的巴黎圣母院。",
+    routeNote: "馆内路线：入口后跟随 Aile Denon（德农馆）→ Peintures françaises（法国绘画）→ Salles Rouges（红厅）→ Salle Mollien 700。展厅可能临时调整，进馆后再用官方导览确认一次。",
+    stops: [
+      {
+        number: "01",
+        status: "必看",
+        titleZh: "《自由引导人民》",
+        titleFr: "La Liberté guidant le peuple",
+        address: "Musée du Louvre · Aile Denon · Niveau 1 · Salle Mollien 700",
+        directions: "在卢浮宫内寻找“Denon / Peintures françaises / Salles Rouges / Salle Mollien 700”指示。不要只导航到金字塔后就结束。",
+        onsite: "先退到能看完整画面的距离：从前景尸体向上看人群和三色旗；再走近看自由女神的弗里吉亚帽、赤脚和身边不同阶层的人。",
+        history: "德拉克洛瓦把1830年巴黎街垒画成历史与寓言的结合：自由既像古典女神，也像正在踩过瓦砾向前的普通人。",
+        practical: "目前官方位置为德农馆一层700号厅；作品2024年完成修复并重新展出。",
+        navigationUrl: "https://www.google.com/maps/search/?api=1&query=Mus%C3%A9e+du+Louvre%2C+Paris%2C+France",
+        sourceUrl: "https://www.louvre.fr/en/explore/the-palace/think-big",
+      },
+    ],
+  },
+  "day-11": {
+    eyebrow: "VERSAILLES REVOLUTION WALK / 凡尔赛革命现场",
+    title: "第11天｜拿着手机就能走的双语路线",
+    dateNote: "2026年10月6日 · 星期二",
+    intro: "你到凡尔赛的日期，正好与1789年10月6日王室被迫离开凡尔赛同月同日。下面按实际参观顺序排列；法语名称可以直接给工作人员看，也可以复制到地图搜索。",
+    routeNote: "推荐顺序：军队广场 → 凡尔赛宫内三个观察点 → 12:30后步行去网球厅。三级会议旧址只在时间和车辆安排允许时增加；不要为了它影响返回巴黎的正式行程。",
+    stops: [
+      {
+        number: "01",
+        status: "顺路观察",
+        titleZh: "军队广场",
+        titleFr: "Place d’Armes",
+        address: "Place d’Armes, 78000 Versailles, France",
+        directions: "这是凡尔赛宫正门外的大广场。下车或从车站走向王宫时就会经过，不需要另买票。面对宫门时，王宫在正前方。",
+        onsite: "先不要急着拍宫殿，转身看广场尺度。1789年10月5日晚，拉法耶特率领的国民卫队曾部署在这里，来自巴黎的人群也聚集在宫门外。",
+        history: "这里是王权、军队和要求面包的巴黎群众直接相遇的空间。",
+        practical: "全天可到达；属于公共广场。",
+        navigationUrl: "https://www.google.com/maps/search/?api=1&query=Place+d%27Armes%2C+78000+Versailles%2C+France",
+        sourceUrl: "https://en.chateauversailles.fr/discover/history/key-dates/departure-king-1789",
+      },
+      {
+        number: "02",
+        status: "宫内寻找",
+        titleZh: "皇家歌剧院",
+        titleFr: "Opéra Royal",
+        address: "Château de Versailles · Aile du Nord（凡尔赛宫北翼内部）",
+        directions: "进入凡尔赛宫后询问工作人员：“Où se trouve l’Opéra Royal ?” 普通参观路线不保证进入歌剧院内部，能看到入口或听讲解即可。",
+        onsite: "记住1789年10月1日：王室卫队在这里举行宴会。巴黎舆论将宴会与粮食危机并置，成为进军凡尔赛的导火索之一。",
+        history: "这是旧制度在凡尔赛举行的最后一次大型宫廷宴会所在地。",
+        practical: "历史点明确，但内部通常取决于当天开放或导览，不要把“必须入内”作为行程前提。",
+        sourceUrl: "https://en.chateauversailles.fr/discover/estate/palace/royal-opera",
+      },
+      {
+        number: "03",
+        status: "宫内寻找",
+        titleZh: "王后卧室",
+        titleFr: "Chambre de la Reine",
+        address: "Grand Appartement de la Reine · Château de Versailles（王后大套房内）",
+        directions: "跟随宫内“Grand Appartement de la Reine / Queen’s State Apartment”路线进入王后卧室。站在参观通道面对床铺时，寻找床龛左侧的小门。",
+        onsite: "1789年10月6日清晨，玛丽·安托瓦内特就是从床龛左侧小门进入内廷走廊，转往国王套房。现场重点是那扇小门，不只是床和织物。",
+        history: "“群众攻入凡尔赛”在这里变成一扇逃生门和一条宫内走廊。",
+        practical: "王后大套房目前属于公开参观区域，但仍以当天宫方封闭情况为准。",
+        sourceUrl: "https://www.chateauversailles.fr/decouvrir/domaine/chateau/grand-appartement-reine",
+      },
+      {
+        number: "04",
+        status: "顺路观察",
+        titleZh: "大理石庭院",
+        titleFr: "Cour de Marbre",
+        address: "Château de Versailles · au cœur de la Cour Royale（王宫中央、皇家庭院最里面）",
+        directions: "从王宫正面依次看荣誉庭院、皇家庭院，最里面黑白相间铺地的小庭院就是大理石庭院。若参观动线无法进入，在正面可见位置观察即可。",
+        onsite: "1789年10月6日，人群聚集在这里要求王室露面。抬头看中央建筑与阳台，理解群众如何把宫廷礼仪空间变成政治现场。",
+        history: "这里见证了国王答应前往巴黎；当天王室离开后再也没有回来常住。",
+        practical: "属于宫殿核心空间；实际可到位置受安保和参观动线影响。",
+        sourceUrl: "https://en.chateauversailles.fr/discover/history/key-dates/departure-king-1789",
+      },
+      {
+        number: "05",
+        status: "必看",
+        titleZh: "网球厅（网球厅宣誓旧址）",
+        titleFr: "Salle du Jeu de Paume",
+        address: "1 rue du Jeu de Paume, 78000 Versailles, France",
+        directions: "结束宫殿参观后回到城市一侧，从凡尔赛宫步行约10分钟。直接复制法语名称或完整地址导航，不要误搜巴黎的同名美术馆。",
+        onsite: "进入后看北端的大型宣誓画、墙上一圈签署者姓名与中央的巴伊雕像。1789年6月20日，代表宣誓在制定宪法前绝不解散。",
+        history: "这里把“向国王请求改革”推进成了“国民议会自己代表法国”。",
+        practical: "2026年公布安排：周二至周日12:30—18:30，17:45停止入场；免费、自由参观。建议12:30以后到。",
+        navigationUrl: "https://www.google.com/maps/search/?api=1&query=Salle+du+Jeu+de+Paume%2C+1+rue+du+Jeu+de+Paume%2C+78000+Versailles%2C+France",
+        sourceUrl: "https://www.chateauversailles.fr/decouvrir/domaine/salle-jeu-paume",
+      },
+      {
+        number: "06",
+        status: "可选补线",
+        titleZh: "国王娱乐事务馆（三级会议旧址）",
+        titleFr: "Hôtel des Menus-Plaisirs",
+        address: "22 avenue de Paris, 78000 Versailles, France",
+        directions: "从网球厅继续导航约12—15分钟；入口地址用22 avenue de Paris。现在这里是“Centre de musique baroque de Versailles”。",
+        onsite: "1789年5月5日三级会议在这里开幕，6月17日第三等级代表宣布成立国民议会。原大会厅是院内临时木结构，后来已拆除，不要期待看到完整旧会场。",
+        history: "政治革命首先在这里发生：代表们开始争论究竟是国王，还是国民，拥有最高政治权力。",
+        practical: "以外观和遗址为主，不保证普通游客进入院内；若时间紧，保留网球厅，取消这一站。",
+        navigationUrl: "https://www.google.com/maps/search/?api=1&query=H%C3%B4tel+des+Menus-Plaisirs%2C+22+avenue+de+Paris%2C+78000+Versailles%2C+France",
+        sourceUrl: "https://en.versailles-tourisme.com/l-hotel-des-menus-plaisirs.html",
+      },
+    ],
+  },
+};
+
 const freeOptions: FreeOption[] = [
   { id: "paris-versailles-treaty", region: "巴黎", category: "历史补线", title: "凡尔赛和约：一战之后的欧洲", places: "凡尔赛宫 / 镜厅 / 巴黎", story: "把凡尔赛从路易十四的王权延伸到1919年的战后秩序：旧王宫如何成为重新划分欧洲的地方。", timing: "巴黎自由日或凡尔赛日之后", source: "Excel 自由行参考（已提炼）", locationKeys: ["凡尔赛宫"] },
   { id: "paris-concorde", region: "巴黎", category: "历史补线", title: "协和广场：王权与革命争夺同一块空间", places: "协和广场", story: "从路易十五广场、革命时期的断头台，到今天的城市轴线，讲公共空间如何反复改名、改写。", timing: "巴黎自由日半日", source: "Excel 自由行参考（已提炼）", locationKeys: ["协和广场"] },
@@ -293,17 +425,20 @@ const dailyMaps: Record<string, DayMap> = {
   },
   "day-11": {
     city: "巴黎｜凡尔赛",
-    subtitle: "巴黎酒店 → 凡尔赛 → 凯旋门 → 巴黎圣母院",
+    subtitle: "巴黎酒店 → 凡尔赛宫 → 网球厅 → 凯旋门 → 巴黎圣母院",
     center: [48.82, 2.25],
     bbox: [2.08, 48.78, 2.40, 48.90],
     hotel: hotelAnchors.paris,
     points: [
-      { name: "凡尔赛宫", query: "Palace of Versailles", kind: "visit", coordinates: [48.8049, 2.1204], note: "绝对王权的空间机器" },
+      { name: "军队广场 / Place d’Armes", query: "Place d'Armes, Versailles", kind: "visit", coordinates: [48.8032, 2.1244], note: "宫门外：1789年10月5—6日群众与国民卫队聚集处", displayOffset: [0, 4] },
+      { name: "凡尔赛宫 / Château de Versailles", query: "Palace of Versailles", kind: "visit", coordinates: [48.8049, 2.1204], note: "宫内寻找皇家歌剧院、王后卧室小门和大理石庭院", displayOffset: [-4, -3] },
+      { name: "网球厅 / Salle du Jeu de Paume", query: "Salle du Jeu de Paume, 1 rue du Jeu de Paume, Versailles", kind: "visit", coordinates: [48.801004, 2.123831], note: "革命必看：免费；12:30后开放", displayOffset: [4, 2] },
+      { name: "三级会议旧址 / Hôtel des Menus-Plaisirs", query: "Hôtel des Menus-Plaisirs, 22 avenue de Paris, Versailles", kind: "optional", coordinates: [48.800397, 2.133727], note: "可选外观补线；时间紧时取消" },
       { name: "凯旋门", query: "Arc de Triomphe, Paris", kind: "visit", coordinates: [48.8738, 2.295], note: "革命与帝国重新写国家叙事" },
       { name: "巴黎圣母院", query: "Notre-Dame de Paris", kind: "visit", coordinates: [48.853, 2.3499] },
     ],
-    relationship: "凡尔赛在巴黎西南郊，凯旋门和巴黎圣母院回到市中心；这是巴黎当天最需要看交通顺序的一天。",
-    note: "凡尔赛已经是正式行程，不会再出现在自由行备选库；这里专门显示它与巴黎酒店和市中心的空间关系。",
+    relationship: "先在宫内完成三个革命观察点，再从宫殿城市一侧步行约10分钟到网球厅；Menus-Plaisirs只作可选补线，之后返回巴黎市区。",
+    note: "网球厅已加入第11天正式补线；2026年10月6日是星期二，按目前公布安排12:30后可免费参观。出发前仍需复核临时闭馆信息。",
   },
   "day-12": {
     city: "巴黎",
@@ -546,15 +681,16 @@ const basePlans: DayPlan[] = [
   },
   {
     id: "day-11", number: "11", date: "10月6日", city: "巴黎 / 凡尔赛", tag: "正式行程", title: "法国如何从王权走到民族国家",
-    route: ["凡尔赛宫", "凡尔赛花园", "凯旋门", "巴黎圣母院"], transport: ["巴黎 ↔ 凡尔赛：按正式方案交通", "凡尔赛 → 巴黎市区：车辆 / RER 以安排为准"], meals: ["午餐：凡尔赛周边", "晚餐：巴黎市区自选"],
+    route: ["军队广场 / Place d’Armes", "凡尔赛宫 / Château de Versailles", "网球厅 / Salle du Jeu de Paume", "凡尔赛花园", "凯旋门", "巴黎圣母院"], transport: ["巴黎 ↔ 凡尔赛：按正式方案交通", "宫殿 → 网球厅：从城市一侧出宫，步行约10分钟；导航 1 rue du Jeu de Paume", "凡尔赛 → 巴黎市区：车辆 / RER 以安排为准"], meals: ["午餐：网球厅参观后在凡尔赛周边安排", "晚餐：巴黎市区自选"],
     activities: [
-      { id: "d11-1", time: "上午", title: "凡尔赛宫", place: "Versailles", note: "绝对王权把空间变成政治理论", kind: "visit" },
-      { id: "d11-2", time: "中午", title: "凡尔赛花园 / 午餐", place: "Versailles", note: "按当天节奏安排", kind: "meal" },
-      { id: "d11-3", time: "下午", title: "凯旋门", place: "Arc de Triomphe", note: "革命动员被重新写成国家叙事", kind: "visit" },
-      { id: "d11-4", time: "傍晚", title: "巴黎圣母院", place: "Notre-Dame", note: "中世纪城市与现代国家叠在一起", kind: "visit" },
+      { id: "d11-1", time: "上午", title: "凡尔赛宫革命观察点", place: "Château de Versailles", note: "依次寻找 Place d’Armes、Opéra Royal、Chambre de la Reine 左侧小门、Cour de Marbre", kind: "visit" },
+      { id: "d11-2", time: "12:30后", title: "网球厅｜革命必看", place: "Salle du Jeu de Paume · 1 rue du Jeu de Paume", note: "从凡尔赛宫步行约10分钟；免费；按2026年公布安排周二开放至18:30，17:45停止入场", kind: "visit" },
+      { id: "d11-3", time: "中午", title: "凡尔赛花园 / 午餐", place: "Versailles", note: "三级会议旧址 Hôtel des Menus-Plaisirs 只在时间和车辆安排允许时增加", kind: "meal" },
+      { id: "d11-4", time: "下午", title: "凯旋门", place: "Arc de Triomphe", note: "革命动员被重新写成国家叙事", kind: "visit" },
+      { id: "d11-5", time: "傍晚", title: "巴黎圣母院", place: "Notre-Dame", note: "中世纪城市与现代国家叠在一起", kind: "visit" },
     ],
-    story: { title: "凡尔赛的镜子，照见革命的反面", question: "法国为什么必须先把王权做到极致，才会产生现代民族国家？", lead: "今天三个地点代表三种不同的法国：王权的顶峰、革命与帝国重新组织国家，以及仍然留在现代城市里的中世纪记忆。", body: "凡尔赛把权力安排在国王周围：谁可以靠近，谁只能等待，整个国家如何围绕一个中心排列，都被礼仪和建筑安排好了。凯旋门则把战争、革命动员和拿破仑的个人形象重新写成国家叙事。到了巴黎圣母院，中世纪城市与宗教记忆提醒我们：现代法国并不是从零开始，而是叠在旧制度、旧城市和旧信仰上面。今天真正要讲的，是法国怎样把旧世界的集中权力，转化成现代国家可以使用的动员能力。", chapters: [{ label: "01", title: "凡尔赛安排距离", text: "谁能靠近国王，谁拥有被看见的资格。" }, { label: "02", title: "凯旋门重写胜利", text: "革命释放的动员能力被帝国集中到国家中心。" }, { label: "03", title: "圣母院保存旧城", text: "现代国家并没有抹掉中世纪，而是把它纳入新的城市身份。" }], prompt: "请把凡尔赛、凯旋门、巴黎圣母院串成一个 6 分钟故事，讲清楚法国如何从王权、革命走到民族国家，并给每个地点一个可观察的现场细节。\n\n原稿：" },
-    source: "正式方案 PDF｜凡尔赛、凯旋门、巴黎圣母院；自由行参考补充凡尔赛和约线",
+    story: { title: "10月6日：王室离开凡尔赛的同一天", question: "法国的最高权力，怎样从国王身上转向了“国民”？", lead: "你在2026年10月6日来到凡尔赛；1789年的同一天，路易十六一家被迫离开这里，凡尔赛从此不再是法国君主的常住宫殿。", body: "今天先在军队广场看群众、军队与宫门相遇的空间，再进王宫寻找皇家歌剧院、王后卧室床龛左侧的小门和大理石庭院。离开宫殿后步行到网球厅，把时间拨回1789年6月20日：代表们宣誓在制定宪法前绝不解散。革命在凡尔赛最关键的变化，不是先砍掉一个国王，而是先提出一个新的政治问题——法国究竟属于国王，还是属于组成国家的人民？下午回到巴黎，凯旋门会让你看到革命释放出的群众动员如何被拿破仑重新集中为国家荣耀；巴黎圣母院则提醒我们，现代法国仍然叠在更古老的城市和宗教记忆上。", chapters: [{ label: "01", title: "五月：三级会议", text: "Hôtel des Menus-Plaisirs里，财政危机把三个等级召集到一起，也把“谁代表法国”变成公开冲突。" }, { label: "02", title: "六月：网球厅宣誓", text: "代表们不再只是向国王陈情，而以国民议会的名义要求制定宪法。" }, { label: "03", title: "十月：王室离开", text: "妇女进军凡尔赛后，王室被带往巴黎；政治中心也离开了王宫。" }, { label: "04", title: "革命之后的国家", text: "凯旋门把革命与战争动员写进帝国和民族国家的纪念体系。" }], prompt: "请把2026年10月6日的凡尔赛行程写成一段可以现场讲给老婆听的8分钟故事。必须使用中法双语地点名，并按现场顺序讲：Place d’Armes、Opéra Royal、Chambre de la Reine床龛左侧小门、Cour de Marbre、Salle du Jeu de Paume；Hôtel des Menus-Plaisirs只作为时间允许的补线。讲清1789年5月三级会议、6月20日网球厅宣誓、10月5—6日妇女进军和王室离开的因果关系。\n\n现场补充：" },
+    source: "正式方案 PDF｜凡尔赛、凯旋门、巴黎圣母院；凡尔赛宫、凡尔赛市与旅游局官方资料补充革命现场",
   },
   {
     id: "day-12", number: "12", date: "10月7日", city: "巴黎", tag: "自由日", title: "把巴黎的缝隙补成自己的线",
@@ -764,8 +900,9 @@ export default function Home() {
 
         {activeView === "plan" && <section className="module plan-module">
           <div className="module-title"><div><p className="eyebrow">SHARED VIEW / 给两个人</p><h3>今天要去哪？</h3><p>这张是你和老婆共同看的版本。它只放具体安排：时间、地点、交通、吃饭，以及现场已经调整过的内容。</p></div><span className="shared-badge">✓ 两个人都看这张</span></div>
-          {dailyReferenceOptions.length > 0 && <section className="daily-reference"><div className="daily-reference-head"><div><p className="eyebrow">TODAY'S NEARBY NOTES / 跟着今天走</p><h4>今天沿线的机位、吃饭和伴手礼参考</h4><p>这些内容是根据今天正式要去的地方筛出来的，只做现场参考，不会自动变成正式停靠。想加入时再点“加入今天”。</p></div><span>正式行程优先</span></div><div className="daily-reference-grid">{dailyReferenceOptions.map((option) => <article className={`daily-reference-card ${option.category === "邓紫棋 / 拍照" ? "gem-option" : ""}`} key={option.id}><div className="library-card-top"><span>{option.region}</span><em>{option.category}</em></div><h5>{option.title}</h5><p className="library-places">导航：{option.places}</p><p className="daily-reference-story">{option.story}</p>{option.shotGuide && <div className="spot-guide">{option.shotGuide.map((spot, index) => <div className="spot-guide-item" key={spot.nav}><b>{String(index + 1).padStart(2, "0")}</b><div><strong>{spot.nav}</strong><span><i>站位</i>{spot.stand}</span><span><i>画面</i>{spot.frame}</span><span><i>时段</i>{spot.bestTime}</span></div></div>)}</div>}<div className="daily-reference-actions"><small>{option.timing}</small><button onClick={() => addFreeOption(option)}>加入今天 →</button></div>{option.sourceUrl && <small className="library-source"><a href={option.sourceUrl} target="_blank" rel="noreferrer">图片 / 路线参考 ↗</a></small>}</article>)}</div></section>}
+          {dailyReferenceOptions.length > 0 && <section className="daily-reference"><div className="daily-reference-head"><div><p className="eyebrow">TODAY&apos;S NEARBY NOTES / 跟着今天走</p><h4>今天沿线的机位、吃饭和伴手礼参考</h4><p>这些内容是根据今天正式要去的地方筛出来的，只做现场参考，不会自动变成正式停靠。想加入时再点“加入今天”。</p></div><span>正式行程优先</span></div><div className="daily-reference-grid">{dailyReferenceOptions.map((option) => <article className={`daily-reference-card ${option.category === "邓紫棋 / 拍照" ? "gem-option" : ""}`} key={option.id}><div className="library-card-top"><span>{option.region}</span><em>{option.category}</em></div><h5>{option.title}</h5><p className="library-places">导航：{option.places}</p><p className="daily-reference-story">{option.story}</p>{option.shotGuide && <div className="spot-guide">{option.shotGuide.map((spot, index) => <div className="spot-guide-item" key={spot.nav}><b>{String(index + 1).padStart(2, "0")}</b><div><strong>{spot.nav}</strong><span><i>站位</i>{spot.stand}</span><span><i>画面</i>{spot.frame}</span><span><i>时段</i>{spot.bestTime}</span></div></div>)}</div>}<div className="daily-reference-actions"><small>{option.timing}</small><button onClick={() => addFreeOption(option)}>加入今天 →</button></div>{option.sourceUrl && <small className="library-source"><a href={option.sourceUrl} target="_blank" rel="noreferrer">图片 / 路线参考 ↗</a></small>}</article>)}</div></section>}
           <div className="plan-layout"><div className="timeline-card"><div className="card-topline"><span>今日路线</span><small>{activePlan.activities.length} 个安排</small></div><div className="route-ribbon">{activePlan.route.map((stop, index) => <span key={`${stop}-${index}`}><i>{String(index + 1).padStart(2, "0")}</i>{stop}</span>)}</div><div className="timeline">{activePlan.activities.map((activity) => <div className={`timeline-item ${activity.kind}`} key={activity.id}><div className="timeline-time">{activity.time}</div><div className="timeline-dot" /><div className="timeline-content"><div><b>{activity.title}</b><span>{activity.place}</span></div><p>{activity.note}</p></div></div>)}</div></div><aside className="side-info"><div className="info-card transport-card"><span className="info-icon">↗</span><div><small>交通方式</small>{activePlan.transport.map((item) => <p key={item}>{item}</p>)}</div></div><div className="info-card meal-card"><span className="info-icon">◇</span><div><small>吃饭 / 休息</small>{activePlan.meals.map((item) => <p key={item}>{item}</p>)}</div></div>{activePlan.photoIdeas && <div className="info-card photo-card"><span className="info-icon">✦</span><div><small>拍照 / 打卡建议</small>{activePlan.photoIdeas.map((item) => <p key={item}>{item}</p>)}</div></div>}<div className="next-card"><small>今天的提醒</small><b>{activePlan.id === "day-03" ? "第三天固定是梵蒂冈" : activePlan.tag === "隐藏时段" ? "这是可以临场调整的时间" : "时间可以在现场控制台调整"}</b><button onClick={() => setActiveView("control")}>去调整今日安排 →</button></div></aside></div>
+          {dayFieldGuides[activePlan.id] && (() => { const guide = dayFieldGuides[activePlan.id]; return <section className={`field-guide ${activePlan.id === "day-11" ? "revolution-guide" : "museum-guide"}`} aria-label={guide.title}><div className="field-guide-head"><div><p className="eyebrow">{guide.eyebrow}</p><h4>{guide.title}</h4><p>{guide.intro}</p></div><span>{guide.dateNote}</span></div><div className="field-route-note"><b>照着走</b><p>{guide.routeNote}</p></div><div className="field-stop-list">{guide.stops.map((stop) => <article className="field-stop" key={`${stop.number}-${stop.titleFr}`}><div className="field-stop-index"><span>{stop.number}</span><em>{stop.status}</em></div><div className="field-stop-content"><div className="field-stop-title"><h5>{stop.titleZh}</h5><strong>{stop.titleFr}</strong></div><p className="field-address"><b>位置 / Adresse</b>{stop.address}</p><div className="field-stop-details"><p><b>怎么到 / Accès</b>{stop.directions}</p><p><b>现场看什么 / À voir</b>{stop.onsite}</p><p><b>为什么重要 / Histoire</b>{stop.history}</p><p><b>开放提醒 / À savoir</b>{stop.practical}</p></div><div className="field-stop-actions">{stop.navigationUrl && <a className="primary-button" href={stop.navigationUrl} target="_blank" rel="noreferrer">打开地图导航 ↗</a>}<a className="secondary-button" href={stop.sourceUrl} target="_blank" rel="noreferrer">查看官方资料 ↗</a></div></div></article>)}</div></section>; })()}
           {activePlan.priorityReminder && <section className="priority-reminder" aria-label={activePlan.priorityReminder.label}><div className="priority-reminder-head"><span className="priority-mark">!</span><div><p className="eyebrow">{activePlan.priorityReminder.label}</p><h4>{activePlan.priorityReminder.title}</h4></div><strong>新增安排</strong></div><p className="priority-reminder-body">{activePlan.priorityReminder.body}</p><div className="priority-reminder-items">{activePlan.priorityReminder.items.map((item, index) => <div key={item}><span>{String(index + 1).padStart(2, "0")}</span><b>{item}</b></div>)}</div></section>}
           {dailyMaps[activePlan.id] && <MapCard map={dailyMaps[activePlan.id]} />}
         </section>}

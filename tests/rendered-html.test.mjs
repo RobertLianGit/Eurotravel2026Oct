@@ -56,6 +56,16 @@ test("starter preview infrastructure is removed from the finished guide", async 
   assert.match(page, /9 月 30 日/);
   assert.match(page, /day-05.*9月30日/s);
   assert.match(page, /新增安排/);
+  assert.match(page, /第11天｜拿着手机就能走的双语路线/);
+  assert.match(page, /2026年10月6日 · 星期二/);
+  assert.match(page, /Salle du Jeu de Paume/);
+  assert.match(page, /1 rue du Jeu de Paume, 78000 Versailles/);
+  assert.match(page, /Chambre de la Reine/);
+  assert.match(page, /床龛左侧的小门/);
+  assert.match(page, /Hôtel des Menus-Plaisirs/);
+  assert.match(page, /22 avenue de Paris, 78000 Versailles/);
+  assert.match(page, /La Liberté guidant le peuple/);
+  assert.match(page, /Salle Mollien 700/);
   assert.match(page, /scheduledText/);
   assert.match(page, /alreadyScheduled/);
   assert.doesNotMatch(page, /berlin-brandenburg|berlin-bornholmer|berlin-checkpoint/);
