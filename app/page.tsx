@@ -367,7 +367,7 @@ const dailyMaps: Record<string, DayMap> = {
       { name: "Volpetti Salumeria", query: "Volpetti Salumeria, Rome", kind: "optional", coordinates: [41.882, 12.4773], note: "朋友攻略原推荐；午饭后顺路看老牌熟食店" },
     ],
     relationship: "三段都建议打车：博尔盖塞到米尔维安大桥约 15—25 分钟；桥边喝完咖啡后到 Testaccio 约 25—35 分钟。Testaccio 内只走市场—Taverna—Volpetti 这一小段。",
-    note: "白天的桥区和 Testaccio 市场核心并非所谓‘贼窝’；主要风险仍是罗马常见的拥挤场所扒窃。手机不要放桌边，包拉链朝身前，跨区使用官方白色出租车。",
+    note: "白天的桥区和 Testaccio 市场核心并非所谓‘贼窝’；主要风险仍是罗马常见的拥挤场所扒窃。手机不要放桌边，包拉链朝身前；跨区可用 Uber（比较 Taxi / Black）或官方白色出租车。",
   },
   "day-07": {
     city: "罗马 → 柏林",
@@ -624,7 +624,7 @@ const basePlans: DayPlan[] = [
   },
   {
     id: "day-06", number: "06", date: "10月1日", city: "罗马", tag: "轻松街区日", title: "从收藏家的罗马，走到普通人的罗马",
-    route: ["博尔盖塞美术馆", "米尔维安大桥", "桥边咖啡", "Testaccio 市场", "Taverna Volpetti / Mordi e Vai", "Volpetti Salumeria"], transport: ["三段跨区移动都建议官方白色出租车；不要用公交换乘消耗体力", "Testaccio 只走市场—午饭—Volpetti，街区内步行约 600—900 米"], meals: ["咖啡：Gondi Bistrot（Piazzale di Ponte Milvio 5/6/7）", "午餐首选：14:00 预约 Taverna Volpetti；迟到备选：市场 Box 15 的 Mordi e Vai", "晚餐：留白；若临时想吃 Pizzeria da Remo，再按当天营业与排队决定"],
+    route: ["博尔盖塞美术馆", "米尔维安大桥", "桥边咖啡", "Testaccio 市场", "Taverna Volpetti / Mordi e Vai", "Volpetti Salumeria"], transport: ["三段跨区移动都建议 Uber（比较 Taxi / Black）或官方白色出租车；不要用公交换乘消耗体力", "Testaccio 只走市场—午饭—Volpetti，街区内步行约 600—900 米"], meals: ["咖啡：Gondi Bistrot（Piazzale di Ponte Milvio 5/6/7）", "午餐首选：14:00 预约 Taverna Volpetti；迟到备选：市场 Box 15 的 Mordi e Vai", "晚餐：留白；若临时想吃 Pizzeria da Remo，再按当天营业与排队决定"],
     photoIdeas: ["博尔盖塞结束后不要在公园继续长走，直接打车去米尔维安大桥。", "桥上拍一张台伯河与古桥，再到桥北端坐下喝咖啡；这段重在休息和看人。", "Testaccio 不追求景点数量：市场摊位、Piazza Testaccio、Volpetti 的熟食柜台，就是街区生活本身。"],
     priorityReminder: { label: "10 月 1 日已确定", title: "博尔盖塞 + 米尔维安大桥 + Testaccio", body: "Testaccio 不是去看一座明星景点，而是体验罗马的市场、熟食店、工人区饮食传统和日常生活。为了少走路，三段跨区移动都打车，街区内只走最短的小环线。", items: ["10:00—12:00｜博尔盖塞美术馆", "12:20—13:10｜米尔维安大桥 + Gondi Bistrot 咖啡", "13:40—15:30｜Testaccio 市场 + 午餐 + Volpetti"] },
     activities: [
