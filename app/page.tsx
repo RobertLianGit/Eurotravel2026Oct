@@ -66,6 +66,7 @@ type MapPoint = {
   query: string;
   kind: "hotel" | "visit" | "move" | "optional" | "context";
   note?: string;
+  travelMode?: "walk" | "taxi" | "transit";
   coordinates: [number, number];
   displayOffset?: [number, number];
 };
@@ -234,7 +235,8 @@ const freeOptions: FreeOption[] = [
   { id: "gem-paris-unclear-clues", region: "巴黎", category: "邓紫棋 / 拍照", title: "演唱会期间的餐馆 / 麦当劳线索｜待核验", places: "小红书粉丝线索：餐馆、麦当劳（没有确认地址）", story: "小红书站内能看到‘之前麦当劳偶遇邓紫棋的小哥被剪进 Vlog’以及演唱会期间餐馆营业内容，但这些是粉丝或商家内容，不足以证明她本人去过哪一家。先保留为线索，现场不要按此安排专程打卡。", timing: "出发前若找到原图地址，再决定是否加入自由日", source: "小红书站内检索｜邓紫棋 巴黎 吃饭", sourceUrl: "https://www.xiaohongshu.com/search_result?keyword=%E9%82%93%E7%B4%AB%E6%A3%8B%20%E5%B7%B4%E9%BB%8E%20%E5%90%83%E9%A5%AD" },
   { id: "paris-left-bank-photo", region: "巴黎", category: "邓紫棋 / 拍照", title: "左岸生活感拍照备选", places: "圣日耳曼大街 → Café de Flore / Les Deux Magots → 艺术桥", story: "如果想拍‘人在巴黎’而不只是地标，可以用咖啡馆、街角和塞纳河完成一条轻松的人像线。", timing: "第12天自由日下午", source: "巴黎官方旅游资料 / 拍照备选" },
   { id: "florence-photo-hotspots", region: "佛罗伦萨", category: "机位 / 出片", title: "佛罗伦萨高频机位线｜具体站位版", places: "Piazza del Duomo → Ponte Santa Trinita → Piazzale Michelangelo", story: "这张卡不再只写‘穹顶、老桥、米开朗基罗广场’，而是给出到现场可直接输入导航的点名、站位和画面。9 月 30 日学院美术馆 + 巴杰罗国家博物馆已经很满，建议把这条线放到其他自由时段，最多选两个点。", timing: "佛罗伦萨自由时段；日落优先留给 Piazzale Michelangelo", source: "佛罗伦萨官方旅游资料 / 图片与路线参考", sourceUrl: "https://www.feelflorence.it/en/experiences-itineraries/18-panoramic-views", locationKeys: ["米开朗基罗广场"], shotGuide: [{ nav: "Piazza del Duomo：圣母百花大教堂南侧 Via Roma 入口", stand: "站在 Piazza San Giovanni 与 Via Roma 交界，向西北拍穹顶与钟楼", frame: "人物贴近画面右侧，穹顶放左上；用广场人流做尺度", bestTime: "上午光线较均匀；避开中午仰拍" }, { nav: "Ponte Santa Trinita：桥中央靠南侧人行道", stand: "面向东，看 Ponte Vecchio；两人站在桥拱线旁，不堵通道", frame: "把 Ponte Vecchio 放中景，阿诺河放前景，拍横构图", bestTime: "日落前30–45分钟；比老桥桥面更容易拍全" }, { nav: "Piazzale Michelangelo：导航到广场中央露台", stand: "从 Rampe del Poggi 上来后，站到面向市中心的栏杆前", frame: "正前方依次是 Palazzo Vecchio、圣母百花穹顶、Ponte Vecchio；拍全景和人物背影", bestTime: "日落前45分钟到蓝调时刻；上山不要卡博物馆闭馆时间" }] },
-  { id: "florence-food-route", region: "佛罗伦萨", category: "美食 / 餐厅", title: "佛罗伦萨吃什么｜T骨牛排、Gelato 与牛肚包", places: "佛罗伦萨老城 / 中央市场周边", story: "近期站内结果的高频方向是佛罗伦萨 T 骨牛排、Gelato、牛肚包和 2 天游吃法。这里先记‘吃什么’而不是直接锁一家店；到现场再结合排队、价格和当天路线决定。", timing: "9月29日或9月30日午晚餐", source: "小红书站内检索｜佛罗伦萨美食", sourceUrl: "https://www.xiaohongshu.com/search_result?keyword=%E4%BD%9B%E7%BD%97%E4%BC%A6%E8%90%A8%20%E7%BE%8E%E9%A3%9F" },
+  { id: "florence-food-day4", region: "佛罗伦萨", category: "美食 / 餐厅", title: "9月29日｜大教堂—领主广场顺路吃", places: "Panini Toscani · Piazza del Duomo 34/R / Trippaio del Porcellino · Piazza del Mercato Nuovo", story: "朋友实吃推荐，按你当天的乌菲兹—大教堂—领主广场路线重新落位。Panini Toscani 就在大教堂旁，适合抵达后快速解决；Trippaio del Porcellino 在领主广场与老桥之间，点 lampredotto（牛肚包）最有佛罗伦萨街头感。两家都以快餐为主，不为吃饭额外绕路；牛肚接受不了就选 Panini Toscani。", timing: "9月29日午餐或下午加餐；牛肚摊遇长队直接放弃", source: "朋友《意大利饮食攻略—2023修订》+ 2026 营业状态核验", sourceUrl: "https://feelflorence.it/en/points-interest/nencioni-orazio-trippaio-del-porcellino" },
+  { id: "florence-food-day5", region: "佛罗伦萨", category: "美食 / 餐厅", title: "9月30日｜两座美术馆之间轻午餐，晚上吃牛排", places: "Nobile Bistrò · Piazza Madonna degli Aldobrandini 13/R / I’Tuscani 3 · Via Dante Alighieri 18/3R", story: "朋友攻略里的 Nobile Bistrò 位于学院美术馆与巴杰罗之间，适合坐下吃 panino、沙拉或简餐；把更费时间的佛罗伦萨 T 骨牛排留到两馆结束后，I’Tuscani 3 仍在原址营业。牛排按重量计价，落座前先确认克数、价格与熟度；晚餐建议预约。", timing: "9月30日：中午 Nobile Bistrò；晚餐 I’Tuscani 3", source: "朋友《意大利饮食攻略—2023修订》+ 店铺当前页面核验", sourceUrl: "https://ituscani3.eatbu.com/?lang=en" },
   { id: "florence-gifts", region: "佛罗伦萨", category: "伴手礼 / 购物", title: "佛罗伦萨伴手礼｜皮具、市场与地方食品", places: "San Lorenzo 市场 / Sant’Ambrogio 市场", story: "佛罗伦萨适合把伴手礼和老城步行结合：先看皮具、纸品和地方食品，再决定是否购买。皮具要现场看做工、材质和退换条件，不因为‘佛罗伦萨’标签就直接下单。", timing: "佛罗伦萨自由时段或返程前", source: "佛罗伦萨官方市场资料", sourceUrl: "https://www.feelflorence.it/en/experiences-itineraries/markets-florence" },
   { id: "berlin-photo-hotspots", region: "柏林", category: "机位 / 出片", title: "柏林补充机位｜具体站位版", places: "Oberbaumbrücke → East Side Gallery → Frankfurter Tor", story: "勃兰登堡门、查理检查站已经在正式行程里，这张卡只补三个可直接导航的机位：桥上拍城市、墙画拍历史、中央绿化带拍电视塔。不是再增加一整天景点。", timing: "柏林自由时段；按顺路选一到两个", source: "visitBerlin 官方｜图片与路线参考", sourceUrl: "https://www.visitberlin.de/en/photo-spots-berlin", locationKeys: ["东边画廊"], shotGuide: [{ nav: "Oberbaumbrücke：导航到桥中央人行道", stand: "站在桥中央向市中心方向（西侧）看，避开自行车道", frame: "把 Spree 河放下方，电视塔和桥塔放中远景；两人靠栏杆拍侧身", bestTime: "日落前30分钟；桥上风大，带外套" }, { nav: "East Side Gallery：从 Warschauer Straße 入口沿 Mühlenstraße 向市中心走", stand: "到‘兄弟之吻’或‘Trabi’壁画前，站在墙对面人行道", frame: "人物不要贴墙，留出整幅壁画；用墙的横向延伸拍走路镜头", bestTime: "上午 8–10 点人少；正式行程已去过则只拍补充画面" }, { nav: "Frankfurter Tor：Karl-Marx-Allee 中央绿化带", stand: "站在两座双塔之间的中轴线上，面向西看电视塔方向", frame: "双塔做左右框景，电视塔压在远处中间；适合竖构图", bestTime: "蓝调时刻，等两侧路灯亮起" }] },
   { id: "berlin-food-route", region: "柏林", category: "美食 / 餐厅", title: "柏林吃什么｜猪肘、Döner、Currywurst", places: "市中心 / Markthalle Neun / 老牌德餐馆", story: "近期结果集中在猪肘、Döner、Currywurst、老牌德餐和亚洲菜。建议把‘传统德国菜’和‘街头快餐’分成两顿，不要一天连续安排多个重口味正餐。", timing: "柏林正式行程的午餐或晚餐", source: "小红书站内检索 / VisitBerlin", sourceUrl: "https://www.xiaohongshu.com/search_result?keyword=%E6%9F%8F%E6%9E%97%20%E7%BE%8E%E9%A3%9F" },
@@ -242,7 +244,9 @@ const freeOptions: FreeOption[] = [
   { id: "paris-photo-hotspots", region: "巴黎", category: "机位 / 出片", title: "巴黎补充机位｜具体站位版", places: "Avenue de Camoëns → Pont de Bir-Hakeim → Rue Saint-Dominique", story: "巴黎不再只写‘战神广场 / 铁塔远景 / 蒙马特’。这三个点都能直接输入导航，并且各自对应不同画面：台阶中轴、桥梁几何、街道透视。第 10 天只选一个即可，避免为拍照反复穿城。", timing: "第10天铁塔段择一；第12天自由日可走完整小线", source: "巴黎铁塔官方｜图片与路线参考", sourceUrl: "https://www.toureiffel.paris/en/news/recreation/best-spots-photographing-eiffel-tower", shotGuide: [{ nav: "Avenue de Camoëns：导航到 Avenue de Camoëns 台阶顶端", stand: "站在台阶最上方，面向西南的铁塔；人物站中段，不挡住上下楼", frame: "台阶扶手做引导线，拍一张全身、一张半身；这是最省时间的铁塔人像位", bestTime: "日出或日落前；官方也特别推荐这里的结构感" }, { nav: "Pont de Bir-Hakeim：导航到桥中央的人行通道", stand: "站在桥中央拱架下的步道，朝铁塔方向拍；不要站在自行车道", frame: "用桥梁横梁和 Seine 做几何前景，人物走动比摆拍自然", bestTime: "傍晚至夜间；蓝调时刻最容易兼顾天空和灯光" }, { nav: "Rue Saint-Dominique：从 29 Rue Saint-Dominique 一带向铁塔方向走", stand: "在街道两侧找不挡车流的人行道位置，向铁塔方向拍透视", frame: "让街道两侧建筑夹出铁塔，不必走到铁塔脚下；适合竖构图", bestTime: "上午或日落前；行人多时拍‘走入巴黎’的生活感" }] },
   { id: "paris-food-route", region: "巴黎", category: "美食 / 餐厅", title: "巴黎吃什么｜法餐、马卡龙与下午茶", places: "正式路线沿线 / 玛黑区 / 左岸", story: "近期结果的高频方向是本地法餐、牛排馆、马卡龙、下午茶和 Brunch。先按当天景点位置挑店，再核对营业时间和预约要求，不直接把搜索热度等同于餐厅质量。", timing: "巴黎第10—12天按路线现场选择", source: "小红书站内检索｜巴黎美食", sourceUrl: "https://www.xiaohongshu.com/search_result?keyword=%E5%B7%B4%E9%BB%8E%20%E7%BE%8E%E9%A3%9F" },
   { id: "paris-gifts", region: "巴黎", category: "伴手礼 / 购物", title: "巴黎伴手礼｜玛黑区、博物馆商店与 10–20 欧元选项", places: "玛黑区 / 博物馆商店 / Bacha Coffee", story: "近期结果里有‘一站式购齐附地图’、玛黑区 6 店路线、10–20 欧元平价伴手礼、博物馆商店和 Bacha Coffee。适合留给巴黎自由日，先确定预算，再按区域集中购买。", timing: "第12天自由日或返程前半天", source: "小红书站内检索 / 巴黎官方旅游资料", sourceUrl: "https://www.xiaohongshu.com/search_result?keyword=%E5%B7%B4%E9%BB%8E%20%E4%BC%B4%E6%89%8B%E7%A4%BC" },
-  { id: "rome-food-route", region: "罗马", category: "美食 / 餐厅", title: "罗马吃什么｜传统罗马菜与 Testaccio", places: "Trastevere / Testaccio / 历史中心", story: "近期站内结果有‘不踩雷指南’、适合中国胃的宝藏餐厅和本地人方向。先按菜系选择：Carbonara、Cacio e pepe、Supplì、牛肚包；区域上优先考虑 Trastevere 与 Testaccio，再根据当天路线落地。", timing: "罗马第2—6天的午晚餐", source: "小红书站内检索 / Roma Food Trail", sourceUrl: "https://www.xiaohongshu.com/search_result?keyword=%E7%BD%97%E9%A9%AC%20%E7%BE%8E%E9%A3%9F" },
+  { id: "rome-food-day2", region: "罗马", category: "美食 / 餐厅", title: "9月27日｜斗兽场—特莱维沿线的朋友实吃清单", places: "Fatamorgana Monti / Grezzo Raw Chocolate / Pane e Salame / La Carbonara", story: "从斗兽场出来若走 Monti，可在 Fatamorgana（Piazza degli Zingari 5）吃 gelato，或在 Grezzo（Via Urbana 130）短休；到特莱维附近，Pane e Salame（Via di Santa Maria in Via 19）适合快速午餐。若晚上仍想吃正统罗马面，可预约 La Carbonara（Via Panisperna 214）。这张卡已替代原先泛泛的‘罗马美食’推荐。", timing: "9月27日按实际走到的位置四选一，不要为了吃饭折返", source: "朋友《意大利饮食攻略—2023修订》+ 店铺官方页面核验", sourceUrl: "https://www.lacarbonara.it/" },
+  { id: "rome-food-vatican", region: "罗马", category: "美食 / 餐厅", title: "9月28日｜梵蒂冈出口的一支冰淇淋", places: "Old Bridge Gelateria · Viale dei Bastioni di Michelangelo 5", story: "朋友攻略里最适合直接嵌入梵蒂冈日的一家：就在梵蒂冈城墙外，当前仍营业。把它当博物馆前后 15—20 分钟的休息点即可，不另加远距离餐厅；正餐仍以预约和参观节奏为先。", timing: "圣彼得大教堂或梵蒂冈博物馆前后；排队太长就跳过", source: "朋友《意大利饮食攻略—2023修订》+ Old Bridge 官方页面", sourceUrl: "https://gelateriaoldbridge.com/contatti/" },
+  { id: "rome-food-testaccio", region: "罗马", category: "美食 / 餐厅", title: "10月1日｜Testaccio 午饭：坐下休息版 + 市场版", places: "Mercato Testaccio → Taverna Volpetti / Mordi e Vai → Volpetti Salumeria", story: "首选 14:00 预约 Taverna Volpetti（Via Alessandro Volta 8）：它与朋友推荐的老牌熟食店 Volpetti 同源，能坐下慢慢吃，适合你不想太累的要求。若时间被前两站拖晚，就在市场 Box 15 的 Mordi e Vai 点 allesso、picchiapò、肉丸或香肠西兰花 panino，排队取号但出餐快。朋友攻略里的 Pizzeria da Remo 只适合晚餐；Romeo 当前经营状态不可靠，已经移出推荐。", timing: "13:35 先逛市场，14:00 午餐；市场周一至周六 7:00—15:30", source: "朋友《意大利饮食攻略—2023修订》+ Mercato / Volpetti / Taverna 官方页面核验", sourceUrl: "https://www.mercatoditestaccio.it/info/" },
   { id: "rome-gifts", region: "罗马", category: "伴手礼 / 购物", title: "罗马伴手礼｜意大利平价礼物与梵蒂冈主题", places: "历史中心 / 梵蒂冈周边 / 本土品牌店", story: "近期结果的方向包括意大利平价伴手礼、本土品牌、Venchi、梵蒂冈主题纪念品和冰箱贴。梵蒂冈日优先买小而轻的纸品或纪念章，巧克力和液体类留意行李空间。", timing: "第3天梵蒂冈结束后或第6天自由日", source: "小红书站内检索｜罗马伴手礼", sourceUrl: "https://www.xiaohongshu.com/search_result?keyword=%E7%BD%97%E9%A9%AC%20%E4%BC%B4%E6%89%8B%E7%A4%BC" },
   { id: "berlin-unter-den-linden", region: "柏林", category: "历史补线", title: "菩提树下大街：国家大道的形成", places: "Unter den Linden / 新岗哨 / 博物馆岛外观", story: "把普鲁士王权、帝国首都、战争记忆和今天的柏林大道放到一条步行线上。", timing: "第9天飞巴黎前隐藏时段", source: "Excel 自由行参考（已提炼）", locationKeys: ["菩提树下大街"] },
   { id: "rome-gem-unverified", region: "罗马", category: "邓紫棋 / 拍照", title: "邓紫棋罗马具体地点：待核实入口", places: "现场照片 / 链接 → 再加入罗马路线", story: "目前没有足够可靠的公开资料确认她在罗马的具体打卡地点。这里先保留入口，不把候选地点误写成她去过。", timing: "罗马自由日集中核对", source: "待你补充照片或链接" },
@@ -251,10 +255,11 @@ const freeOptions: FreeOption[] = [
 ];
 
 const dailyReferenceIds: Record<string, string[]> = {
-  "day-02": ["rome-food-route"],
-  "day-03": ["rome-gifts"],
-  "day-04": ["florence-photo-hotspots", "florence-food-route", "florence-gifts"],
-  "day-05": ["florence-food-route", "florence-gifts"],
+  "day-02": ["rome-food-day2"],
+  "day-03": ["rome-food-vatican", "rome-gifts"],
+  "day-04": ["florence-photo-hotspots", "florence-food-day4", "florence-gifts"],
+  "day-05": ["florence-food-day5", "florence-gifts"],
+  "day-06": ["rome-food-testaccio"],
   "day-08": ["berlin-food-route", "berlin-gifts"],
   "day-10": ["gem-fly-away", "paris-photo-hotspots", "paris-food-route"],
   "day-11": ["paris-food-route", "paris-gifts"],
@@ -349,19 +354,20 @@ const dailyMaps: Record<string, DayMap> = {
   },
   "day-06": {
     city: "罗马",
-    subtitle: "自由日：经典人像线 + 圣彼得穹顶远景候选",
-    center: [41.895, 12.479],
-    bbox: [12.43, 41.80, 12.52, 41.925],
+    subtitle: "博尔盖塞 → 米尔维安大桥 → Testaccio｜少走路版",
+    center: [41.88, 12.478],
+    bbox: [12.43, 41.79, 12.52, 41.95],
     hotel: hotelAnchors.rome,
     points: [
-      { name: "特莱维喷泉", query: "Trevi Fountain, Rome", kind: "optional", coordinates: [41.9009, 12.4833] },
-      { name: "西班牙广场", query: "Spanish Steps, Rome", kind: "optional", coordinates: [41.9059, 12.4828] },
-      { name: "橘园", query: "Giardino degli Aranci, Rome", kind: "optional", coordinates: [41.8889, 12.4828] },
-      { name: "马尔他骑士团钥匙孔", query: "Knights of Malta Keyhole, Rome", kind: "optional", coordinates: [41.8859, 12.4769] },
-      { name: "茉莉花步道", query: "Passeggiata del Gelsomino, Rome", kind: "optional", coordinates: [41.8976, 12.4487], note: "从城外远景看圣彼得穹顶" },
+      { name: "博尔盖塞美术馆", query: "Galleria Borghese, Rome", kind: "visit", travelMode: "taxi", coordinates: [41.9142, 12.4922], note: "10:00 预约；建议 09:25 抵达" },
+      { name: "米尔维安大桥", query: "Ponte Milvio, Rome", kind: "visit", travelMode: "taxi", coordinates: [41.9352, 12.4663], note: "看古桥与罗马北部街区生活" },
+      { name: "Gondi Bistrot", query: "Gondi Bistrot Ponte Milvio, Rome", kind: "optional", coordinates: [41.9371, 12.4657], note: "桥北端坐下喝咖啡；1959 年起的家庭店" },
+      { name: "Testaccio 市场", query: "Mercato Testaccio, Rome", kind: "visit", travelMode: "taxi", coordinates: [41.8778, 12.4746], note: "先逛再吃；周一至周六 07:00—15:30" },
+      { name: "Taverna Volpetti", query: "Taverna Volpetti, Rome", kind: "visit", coordinates: [41.8809, 12.4775], note: "14:00 预约午餐；坐下休息版首选" },
+      { name: "Volpetti Salumeria", query: "Volpetti Salumeria, Rome", kind: "optional", coordinates: [41.882, 12.4773], note: "朋友攻略原推荐；午饭后顺路看老牌熟食店" },
     ],
-    relationship: "自由日不锁死路线；地图把几个候选点放在同一张罗马图上，方便你按天气和体力取舍。",
-    note: "按你的最新说明，自由日仍从温暖酒店出发；这些候选不会自动覆盖正式行程，选中后再去现场控制台排序。",
+    relationship: "三段都建议打车：博尔盖塞到米尔维安大桥约 15—25 分钟；桥边喝完咖啡后到 Testaccio 约 25—35 分钟。Testaccio 内只走市场—Taverna—Volpetti 这一小段。",
+    note: "白天的桥区和 Testaccio 市场核心并非所谓‘贼窝’；主要风险仍是罗马常见的拥挤场所扒窃。手机不要放桌边，包拉链朝身前，跨区使用官方白色出租车。",
   },
   "day-07": {
     city: "罗马 → 柏林",
@@ -501,7 +507,7 @@ function segmentLabel(from: [number, number], to: [number, number], point: MapPo
   const km = distanceKm(from, to);
   const roundedKm = km < 1 ? km.toFixed(1) : km.toFixed(1);
   const direction = directionLabel(from, to);
-  const mode = point.kind === "move" || km > 8 ? "交通段" : `步行约 ${Math.max(3, Math.round(km * 12))} 分钟`;
+  const mode = point.travelMode === "taxi" ? "打车段" : point.travelMode === "transit" || point.kind === "move" || km > 8 ? "交通段" : `步行约 ${Math.max(3, Math.round(km * 12))} 分钟`;
   return `约 ${roundedKm} km · ${direction} · ${mode}`;
 }
 
@@ -567,7 +573,7 @@ const basePlans: DayPlan[] = [
   },
   {
     id: "day-02", number: "02", date: "9月27日", city: "罗马", tag: "正式行程", title: "皇帝如何控制一座城市",
-    route: ["斗兽场", "万神殿", "特莱维喷泉", "真理之口", "西班牙广场"], transport: ["酒店 → 斗兽场：步行 / 地铁，以酒店位置调整", "市中心景点之间：步行串联"], meals: ["午餐：斗兽场—万神殿之间自选", "晚餐：西班牙广场附近自选"],
+    route: ["斗兽场", "万神殿", "特莱维喷泉", "真理之口", "西班牙广场"], transport: ["酒店 → 斗兽场：步行 / 地铁，以酒店位置调整", "市中心景点之间：步行串联"], meals: ["午餐：特莱维附近 Pane e Salame；若走 Monti 则按 Fatamorgana / Grezzo 顺路休息", "晚餐：可预约 Monti 的 La Carbonara；不为餐厅折返"],
     activities: [
       { id: "d2-1", time: "09:00", title: "斗兽场", place: "Colosseo", note: "看皇帝如何组织城市大众", kind: "visit" },
       { id: "d2-2", time: "11:30", title: "万神殿", place: "Pantheon", note: "看皇帝如何把秩序包装成宇宙", kind: "visit" },
@@ -580,7 +586,7 @@ const basePlans: DayPlan[] = [
   },
   {
     id: "day-03", number: "03", date: "9月28日", city: "罗马｜梵蒂冈", tag: "重点日", title: "帝国如何变成教皇世界",
-    route: ["圣彼得大教堂", "梵蒂冈博物馆", "西斯廷教堂"], transport: ["罗马酒店 → 梵蒂冈：步行 / 地铁 / 车程，以酒店位置调整", "梵蒂冈内部：按预约时间入场"], meals: ["午餐：梵蒂冈周边自选", "晚餐：回罗马市区后自选"],
+    route: ["圣彼得大教堂", "梵蒂冈博物馆", "西斯廷教堂"], transport: ["罗马酒店 → 梵蒂冈：步行 / 地铁 / 车程，以酒店位置调整", "梵蒂冈内部：按预约时间入场"], meals: ["午餐：梵蒂冈周边按预约节奏解决", "甜点休息：Old Bridge Gelateria（城墙外 Viale dei Bastioni di Michelangelo 5）", "晚餐：回罗马市区后自选"],
     activities: [
       { id: "d3-1", time: "08:00", title: "圣彼得大教堂", place: "St. Peter's Basilica", note: "从君士坦丁讲到教皇罗马", kind: "visit" },
       { id: "d3-2", time: "11:30", title: "午餐 / 休息", place: "梵蒂冈周边", note: "根据预约和排队情况调整", kind: "meal" },
@@ -593,7 +599,7 @@ const basePlans: DayPlan[] = [
   },
   {
     id: "day-04", number: "04", date: "9月29日", city: "罗马 → 佛罗伦萨", tag: "正式行程", title: "帝国之后，城邦重新发明欧洲",
-    route: ["前往佛罗伦萨", "乌菲兹美术馆", "圣母百花大教堂", "领主广场", "天堂之门"], transport: ["罗马 → 佛罗伦萨：按正式方案交通", "佛罗伦萨市区：步行串联"], meals: ["午餐：佛罗伦萨市中心自选", "晚餐：酒店 / 市区自选"],
+    route: ["前往佛罗伦萨", "乌菲兹美术馆", "圣母百花大教堂", "领主广场", "天堂之门"], transport: ["罗马 → 佛罗伦萨：按正式方案交通", "佛罗伦萨市区：步行串联"], meals: ["午餐：大教堂旁 Panini Toscani；若已走到领主广场，可改吃 Trippaio del Porcellino", "晚餐：酒店 / 市区自选"],
     activities: [
       { id: "d4-1", time: "上午", title: "前往佛罗伦萨", place: "罗马 → 佛罗伦萨", note: "从帝国城市进入城邦城市", kind: "move" },
       { id: "d4-2", time: "10:30", title: "乌菲兹美术馆", place: "Uffizi Gallery", note: "美第奇如何用艺术打造公共声望", kind: "visit" },
@@ -605,7 +611,7 @@ const basePlans: DayPlan[] = [
   },
   {
     id: "day-05", number: "05", date: "9月30日", city: "佛罗伦萨", tag: "重点日", title: "学院与巴杰罗：把佛罗伦萨的雕塑线补完整",
-    route: ["学院美术馆", "巴杰罗国家博物馆", "佛罗伦萨老城步行"], transport: ["酒店 → 学院美术馆：步行 / 市内交通，以预约时间为准", "学院美术馆 → 巴杰罗国家博物馆：佛罗伦萨老城步行串联"], meals: ["午餐：学院美术馆—巴杰罗之间自选", "晚餐：佛罗伦萨市区 / 酒店附近自选"],
+    route: ["学院美术馆", "巴杰罗国家博物馆", "佛罗伦萨老城步行"], transport: ["酒店 → 学院美术馆：步行 / 市内交通，以预约时间为准", "学院美术馆 → 巴杰罗国家博物馆：佛罗伦萨老城步行串联"], meals: ["午餐：两馆之间的 Nobile Bistrò，简餐并坐下休息", "晚餐：I’Tuscani 3 吃佛罗伦萨牛排，建议预约并先确认重量价格"],
     priorityReminder: { label: "务必记住 / 9 月 30 日", title: "学院美术馆 + 巴杰罗国家博物馆", body: "今天已经确定去学院美术馆；新增的巴杰罗国家博物馆必须单独记住，不要只看完《大卫》就漏掉巴杰罗。两馆可以串成一条‘米开朗基罗—多纳太罗—佛罗伦萨雕塑传统’的完整补充线，具体先后按预约时间调整。", items: ["学院美术馆｜Galleria dell’Accademia｜已确定安排：重点看米开朗基罗《大卫》", "巴杰罗国家博物馆｜Museo Nazionale del Bargello｜新增安排：重点提醒，不要忘记"] },
     activities: [
       { id: "d5-1", time: "上午", title: "学院美术馆", place: "Galleria dell’Accademia", note: "已确定安排；重点看米开朗基罗《大卫》", kind: "visit" },
@@ -617,17 +623,22 @@ const basePlans: DayPlan[] = [
     source: "你的最新安排｜9 月 30 日学院美术馆 + 巴杰罗国家博物馆",
   },
   {
-    id: "day-06", number: "06", date: "10月1日", city: "罗马", tag: "自由日", title: "给自己补一块罗马",
-    route: ["全天自由活动", "拍照预留：罗马人像线", "可选：古罗马 / 橘园一线"], transport: ["市内交通：步行 / 地铁 / 打车按当天选择", "自由日不锁死路线；拍照线按天气和体力取舍"], meals: ["午餐：当天路线附近自选", "晚餐：罗马市区自选"],
-    photoIdeas: ["邓紫棋罗马具体打卡点：目前没有足够可靠的公开资料确认，不把候选点写成她去过。", "建议预留：特莱维喷泉 → 西班牙广场，适合做一条轻量经典人像线。", "进阶备选：橘园 / 马尔他骑士团钥匙孔；想拍圣彼得穹顶远景，可看罗马官方推荐的茉莉花步道。"],
+    id: "day-06", number: "06", date: "10月1日", city: "罗马", tag: "轻松街区日", title: "从收藏家的罗马，走到普通人的罗马",
+    route: ["博尔盖塞美术馆", "米尔维安大桥", "桥边咖啡", "Testaccio 市场", "Taverna Volpetti / Mordi e Vai", "Volpetti Salumeria"], transport: ["三段跨区移动都建议官方白色出租车；不要用公交换乘消耗体力", "Testaccio 只走市场—午饭—Volpetti，街区内步行约 600—900 米"], meals: ["咖啡：Gondi Bistrot（Piazzale di Ponte Milvio 5/6/7）", "午餐首选：14:00 预约 Taverna Volpetti；迟到备选：市场 Box 15 的 Mordi e Vai", "晚餐：留白；若临时想吃 Pizzeria da Remo，再按当天营业与排队决定"],
+    photoIdeas: ["博尔盖塞结束后不要在公园继续长走，直接打车去米尔维安大桥。", "桥上拍一张台伯河与古桥，再到桥北端坐下喝咖啡；这段重在休息和看人。", "Testaccio 不追求景点数量：市场摊位、Piazza Testaccio、Volpetti 的熟食柜台，就是街区生活本身。"],
+    priorityReminder: { label: "10 月 1 日已确定", title: "博尔盖塞 + 米尔维安大桥 + Testaccio", body: "Testaccio 不是去看一座明星景点，而是体验罗马的市场、熟食店、工人区饮食传统和日常生活。为了少走路，三段跨区移动都打车，街区内只走最短的小环线。", items: ["10:00—12:00｜博尔盖塞美术馆", "12:20—13:10｜米尔维安大桥 + Gondi Bistrot 咖啡", "13:40—15:30｜Testaccio 市场 + 午餐 + Volpetti"] },
     activities: [
-      { id: "d6-1", time: "09:00–11:00", title: "拍照预留：罗马人像线", place: "特莱维喷泉 → 西班牙广场", note: "先作为邓紫棋打卡候选，不把它写成已确认的她去过地点；天气不好可直接取消", kind: "free" },
-      { id: "d6-2", time: "中午", title: "午餐", place: "当天决定", note: "可以在控制台里加入餐厅", kind: "meal" },
-      { id: "d6-3", time: "14:30–16:30", title: "第二拍照备选 / 历史补线", place: "橘园 / 马尔他骑士团钥匙孔 / 茉莉花步道", note: "三选一即可；不要为了拍照把自由日排满", kind: "free" },
-      { id: "d6-4", time: "傍晚", title: "自由活动 / 晚餐", place: "罗马市区", note: "保留体力，也可补拍白天没拍到的照片", kind: "free" },
+      { id: "d6-1", time: "09:25", title: "提前抵达", place: "博尔盖塞美术馆", note: "预约 10:00；留出安检、存包和找入口时间", kind: "move" },
+      { id: "d6-2", time: "10:00–12:00", title: "博尔盖塞美术馆", place: "Galleria Borghese", note: "两小时看贝尼尼、卡拉瓦乔；结束后不再长走公园", kind: "visit" },
+      { id: "d6-3", time: "12:20–13:10", title: "米尔维安大桥 + 咖啡", place: "Ponte Milvio → Gondi Bistrot", note: "桥上短走、看台伯河；桥北端坐下喝咖啡，观察本地街区日常", kind: "free" },
+      { id: "d6-4", time: "13:10–13:40", title: "打车去 Testaccio", place: "Ponte Milvio → Mercato Testaccio", note: "避开公交换乘；下车点设在市场入口", kind: "move" },
+      { id: "d6-5", time: "13:40–14:00", title: "Testaccio 市场", place: "Mercato Testaccio", note: "市场 15:30 关，必须先看；重点看蔬果、奶酪、肉铺与熟食摊", kind: "visit" },
+      { id: "d6-6", time: "14:00–15:10", title: "午餐 / 休息", place: "Taverna Volpetti", note: "首选提前预约；想更市井则改去市场 Box 15 的 Mordi e Vai", kind: "meal" },
+      { id: "d6-7", time: "15:10–15:40", title: "Volpetti / Piazza Testaccio", place: "Via Marmorata 47 → Piazza Testaccio", note: "看熟食柜台和街区广场；累了就取消广场，直接打车回酒店", kind: "free" },
+      { id: "d6-8", time: "15:40 后", title: "打车回酒店休息", place: "Testaccio → Warmthotel", note: "下午不再加景点；晚餐按体力决定", kind: "move" },
     ],
-    story: { title: "自由日不是空白，是你的版本", question: "自由时间怎样把正式路线变成自己的旅行？", lead: "正式方案在这里留出全天自由活动。今天的重点不是完成更多景点，而是决定你想把哪条历史线补完整。", body: "你可以回看前几天：斗兽场代表皇帝如何管理人群，梵蒂冈代表帝国如何被教会继承，佛罗伦萨又把罗马遗产变成了城邦竞争。现在请你选择一个缺口：补古罗马公共空间，补圣天使堡和教皇罗马，或者只在街道里观察这些历史怎样继续生活在今天。自由日的价值，是让你不必服从别人替你排好的顺序。", chapters: [{ label: "01", title: "补古罗马", text: "把前一天的帝国城市线再补一段。" }, { label: "02", title: "补教皇罗马", text: "把梵蒂冈之后的城市记忆继续延伸。" }, { label: "03", title: "什么都不补", text: "休息、吃饭和观察，也可以成为旅行材料。" }], prompt: "我在罗马自由日有这些选择：____。请帮我根据前几天已经讲过的帝国、教会和文艺复兴，安排一条不重复、节奏合理的半日或一日路线，并写出当天可以讲的完整故事。\n\n现场补充：" },
-    source: "正式方案 PDF｜罗马全天自由活动；自由行参考第二 sheet 作为补充库",
+    story: { title: "Testaccio：罗马为什么也要看市场和饭桌？", question: "看完贵族收藏，怎样在同一天看见普通罗马人的城市？", lead: "上午的博尔盖塞是贵族把财富、权力和艺术集中进一座别墅；下午的 Testaccio 则把罗马放回市场、屠宰业、熟食店和居民的饭桌。", body: "博尔盖塞美术馆里的贝尼尼和卡拉瓦乔，代表的是被家族收藏、被精心展示的罗马。离开美术馆去米尔维安大桥，城市从室内重新回到道路与河流：这座桥长期是罗马北方入口，今天桥边的咖啡馆和居民生活又给它加上了当代的一层。最后到 Testaccio，真正要看的不是‘又一个古迹’，而是城市怎样吃饭。古代的货物沿台伯河进入这里，破碎的油罐堆成 Monte Testaccio；近代屠宰场又让牛杂和所谓 quinto quarto 成为街区味道。今天的市场、Volpetti 和罗马面食把这些历史留在日常里。你在摊位前看到的奶酪、肉铺、蔬果和 panino，不是景点布景，而是罗马继续生活的方式。", chapters: [{ label: "01", title: "博尔盖塞：被收藏的罗马", text: "贵族家族把艺术变成身份、权力和审美秩序。" }, { label: "02", title: "米尔维安：道路上的罗马", text: "古桥曾连接罗马与北方，今天则是居民喝咖啡、见面和散步的地方。" }, { label: "03", title: "Testaccio：被吃出来的罗马", text: "港口、陶罐山、屠宰场和市场，共同形成这片工人街区的饮食传统。" }], prompt: "请把 10 月 1 日的博尔盖塞美术馆、米尔维安大桥和 Testaccio 写成一段 5 分钟现场故事。重点不是景点百科，而是从贵族收藏、城市道路讲到普通罗马人的市场与饭桌；最后解释 Testaccio 的 Monte dei Cocci、旧屠宰场和 quinto quarto 为什么塑造了罗马菜。\n\n现场补充：" },
+    source: "你的最新安排｜10 月 1 日博尔盖塞 + 米尔维安大桥 + Testaccio；朋友《意大利饮食攻略—2023修订》；店铺与市场官方页面 2026 核验",
   },
   {
     id: "day-07", number: "07", date: "10月2日", city: "罗马 → 柏林", tag: "隐藏时段", title: "去柏林前的自由半天",
