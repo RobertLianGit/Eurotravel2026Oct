@@ -56,6 +56,13 @@ test("starter preview infrastructure is removed from the finished guide", async 
   assert.match(page, /9 月 30 日/);
   assert.match(page, /day-05.*9月30日/s);
   assert.match(page, /新增安排/);
+  assert.match(page, /08:30 温暖酒店集合/);
+  assert.match(page, /圣伊纳爵教堂/);
+  assert.match(page, /圣天使堡/);
+  assert.match(page, /纳沃纳广场/);
+  assert.match(page, /大殿名单里“圣保禄”重复了一次/);
+  assert.match(page, /巴黎圣母院 \+ 奥赛美术馆/);
+  assert.match(page, /奥赛出来后/);
   assert.match(page, /第11天｜拿着手机就能走的双语路线/);
   assert.match(page, /2026年10月6日 · 星期二/);
   assert.match(page, /Salle du Jeu de Paume/);
