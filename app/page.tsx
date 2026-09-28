@@ -114,6 +114,28 @@ type DayFieldGuide = {
 };
 
 const dayFieldGuides: Record<string, DayFieldGuide> = {
+  "day-06": {
+    eyebrow: "BERNINI MUST-SEE / 贝尼尼必看",
+    title: "《圣特蕾莎的狂喜》｜L’Estasi di santa Teresa d’Avila",
+    dateNote: "10月1日 · 16:00 到达",
+    intro: "这是当天新增的必去项。博尔盖塞12:00结束时教堂正进入午间关闭，因此不要出馆后直接冲过去；按官方参观时段，下午16:00再进入最稳妥。",
+    routeNote: "从 Testaccio 打车导航到 Chiesa di Santa Maria della Vittoria, Via XX Settembre 17。进门沿中殿走向主祭坛，在左侧耳堂寻找 Cappella Cornaro（科尔纳罗礼拜堂）。",
+    stops: [
+      {
+        number: "01",
+        status: "必看",
+        titleZh: "胜利之后圣母堂与《圣特蕾莎的狂喜》",
+        titleFr: "Santa Maria della Vittoria · L’Estasi di santa Teresa",
+        address: "Via XX Settembre 17, 00187 Roma",
+        directions: "16:00从正门进入；沿中殿向主祭坛走，在左侧耳堂看科尔纳罗礼拜堂。若正在举行弥撒或祈祷，先安静等候，仪式期间不能参观。",
+        onsite: "先退后看整座礼拜堂：圣女和天使是舞台中央，两侧包厢里的科尔纳罗家族像观众。再看上方隐藏采光、金色光束、白色大理石与彩色大理石怎样共同制造一场宗教戏剧。",
+        history: "贝尼尼在1647—1652年前后把特蕾莎所描述的‘心被金箭刺穿、痛苦与狂喜同时发生’变成空间、雕塑和光线的整体作品。它不是一尊孤立雕像，而是一座完整的巴洛克剧场。",
+        practical: "教堂官方页面列出的普通参观时段为周一至周六8:00—12:00、16:00—18:00；礼仪期间禁止参观。当天不需要为了赶中午开放而提前离开博尔盖塞。",
+        navigationUrl: "https://www.google.com/maps/search/?api=1&query=Chiesa+di+Santa+Maria+della+Vittoria%2C+Via+XX+Settembre+17%2C+Roma",
+        sourceUrl: "https://www.carmelitanicentroitalia.it/dove-siamo/conventi-della-provincia/s-maria-della-vittoria-roma",
+      },
+    ],
+  },
   "day-10": {
     eyebrow: "LOUVRE MUST-SEE / 卢浮宫第一目标",
     title: "《自由引导人民》｜La Liberté guidant le peuple",
@@ -357,7 +379,7 @@ const dailyMaps: Record<string, DayMap> = {
   },
   "day-06": {
     city: "罗马",
-    subtitle: "博尔盖塞 → 米尔维安大桥 → Testaccio｜少走路版",
+    subtitle: "博尔盖塞 → 米尔维安大桥 → Testaccio → 胜利之后圣母堂｜少走路版",
     center: [41.88, 12.478],
     bbox: [12.43, 41.79, 12.52, 41.95],
     hotel: hotelAnchors.rome,
@@ -368,9 +390,10 @@ const dailyMaps: Record<string, DayMap> = {
       { name: "Testaccio 市场", query: "Mercato Testaccio, Rome", kind: "visit", travelMode: "taxi", coordinates: [41.8778, 12.4746], note: "先逛再吃；周一至周六 07:00—15:30" },
       { name: "Taverna Volpetti", query: "Taverna Volpetti, Rome", kind: "visit", coordinates: [41.8809, 12.4775], note: "14:00 预约午餐；坐下休息版首选" },
       { name: "Volpetti Salumeria", query: "Volpetti Salumeria, Rome", kind: "optional", coordinates: [41.882, 12.4773], note: "朋友攻略原推荐；午饭后顺路看老牌熟食店" },
+      { name: "胜利之后圣母堂", query: "Chiesa di Santa Maria della Vittoria, Rome", kind: "visit", travelMode: "taxi", coordinates: [41.9045, 12.4943], note: "16:00 必去；左侧耳堂看贝尼尼《圣特蕾莎的狂喜》" },
     ],
-    relationship: "三段都建议打车：博尔盖塞到米尔维安大桥约 15—25 分钟；桥边喝完咖啡后到 Testaccio 约 25—35 分钟。Testaccio 内只走市场—Taverna—Volpetti 这一小段。",
-    note: "白天的桥区和 Testaccio 市场核心并非所谓‘贼窝’；主要风险仍是罗马常见的拥挤场所扒窃。手机不要放桌边，包拉链朝身前；跨区可用 Uber（比较 Taxi / Black）或官方白色出租车。",
+    relationship: "四段跨区都建议打车：博尔盖塞到米尔维安大桥约 15—25 分钟，桥边到 Testaccio 约 25—35 分钟，15:25 左右再从 Testaccio 前往胜利之后圣母堂。Testaccio 内只走市场—Taverna—Volpetti 这一小段。",
+    note: "教堂中午关闭，普通参观下午 16:00 恢复，所以把它放在 Testaccio 之后；不要 12:00 从博尔盖塞出来就直接过去。白天桥区与市场核心的主要风险仍是拥挤场所扒窃；跨区可用 Uber（比较 Taxi / Black）或官方白色出租车。",
   },
   "day-07": {
     city: "罗马 → 柏林",
@@ -626,10 +649,10 @@ const basePlans: DayPlan[] = [
     source: "你的最新安排｜9 月 30 日学院美术馆 + 巴杰罗国家博物馆",
   },
   {
-    id: "day-06", number: "06", date: "10月1日", city: "罗马", tag: "轻松街区日", title: "从收藏家的罗马，走到普通人的罗马",
-    route: ["博尔盖塞美术馆", "米尔维安大桥", "桥边咖啡", "Testaccio 市场", "Taverna Volpetti / Mordi e Vai", "Volpetti Salumeria"], transport: ["三段跨区移动都建议 Uber（比较 Taxi / Black）或官方白色出租车；不要用公交换乘消耗体力", "Testaccio 只走市场—午饭—Volpetti，街区内步行约 600—900 米"], meals: ["咖啡：Gondi Bistrot（Piazzale di Ponte Milvio 5/6/7）", "午餐首选：14:00 预约 Taverna Volpetti；迟到备选：市场 Box 15 的 Mordi e Vai", "晚餐：留白；若临时想吃 Pizzeria da Remo，再按当天营业与排队决定"],
-    photoIdeas: ["博尔盖塞结束后不要在公园继续长走，直接打车去米尔维安大桥。", "桥上拍一张台伯河与古桥，再到桥北端坐下喝咖啡；这段重在休息和看人。", "Testaccio 不追求景点数量：市场摊位、Piazza Testaccio、Volpetti 的熟食柜台，就是街区生活本身。"],
-    priorityReminder: { label: "10 月 1 日已确定", title: "博尔盖塞 + 米尔维安大桥 + Testaccio", body: "Testaccio 不是去看一座明星景点，而是体验罗马的市场、熟食店、工人区饮食传统和日常生活。为了少走路，三段跨区移动都打车，街区内只走最短的小环线。", items: ["10:00—12:00｜博尔盖塞美术馆", "12:20—13:10｜米尔维安大桥 + Gondi Bistrot 咖啡", "13:40—15:30｜Testaccio 市场 + 午餐 + Volpetti"] },
+    id: "day-06", number: "06", date: "10月1日", city: "罗马", tag: "贝尼尼重点日", title: "从博尔盖塞的贝尼尼，走进圣特蕾莎的巴洛克剧场",
+    route: ["博尔盖塞美术馆", "米尔维安大桥", "桥边咖啡", "Testaccio 市场", "Taverna Volpetti / Mordi e Vai", "Volpetti Salumeria", "胜利之后圣母堂", "《圣特蕾莎的狂喜》"], transport: ["四段跨区移动都建议 Uber（比较 Taxi / Black）或官方白色出租车；不要用公交换乘消耗体力", "Testaccio 只走市场—午饭—Volpetti，随后打车到教堂，16:00 再入内"], meals: ["咖啡：Gondi Bistrot（Piazzale di Ponte Milvio 5/6/7）", "午餐首选：14:00 预约 Taverna Volpetti；迟到备选：市场 Box 15 的 Mordi e Vai", "晚餐：参观教堂后回酒店休息，再按体力决定"],
+    photoIdeas: ["博尔盖塞结束后不要在公园继续长走，直接打车去米尔维安大桥。", "桥上拍一张台伯河与古桥，再到桥北端坐下喝咖啡；这段重在休息和看人。", "Testaccio 不追求景点数量：市场摊位和 Volpetti 的熟食柜台，就是街区生活本身。", "胜利之后圣母堂内先拍完整科尔纳罗礼拜堂，再拍圣女、天使、金色光束与两侧‘观众包厢’的关系；若现场禁止拍摄，以观看为先。"],
+    priorityReminder: { label: "10 月 1 日新增必去", title: "16:00 胜利之后圣母堂｜《圣特蕾莎的狂喜》", body: "这站已经锁定，但不能在博尔盖塞12:00出馆后立刻去：教堂普通参观12:00—16:00关闭。保留原有米尔维安大桥和 Testaccio，15:25左右从 Testaccio打车，16:00进入最稳妥。", items: ["10:00—12:00｜博尔盖塞美术馆", "12:20—13:10｜米尔维安大桥 + Gondi Bistrot 咖啡", "13:40—15:25｜Testaccio 市场 + 午餐 + Volpetti", "16:00—16:35｜胜利之后圣母堂 +《圣特蕾莎的狂喜》"] },
     activities: [
       { id: "d6-1", time: "09:25", title: "提前抵达", place: "博尔盖塞美术馆", note: "预约 10:00；留出安检、存包和找入口时间", kind: "move" },
       { id: "d6-2", time: "10:00–12:00", title: "博尔盖塞美术馆", place: "Galleria Borghese", note: "两小时看贝尼尼、卡拉瓦乔；结束后不再长走公园", kind: "visit" },
@@ -637,11 +660,13 @@ const basePlans: DayPlan[] = [
       { id: "d6-4", time: "13:10–13:40", title: "打车去 Testaccio", place: "Ponte Milvio → Mercato Testaccio", note: "避开公交换乘；下车点设在市场入口", kind: "move" },
       { id: "d6-5", time: "13:40–14:00", title: "Testaccio 市场", place: "Mercato Testaccio", note: "市场 15:30 关，必须先看；重点看蔬果、奶酪、肉铺与熟食摊", kind: "visit" },
       { id: "d6-6", time: "14:00–15:10", title: "午餐 / 休息", place: "Taverna Volpetti", note: "首选提前预约；想更市井则改去市场 Box 15 的 Mordi e Vai", kind: "meal" },
-      { id: "d6-7", time: "15:10–15:40", title: "Volpetti / Piazza Testaccio", place: "Via Marmorata 47 → Piazza Testaccio", note: "看熟食柜台和街区广场；累了就取消广场，直接打车回酒店", kind: "free" },
-      { id: "d6-8", time: "15:40 后", title: "打车回酒店休息", place: "Testaccio → Warmthotel", note: "下午不再加景点；晚餐按体力决定", kind: "move" },
+      { id: "d6-7", time: "15:10–15:25", title: "Volpetti 熟食店", place: "Volpetti Salumeria · Via Marmorata 47", note: "短看熟食柜台，不再绕去广场；15:25左右必须出发", kind: "free" },
+      { id: "d6-8", time: "15:25–16:00", title: "打车去胜利之后圣母堂", place: "Testaccio → Via XX Settembre 17", note: "导航到 Chiesa di Santa Maria della Vittoria；预留堵车和下车找入口时间", kind: "move" },
+      { id: "d6-9", time: "16:00–16:35", title: "《圣特蕾莎的狂喜》", place: "胜利之后圣母堂 · Cappella Cornaro", note: "新增必去；进门走向主祭坛，在左侧耳堂看贝尼尼如何用雕塑、建筑与隐藏光源组成一座剧场", kind: "visit" },
+      { id: "d6-10", time: "16:35 后", title: "打车回酒店休息", place: "Via XX Settembre 17 → Warmthotel", note: "当天重点已经完成；晚餐按体力决定", kind: "move" },
     ],
-    story: { title: "Testaccio：罗马为什么也要看市场和饭桌？", question: "看完贵族收藏，怎样在同一天看见普通罗马人的城市？", lead: "上午的博尔盖塞是贵族把财富、权力和艺术集中进一座别墅；下午的 Testaccio 则把罗马放回市场、屠宰业、熟食店和居民的饭桌。", body: "博尔盖塞美术馆里的贝尼尼和卡拉瓦乔，代表的是被家族收藏、被精心展示的罗马。离开美术馆去米尔维安大桥，城市从室内重新回到道路与河流：这座桥长期是罗马北方入口，今天桥边的咖啡馆和居民生活又给它加上了当代的一层。最后到 Testaccio，真正要看的不是‘又一个古迹’，而是城市怎样吃饭。古代的货物沿台伯河进入这里，破碎的油罐堆成 Monte Testaccio；近代屠宰场又让牛杂和所谓 quinto quarto 成为街区味道。今天的市场、Volpetti 和罗马面食把这些历史留在日常里。你在摊位前看到的奶酪、肉铺、蔬果和 panino，不是景点布景，而是罗马继续生活的方式。", chapters: [{ label: "01", title: "博尔盖塞：被收藏的罗马", text: "贵族家族把艺术变成身份、权力和审美秩序。" }, { label: "02", title: "米尔维安：道路上的罗马", text: "古桥曾连接罗马与北方，今天则是居民喝咖啡、见面和散步的地方。" }, { label: "03", title: "Testaccio：被吃出来的罗马", text: "港口、陶罐山、屠宰场和市场，共同形成这片工人街区的饮食传统。" }], prompt: "请把 10 月 1 日的博尔盖塞美术馆、米尔维安大桥和 Testaccio 写成一段 5 分钟现场故事。重点不是景点百科，而是从贵族收藏、城市道路讲到普通罗马人的市场与饭桌；最后解释 Testaccio 的 Monte dei Cocci、旧屠宰场和 quinto quarto 为什么塑造了罗马菜。\n\n现场补充：" },
-    source: "你的最新安排｜10 月 1 日博尔盖塞 + 米尔维安大桥 + Testaccio；朋友《意大利饮食攻略—2023修订》；店铺与市场官方页面 2026 核验",
+    story: { title: "同一个贝尼尼，为什么在博物馆与教堂里完全不同？", question: "从贵族收藏、城市道路和普通人的饭桌走回一座巴洛克教堂，罗马怎样把艺术变成可亲历的戏剧？", lead: "上午在博尔盖塞看被家族收藏的贝尼尼，下午穿过米尔维安和 Testaccio 的城市生活，最后在胜利之后圣母堂看他把雕塑、建筑、光线和信仰合成一场剧。", body: "博尔盖塞美术馆里的贝尼尼和卡拉瓦乔，代表的是被家族收藏、被精心展示的罗马。离开美术馆去米尔维安大桥，城市从室内回到道路与河流；到了 Testaccio，又从贵族艺术进入市场、屠宰业、熟食店和居民饭桌。最后回到胜利之后圣母堂，贝尼尼不再只是做一尊供人绕着看的雕像。他把《圣特蕾莎的狂喜》放进科尔纳罗礼拜堂的舞台中央：圣女和天使被上方隐藏的自然光照亮，金色光束强化神启，两侧科尔纳罗家族成员像坐在包厢里观看。特蕾莎描述的是一支金箭刺入心脏时，痛苦与喜悦同时到来的神秘经验；贝尼尼把难以言说的内在感觉变成人人都能看见的身体、光线和剧场。这样一天里看到的不是四个互不相干的点，而是罗马的四层：收藏、道路、饭桌和信仰。", chapters: [{ label: "01", title: "博尔盖塞：被收藏的贝尼尼", text: "贵族家族把艺术变成身份、权力和审美秩序。" }, { label: "02", title: "米尔维安：道路上的罗马", text: "古桥曾连接罗马与北方，今天仍是居民喝咖啡、见面和散步的地方。" }, { label: "03", title: "Testaccio：被吃出来的罗马", text: "港口、陶罐山、屠宰场与市场，共同形成工人街区的饮食传统。" }, { label: "04", title: "圣特蕾莎：一座巴洛克剧场", text: "雕塑不是孤立陈列，隐藏光源、彩色大理石、金色光束与两侧包厢共同把神秘体验变成现场戏剧。" }], prompt: "请把 10 月 1 日写成一段 6 分钟现场故事：上午博尔盖塞看贝尼尼，之后去米尔维安大桥与 Testaccio，16:00到胜利之后圣母堂看《圣特蕾莎的狂喜》。重点讲清同一个贝尼尼在贵族收藏与教堂科尔纳罗礼拜堂里的不同，并把收藏、道路、市场饭桌和宗教戏剧连成一条线；到了教堂必须告诉我站在哪里、先看什么、再看什么。\n\n现场补充：" },
+    source: "你的最新安排｜10 月 1 日新增胜利之后圣母堂《圣特蕾莎的狂喜》；加尔默罗会教堂官方开放与参观时段；Roma Capitale 官方景点资料；朋友《意大利饮食攻略—2023修订》",
   },
   {
     id: "day-07", number: "07", date: "10月2日", city: "罗马 → 柏林", tag: "隐藏时段", title: "去柏林前的自由半天",

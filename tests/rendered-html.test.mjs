@@ -56,6 +56,11 @@ test("starter preview infrastructure is removed from the finished guide", async 
   assert.match(page, /9 月 30 日/);
   assert.match(page, /day-05.*9月30日/s);
   assert.match(page, /新增安排/);
+  assert.match(page, /胜利之后圣母堂/);
+  assert.match(page, /圣特蕾莎的狂喜/);
+  assert.match(page, /16:00—16:35｜胜利之后圣母堂/);
+  assert.match(page, /Via XX Settembre 17/);
+  assert.match(page, /Cappella Cornaro/);
   assert.match(page, /08:30 温暖酒店集合/);
   assert.match(page, /圣伊纳爵教堂/);
   assert.match(page, /圣天使堡/);
